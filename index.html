@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="FitTrack">
+    <meta name="theme-color" content="#000000">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="description" content="Your Personal 6-Day Workout Plan - Track workouts, watch demos, achieve your fitness goals">
+    
+    <title>Fitness Tracker</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- PWA Icons -->
+    <link rel="apple-touch-icon" href="icons/icon-180.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png">
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+    
+    <!-- Splash Screens for iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-startup-image" href="icons/splash.png">
+    
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* Prevent FOUC */
+        html { background: #000; }
+        
+        /* Install Prompt */
+        .install-prompt {
+            display: none;
+            position: fixed;
+            bottom: 100px;
+            left: 16px;
+            right: 16px;
+            background: linear-gradient(135deg, #1C1C1E, #2C2C2E);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 16px;
+            z-index: 1000;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: slideUp 0.3s ease;
+        }
+        .install-prompt.show { display: block; }
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .install-prompt h3 {
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+        .install-prompt p {
+            font-size: 14px;
+            color: #8E8E93;
+            margin-bottom: 16px;
+        }
+        .install-prompt .btn-row {
+            display: flex;
+            gap: 12px;
+        }
+        .install-prompt button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+        .install-prompt .install-btn {
+            background: #007AFF;
+            color: white;
+        }
+        .install-prompt .later-btn {
+            background: #3A3A3C;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="app-background"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-blur"></div>
+            
+            <div class="app-icon">💪</div>
+            <h1>Fitness Tracker</h1>
+            <p class="header-subtitle">Your Personal Training Assistant</p>
+            
+            <!-- Goals Pills -->
+            <div class="goals-scroll">
+                <div class="goals">
+                    <span class="goal-tag">🔥 Belly Fat</span>
+                    <span class="goal-tag">💪 Chest Fat</span>
+                    <span class="goal-tag">🦴 Lower Back</span>
+                    <span class="goal-tag">🧘 Posture</span>
+                    <span class="goal-tag">📍 Neck Hump</span>
+                    <span class="goal-tag">🏏 Bat Speed</span>
+                </div>
+            </div>
+            
+            <!-- Stats Bar -->
+            <div class="stats-bar" id="header-stats">
+                <div class="stat-item">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Workouts</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Exercises</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">0🔥</div>
+                    <div class="stat-label">Streak</div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main id="content">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <nav class="nav-container">
+        <div class="nav-scroll">
+            <div class="nav-tabs" id="nav-tabs">
+                <!-- Rendered by JS -->
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Video Modal -->
+    <div class="modal" id="video-modal"></div>
+    
+    <!-- Install Prompt -->
+    <div class="install-prompt" id="install-prompt">
+        <h3>📱 Install Fitness Tracker</h3>
+        <p>Add to your home screen for the best experience - works offline!</p>
+        <div class="btn-row">
+            <button class="later-btn" onclick="dismissInstall()">Later</button>
+            <button class="install-btn" onclick="installPWA()">Install</button>
+        </div>
+    </div>
+    
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('SW registered:', reg.scope))
+                    .catch(err => console.log('SW registration failed:', err));
+            });
+        }
+        
+        // Install prompt handling
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install prompt after 30 seconds if not installed
+            setTimeout(() => {
+                if (deferredPrompt && !localStorage.getItem('pwaInstallDismissed')) {
+                    document.getElementById('install-prompt').classList.add('show');
+                }
+            }, 30000);
+        });
+        
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choice) => {
+                    if (choice.outcome === 'accepted') {
+                        console.log('PWA installed');
+                    }
+                    deferredPrompt = null;
+                    document.getElementById('install-prompt').classList.remove('show');
+                });
+            }
+        }
+        
+        function dismissInstall() {
+            document.getElementById('install-prompt').classList.remove('show');
+            localStorage.setItem('pwaInstallDismissed', 'true');
+        }
+        
+        // Detect if running as PWA
+        if (window.matchMedia('(display-mode: standalone)').matches || 
+            window.navigator.standalone === true) {
+            document.body.classList.add('pwa-mode');
+        }
+    </script>
+</body>
+</html>
