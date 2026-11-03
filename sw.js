@@ -1,57 +1,41 @@
-// Service Worker for FitPro PWA
-const CACHE_NAME = 'fitpro-v2.0.0';
-
+// Service Worker for Fitness Tracker PWA
+const CACHE_NAME = 'fitness-tracker-v1';
 const ASSETS_TO_CACHE = [
-    '/fitness-tracker/',
-    '/fitness-tracker/index.html',
-    '/fitness-tracker/css/style.css',
-    '/fitness-tracker/js/exercises.js',
-    '/fitness-tracker/js/workouts.js',
-    '/fitness-tracker/js/storage.js',
-    '/fitness-tracker/js/app.js',
-    '/fitness-tracker/manifest.json',
-    '/fitness-tracker/icons/icon-192.png',
-    '/fitness-tracker/icons/icon-512.png'
+    '/',
+    '/index.html',
+    '/css/style.css',
+    '/js/app.js',
+    '/js/data.js',
+    '/manifest.json',
+    '/icons/icon-192.png',
+    '/icons/icon-512.png'
 ];
 
 // Install event - cache assets
 self.addEventListener('install', (event) => {
-    console.log('[SW] Installing...');
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
-                console.log('[SW] Caching app shell');
+                console.log('Caching app assets');
                 return cache.addAll(ASSETS_TO_CACHE);
             })
-            .then(() => {
-                console.log('[SW] Install complete');
-                return self.skipWaiting();
-            })
-            .catch((err) => {
-                console.log('[SW] Cache failed:', err);
-            })
+            .then(() => self.skipWaiting())
     );
 });
 
-// Activate event - clean up old caches
+// Activate event - clean old caches
 self.addEventListener('activate', (event) => {
-    console.log('[SW] Activating...');
     event.waitUntil(
-        caches.keys()
-            .then((cacheNames) => {
-                return Promise.all(
-                    cacheNames
-                        .filter((name) => name !== CACHE_NAME)
-                        .map((name) => {
-                            console.log('[SW] Deleting old cache:', name);
-                            return caches.delete(name);
-                        })
-                );
-            })
-            .then(() => {
-                console.log('[SW] Activate complete');
-                return self.clients.claim();
-            })
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames.map((cacheName) => {
+                    if (cacheName !== CACHE_NAME) {
+                        console.log('Deleting old cache:', cacheName);
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        }).then(() => self.clients.claim())
     );
 });
 
@@ -60,11 +44,13 @@ self.addEventListener('fetch', (event) => {
     // Skip non-GET requests
     if (event.request.method !== 'GET') return;
     
-    // Skip external requests (like CDN scripts, GIFs, etc.)
-    if (!event.request.url.startsWith(self.location.origin)) {
+    // Skip YouTube and external requests
+    if (event.request.url.includes('youtube.com') || 
+        event.request.url.includes('googlevideo.com') ||
+        event.request.url.includes('ytimg.com')) {
         return;
     }
-
+    
     event.respondWith(
         caches.match(event.request)
             .then((cachedResponse) => {
@@ -72,37 +58,63 @@ self.addEventListener('fetch', (event) => {
                     // Return cached version
                     return cachedResponse;
                 }
-
-                // Not in cache, fetch from network
+                
+                // Fetch from network
                 return fetch(event.request)
-                    .then((networkResponse) => {
-                        // Don't cache if not a valid response
-                        if (!networkResponse || networkResponse.status !== 200) {
-                            return networkResponse;
+                    .then((response) => {
+                        // Don't cache non-successful responses
+                        if (!response || response.status !== 200 || response.type !== 'basic') {
+                            return response;
                         }
-
-                        // Cache the new response for future use
-                        const responseToCache = networkResponse.clone();
+                        
+                        // Clone and cache the response
+                        const responseToCache = response.clone();
                         caches.open(CACHE_NAME)
                             .then((cache) => {
                                 cache.put(event.request, responseToCache);
                             });
-
-                        return networkResponse;
+                        
+                        return response;
                     })
                     .catch(() => {
-                        // Network failed, try to return offline page
+                        // Return offline page for navigation requests
                         if (event.request.mode === 'navigate') {
-                            return caches.match('/fitness-tracker/index.html');
+                            return caches.match('/index.html');
                         }
                     });
             })
     );
 });
 
-// Handle messages from the app
-self.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'SKIP_WAITING') {
-        self.skipWaiting();
+// Handle background sync for workout data
+self.addEventListener('sync', (event) => {
+    if (event.tag === 'sync-workout') {
+        console.log('Background sync: workout data');
     }
+});
+
+// Push notification support (for future use)
+self.addEventListener('push', (event) => {
+    if (event.data) {
+        const data = event.data.json();
+        const options = {
+            body: data.body || 'Time for your workout!',
+            icon: '/icons/icon-192.png',
+            badge: '/icons/icon-96.png',
+            vibrate: [100, 50, 100],
+            data: { url: data.url || '/' }
+        };
+        
+        event.waitUntil(
+            self.registration.showNotification(data.title || 'Fitness Tracker', options)
+        );
+    }
+});
+
+// Handle notification clicks
+self.addEventListener('notificationclick', (event) => {
+    event.notification.close();
+    event.waitUntil(
+        clients.openWindow(event.notification.data.url || '/')
+    );
 });

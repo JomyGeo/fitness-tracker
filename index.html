@@ -2,711 +2,213 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="FitPro">
+    <meta name="apple-mobile-web-app-title" content="FitTrack">
     <meta name="theme-color" content="#000000">
-    <meta name="description" content="Professional fitness tracker with exercise library, workout builder, progress tracking and more.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="description" content="Your Personal 6-Day Workout Plan - Track workouts, watch demos, achieve your fitness goals">
     
-    <title>FitPro - Gym Tracker</title>
+    <title>Fitness Tracker</title>
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
     
-    <!-- iOS Icons -->
-    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <!-- PWA Icons -->
+    <link rel="apple-touch-icon" href="icons/icon-180.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png">
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
     
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Splash Screens for iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-startup-image" href="icons/splash.png">
     
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- Styles -->
     <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* Prevent FOUC */
+        html { background: #000; }
+        
+        /* Install Prompt */
+        .install-prompt {
+            display: none;
+            position: fixed;
+            bottom: 100px;
+            left: 16px;
+            right: 16px;
+            background: linear-gradient(135deg, #1C1C1E, #2C2C2E);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 16px;
+            z-index: 1000;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: slideUp 0.3s ease;
+        }
+        .install-prompt.show { display: block; }
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .install-prompt h3 {
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+        .install-prompt p {
+            font-size: 14px;
+            color: #8E8E93;
+            margin-bottom: 16px;
+        }
+        .install-prompt .btn-row {
+            display: flex;
+            gap: 12px;
+        }
+        .install-prompt button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+        .install-prompt .install-btn {
+            background: #007AFF;
+            color: white;
+        }
+        .install-prompt .later-btn {
+            background: #3A3A3C;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <!-- App Container -->
-    <div id="app">
-        
-        <!-- ==================== HEADER ==================== -->
-        <header id="app-header">
-            <div class="header-left">
-                <button id="header-back-btn" class="header-btn hidden">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M15 18l-6-6 6-6"/>
-                    </svg>
-                </button>
-                <h1 id="header-title">FitPro</h1>
+    <!-- Animated Background -->
+    <div class="app-background"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-blur"></div>
+            
+            <div class="app-icon">💪</div>
+            <h1>Fitness Tracker</h1>
+            <p class="header-subtitle">Your Personal Training Assistant</p>
+            
+            <!-- Goals Pills -->
+            <div class="goals-scroll">
+                <div class="goals">
+                    <span class="goal-tag">🔥 Belly Fat</span>
+                    <span class="goal-tag">💪 Chest Fat</span>
+                    <span class="goal-tag">🦴 Lower Back</span>
+                    <span class="goal-tag">🧘 Posture</span>
+                    <span class="goal-tag">📍 Neck Hump</span>
+                    <span class="goal-tag">🏏 Bat Speed</span>
+                </div>
             </div>
-            <div class="header-right">
-                <button id="header-action-btn" class="header-btn hidden">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 5v14M5 12h14"/>
-                    </svg>
-                </button>
+            
+            <!-- Stats Bar -->
+            <div class="stats-bar" id="header-stats">
+                <div class="stat-item">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Workouts</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Exercises</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">0🔥</div>
+                    <div class="stat-label">Streak</div>
+                </div>
             </div>
         </header>
-
-        <!-- ==================== MAIN CONTENT ==================== -->
-        <main id="main-content">
-            
-            <!-- ===== HOME SCREEN ===== -->
-            <section id="screen-home" class="screen active">
-                <!-- Quick Stats -->
-                <div class="quick-stats">
-                    <div class="stat-card">
-                        <div class="stat-icon">🔥</div>
-                        <div class="stat-info">
-                            <span class="stat-value" id="stat-streak">0</span>
-                            <span class="stat-label">Day Streak</span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">🏋️</div>
-                        <div class="stat-info">
-                            <span class="stat-value" id="stat-workouts">0</span>
-                            <span class="stat-label">Workouts</span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">⚡</div>
-                        <div class="stat-info">
-                            <span class="stat-value" id="stat-volume">0</span>
-                            <span class="stat-label">Total kg</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Today's Workout Section -->
-                <div class="section">
-                    <div class="section-header">
-                        <h2>Today's Workout</h2>
-                        <span class="section-date" id="today-date"></span>
-                    </div>
-                    <div id="today-workout" class="today-workout-card">
-                        <div class="empty-state">
-                            <div class="empty-icon">📋</div>
-                            <p>No workout scheduled</p>
-                            <button class="btn-primary" onclick="App.showScreen('workouts')">Browse Workouts</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quick Actions -->
-                <div class="section">
-                    <h2>Quick Actions</h2>
-                    <div class="quick-actions">
-                        <button class="action-card" onclick="App.startQuickWorkout()">
-                            <div class="action-icon">⚡</div>
-                            <span>Quick Start</span>
-                        </button>
-                        <button class="action-card" onclick="App.showScreen('exercises')">
-                            <div class="action-icon">📚</div>
-                            <span>Exercises</span>
-                        </button>
-                        <button class="action-card" onclick="App.showScreen('calculator')">
-                            <div class="action-icon">🧮</div>
-                            <span>1RM Calc</span>
-                        </button>
-                        <button class="action-card" onclick="App.showScreen('history')">
-                            <div class="action-icon">📅</div>
-                            <span>History</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Recent Workouts -->
-                <div class="section">
-                    <div class="section-header">
-                        <h2>Recent Activity</h2>
-                        <button class="link-btn" onclick="App.showScreen('history')">See All</button>
-                    </div>
-                    <div id="recent-workouts" class="recent-list">
-                        <div class="empty-state small">
-                            <p>No recent workouts</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ===== WORKOUTS SCREEN ===== -->
-            <section id="screen-workouts" class="screen">
-                <!-- Tabs -->
-                <div class="tabs">
-                    <button class="tab active" data-tab="my-workouts">My Workouts</button>
-                    <button class="tab" data-tab="preset-workouts">Presets</button>
-                </div>
-
-                <!-- My Workouts Tab -->
-                <div id="tab-my-workouts" class="tab-content active">
-                    <div id="my-workouts-list" class="workout-list">
-                        <div class="empty-state">
-                            <div class="empty-icon">🏋️</div>
-                            <p>No custom workouts yet</p>
-                            <button class="btn-primary" onclick="App.createNewWorkout()">Create Workout</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Preset Workouts Tab -->
-                <div id="tab-preset-workouts" class="tab-content">
-                    <div id="preset-workouts-list" class="workout-list">
-                        <!-- Will be populated by JS -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- ===== EXERCISES LIBRARY SCREEN ===== -->
-            <section id="screen-exercises" class="screen">
-                <!-- Search Bar -->
-                <div class="search-container">
-                    <div class="search-box">
-                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"/>
-                            <path d="M21 21l-4.35-4.35"/>
-                        </svg>
-                        <input type="text" id="exercise-search" placeholder="Search exercises...">
-                        <button id="clear-search" class="clear-btn hidden">×</button>
-                    </div>
-                </div>
-
-                <!-- Filter Pills -->
-                <div class="filter-section">
-                    <div class="filter-row">
-                        <span class="filter-label">Muscle:</span>
-                        <div class="filter-pills" id="muscle-filters">
-                            <!-- Generated by JS -->
-                        </div>
-                    </div>
-                    <div class="filter-row">
-                        <span class="filter-label">Equipment:</span>
-                        <div class="filter-pills" id="equipment-filters">
-                            <!-- Generated by JS -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Exercise Count -->
-                <div class="results-info">
-                    <span id="exercise-count">0 exercises</span>
-                </div>
-
-                <!-- Exercise List -->
-                <div id="exercise-list" class="exercise-grid">
-                    <!-- Generated by JS -->
-                </div>
-            </section>
-
-            <!-- ===== HISTORY / CALENDAR SCREEN ===== -->
-            <section id="screen-history" class="screen">
-                <!-- Calendar Header -->
-                <div class="calendar-header">
-                    <button id="prev-month" class="calendar-nav">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M15 18l-6-6 6-6"/>
-                        </svg>
-                    </button>
-                    <h2 id="calendar-title">October 2024</h2>
-                    <button id="next-month" class="calendar-nav">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 18l6-6-6-6"/>
-                        </svg>
-                    </button>
-                </div>
-
-                <!-- Calendar Grid -->
-                <div class="calendar-container">
-                    <div class="calendar-weekdays">
-                        <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
-                    </div>
-                    <div id="calendar-grid" class="calendar-grid">
-                        <!-- Generated by JS -->
-                    </div>
-                </div>
-
-                <!-- Selected Day Workouts -->
-                <div class="section">
-                    <h3 id="selected-date-title">Today</h3>
-                    <div id="day-workouts" class="day-workout-list">
-                        <div class="empty-state small">
-                            <p>No workouts on this day</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Monthly Summary -->
-                <div class="section">
-                    <h3>Monthly Summary</h3>
-                    <div class="monthly-stats">
-                        <div class="monthly-stat">
-                            <span class="monthly-value" id="monthly-workouts">0</span>
-                            <span class="monthly-label">Workouts</span>
-                        </div>
-                        <div class="monthly-stat">
-                            <span class="monthly-value" id="monthly-volume">0</span>
-                            <span class="monthly-label">Total kg</span>
-                        </div>
-                        <div class="monthly-stat">
-                            <span class="monthly-value" id="monthly-exercises">0</span>
-                            <span class="monthly-label">Exercises</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ===== PROGRESS / CHARTS SCREEN ===== -->
-            <section id="screen-progress" class="screen">
-                <!-- Progress Tabs -->
-                <div class="tabs">
-                    <button class="tab active" data-tab="volume-chart">Volume</button>
-                    <button class="tab" data-tab="strength-chart">Strength</button>
-                    <button class="tab" data-tab="prs-list">PRs</button>
-                </div>
-
-                <!-- Volume Chart Tab -->
-                <div id="tab-volume-chart" class="tab-content active">
-                    <div class="chart-container">
-                        <canvas id="volume-chart"></canvas>
-                    </div>
-                    <div class="chart-legend">
-                        <div class="legend-item">
-                            <span class="legend-color" style="background: var(--primary)"></span>
-                            <span>Weekly Volume (kg)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Strength Chart Tab -->
-                <div id="tab-strength-chart" class="tab-content">
-                    <div class="exercise-select-container">
-                        <label>Select Exercise:</label>
-                        <select id="strength-exercise-select" class="select-input">
-                            <option value="">Choose an exercise...</option>
-                        </select>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="strength-chart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Personal Records Tab -->
-                <div id="tab-prs-list" class="tab-content">
-                    <div id="prs-list" class="pr-list">
-                        <div class="empty-state">
-                            <div class="empty-icon">🏆</div>
-                            <p>No personal records yet</p>
-                            <p class="empty-subtitle">Complete workouts to track your PRs</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ===== SETTINGS SCREEN ===== -->
-            <section id="screen-settings" class="screen">
-                <!-- Profile Section -->
-                <div class="settings-section">
-                    <h3>Profile</h3>
-                    <div class="settings-card">
-                        <div class="profile-header">
-                            <div class="profile-avatar" id="profile-avatar">JG</div>
-                            <div class="profile-info">
-                                <input type="text" id="profile-name" class="profile-name-input" placeholder="Your Name" value="User">
-                                <span class="profile-subtitle">Member since <span id="member-since">2024</span></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Units Section -->
-                <div class="settings-section">
-                    <h3>Units</h3>
-                    <div class="settings-card">
-                        <div class="setting-row">
-                            <span class="setting-label">Weight Unit</span>
-                            <div class="toggle-group">
-                                <button class="toggle-btn active" data-unit="kg">kg</button>
-                                <button class="toggle-btn" data-unit="lb">lb</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Rest Timer Section -->
-                <div class="settings-section">
-                    <h3>Rest Timer</h3>
-                    <div class="settings-card">
-                        <div class="setting-row">
-                            <span class="setting-label">Default Rest Time</span>
-                            <select id="default-rest-time" class="select-input small">
-                                <option value="30">30 sec</option>
-                                <option value="60" selected>60 sec</option>
-                                <option value="90">90 sec</option>
-                                <option value="120">2 min</option>
-                                <option value="180">3 min</option>
-                            </select>
-                        </div>
-                        <div class="setting-row">
-                            <span class="setting-label">Vibration</span>
-                            <label class="switch">
-                                <input type="checkbox" id="vibration-toggle" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                        <div class="setting-row">
-                            <span class="setting-label">Sound</span>
-                            <label class="switch">
-                                <input type="checkbox" id="sound-toggle" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Data Section -->
-                <div class="settings-section">
-                    <h3>Data</h3>
-                    <div class="settings-card">
-                        <button class="setting-btn" onclick="App.exportData()">
-                            <span>Export Data</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                            </svg>
-                        </button>
-                        <button class="setting-btn" onclick="App.importData()">
-                            <span>Import Data</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
-                            </svg>
-                        </button>
-                        <button class="setting-btn danger" onclick="App.clearAllData()">
-                            <span>Clear All Data</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- About Section -->
-                <div class="settings-section">
-                    <h3>About</h3>
-                    <div class="settings-card">
-                        <div class="about-info">
-                            <div class="app-logo">💪</div>
-                            <h4>FitPro</h4>
-                            <p>Version 2.0.0</p>
-                            <p class="about-text">Your personal fitness companion. Track workouts, monitor progress, and achieve your goals.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ===== 1RM CALCULATOR SCREEN ===== -->
-            <section id="screen-calculator" class="screen">
-                <div class="calculator-container">
-                    <div class="calc-card">
-                        <h3>One Rep Max Calculator</h3>
-                        <p class="calc-description">Estimate your maximum weight for one repetition based on your recent lift.</p>
-                        
-                        <div class="calc-inputs">
-                            <div class="input-group">
-                                <label>Weight Lifted</label>
-                                <div class="input-with-unit">
-                                    <input type="number" id="calc-weight" placeholder="0" min="0">
-                                    <span class="unit-label" id="calc-unit">kg</span>
-                                </div>
-                            </div>
-                            <div class="input-group">
-                                <label>Reps Performed</label>
-                                <input type="number" id="calc-reps" placeholder="0" min="1" max="30">
-                            </div>
-                        </div>
-
-                        <button class="btn-primary full-width" onclick="App.calculate1RM()">Calculate</button>
-
-                        <div id="calc-result" class="calc-result hidden">
-                            <div class="result-main">
-                                <span class="result-label">Estimated 1RM</span>
-                                <span class="result-value" id="result-1rm">0 kg</span>
-                            </div>
-                            <div class="result-table">
-                                <h4>Rep Max Estimates</h4>
-                                <div class="rep-max-grid" id="rep-max-grid">
-                                    <!-- Generated by JS -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Formula Info -->
-                    <div class="calc-info">
-                        <h4>About the Formula</h4>
-                        <p>This calculator uses the Brzycki formula: 1RM = Weight × (36 / (37 - Reps))</p>
-                        <p>Most accurate for 1-10 reps. Results are estimates and may vary.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ===== WORKOUT BUILDER SCREEN ===== -->
-            <section id="screen-workout-builder" class="screen">
-                <div class="builder-header">
-                    <input type="text" id="workout-name" class="workout-name-input" placeholder="Workout Name">
-                </div>
-
-                <div id="builder-exercises" class="builder-exercises">
-                    <div class="empty-state">
-                        <div class="empty-icon">➕</div>
-                        <p>No exercises added</p>
-                        <button class="btn-secondary" onclick="App.openExercisePicker()">Add Exercise</button>
-                    </div>
-                </div>
-
-                <button class="fab" id="add-exercise-fab" onclick="App.openExercisePicker()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 5v14M5 12h14"/>
-                    </svg>
-                </button>
-            </section>
-
-            <!-- ===== ACTIVE WORKOUT SCREEN ===== -->
-            <section id="screen-active-workout" class="screen">
-                <!-- Workout Header -->
-                <div class="active-workout-header">
-                    <div class="workout-timer">
-                        <span class="timer-label">Duration</span>
-                        <span class="timer-value" id="workout-duration">00:00</span>
-                    </div>
-                    <div class="workout-progress-info">
-                        <span id="exercise-progress">0/0</span>
-                        <span>exercises</span>
-                    </div>
-                </div>
-
-                <!-- Current Exercise -->
-                <div id="current-exercise-container" class="current-exercise">
-                    <!-- Populated by JS -->
-                </div>
-
-                <!-- Set Logger -->
-                <div id="set-logger" class="set-logger">
-                    <div class="set-list" id="set-list">
-                        <!-- Populated by JS -->
-                    </div>
-                    <button class="btn-secondary full-width" id="add-set-btn">+ Add Set</button>
-                </div>
-
-                <!-- Rest Timer -->
-                <div id="rest-timer-container" class="rest-timer hidden">
-                    <div class="rest-timer-circle">
-                        <svg class="rest-progress" viewBox="0 0 100 100">
-                            <circle class="rest-bg" cx="50" cy="50" r="45"/>
-                            <circle class="rest-fill" cx="50" cy="50" r="45" id="rest-progress-circle"/>
-                        </svg>
-                        <div class="rest-time" id="rest-time">60</div>
-                    </div>
-                    <p>Rest Time</p>
-                    <div class="rest-controls">
-                        <button class="rest-btn" onclick="App.adjustRestTime(-15)">-15s</button>
-                        <button class="rest-btn skip" onclick="App.skipRest()">Skip</button>
-                        <button class="rest-btn" onclick="App.adjustRestTime(15)">+15s</button>
-                    </div>
-                </div>
-
-                <!-- Exercise Navigation -->
-                <div class="exercise-nav">
-                    <button class="nav-btn" id="prev-exercise-btn" disabled>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M15 18l-6-6 6-6"/>
-                        </svg>
-                        Previous
-                    </button>
-                    <button class="nav-btn primary" id="next-exercise-btn">
-                        Next
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 18l6-6-6-6"/>
-                        </svg>
-                    </button>
-                </div>
-
-                <!-- Finish Button -->
-                <button class="btn-finish" id="finish-workout-btn" onclick="App.finishWorkout()">
-                    Finish Workout
-                </button>
-            </section>
-
-            <!-- ===== EXERCISE DETAIL SCREEN ===== -->
-            <section id="screen-exercise-detail" class="screen">
-                <div id="exercise-detail-content" class="exercise-detail">
-                    <!-- Populated by JS -->
-                </div>
-            </section>
-
-            <!-- ===== WORKOUT SUMMARY SCREEN ===== -->
-            <section id="screen-workout-summary" class="screen">
-                <div class="summary-container">
-                    <div class="summary-header">
-                        <div class="summary-icon">🎉</div>
-                        <h2>Workout Complete!</h2>
-                    </div>
-                    <div class="summary-stats">
-                        <div class="summary-stat">
-                            <span class="summary-value" id="summary-duration">0:00</span>
-                            <span class="summary-label">Duration</span>
-                        </div>
-                        <div class="summary-stat">
-                            <span class="summary-value" id="summary-volume">0</span>
-                            <span class="summary-label">Total Volume</span>
-                        </div>
-                        <div class="summary-stat">
-                            <span class="summary-value" id="summary-sets">0</span>
-                            <span class="summary-label">Sets</span>
-                        </div>
-                    </div>
-                    <div class="summary-exercises" id="summary-exercises">
-                        <!-- Populated by JS -->
-                    </div>
-                    <div class="summary-prs" id="summary-prs">
-                        <!-- Populated by JS if PRs achieved -->
-                    </div>
-                    <button class="btn-primary full-width" onclick="App.goHome()">Done</button>
-                </div>
-            </section>
-
+        
+        <!-- Main Content -->
+        <main id="content">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+            </div>
         </main>
-
-        <!-- ==================== BOTTOM NAVIGATION ==================== -->
-        <nav id="bottom-nav">
-            <button class="nav-item active" data-screen="home">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                    <polyline points="9 22 9 12 15 12 15 22"/>
-                </svg>
-                <span>Home</span>
-            </button>
-            <button class="nav-item" data-screen="workouts">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                    <line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
-                </svg>
-                <span>Workouts</span>
-            </button>
-            <button class="nav-item" data-screen="exercises">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-                    <line x1="9" y1="9" x2="9.01" y2="9"/>
-                    <line x1="15" y1="9" x2="15.01" y2="9"/>
-                </svg>
-                <span>Exercises</span>
-            </button>
-            <button class="nav-item" data-screen="progress">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="18" y1="20" x2="18" y2="10"/>
-                    <line x1="12" y1="20" x2="12" y2="4"/>
-                    <line x1="6" y1="20" x2="6" y2="14"/>
-                </svg>
-                <span>Progress</span>
-            </button>
-            <button class="nav-item" data-screen="settings">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="3"/>
-                    <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
-                </svg>
-                <span>Settings</span>
-            </button>
-        </nav>
-
     </div>
-
-    <!-- ==================== MODALS ==================== -->
     
-    <!-- Exercise Picker Modal -->
-    <div id="exercise-picker-modal" class="modal">
-        <div class="modal-content large">
-            <div class="modal-header">
-                <h3>Add Exercise</h3>
-                <button class="modal-close" onclick="App.closeModal('exercise-picker-modal')">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="search-box">
-                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"/>
-                        <path d="M21 21l-4.35-4.35"/>
-                    </svg>
-                    <input type="text" id="picker-search" placeholder="Search exercises...">
-                </div>
-                <div class="picker-filters">
-                    <select id="picker-muscle-filter" class="select-input">
-                        <option value="all">All Muscles</option>
-                    </select>
-                    <select id="picker-equipment-filter" class="select-input">
-                        <option value="all">All Equipment</option>
-                    </select>
-                </div>
-                <div id="picker-exercise-list" class="picker-list">
-                    <!-- Generated by JS -->
-                </div>
+    <!-- Bottom Navigation -->
+    <nav class="nav-container">
+        <div class="nav-scroll">
+            <div class="nav-tabs" id="nav-tabs">
+                <!-- Rendered by JS -->
             </div>
         </div>
-    </div>
-
-    <!-- Exercise Detail Modal -->
-    <div id="exercise-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modal-exercise-name">Exercise</h3>
-                <button class="modal-close" onclick="App.closeModal('exercise-modal')">×</button>
-            </div>
-            <div class="modal-body" id="modal-exercise-content">
-                <!-- Populated by JS -->
-            </div>
+    </nav>
+    
+    <!-- Video Modal -->
+    <div class="modal" id="video-modal"></div>
+    
+    <!-- Install Prompt -->
+    <div class="install-prompt" id="install-prompt">
+        <h3>📱 Install Fitness Tracker</h3>
+        <p>Add to your home screen for the best experience - works offline!</p>
+        <div class="btn-row">
+            <button class="later-btn" onclick="dismissInstall()">Later</button>
+            <button class="install-btn" onclick="installPWA()">Install</button>
         </div>
     </div>
-
-    <!-- Confirmation Modal -->
-    <div id="confirm-modal" class="modal">
-        <div class="modal-content small">
-            <div class="modal-header">
-                <h3 id="confirm-title">Confirm</h3>
-            </div>
-            <div class="modal-body">
-                <p id="confirm-message">Are you sure?</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" onclick="App.closeModal('confirm-modal')">Cancel</button>
-                <button class="btn-primary" id="confirm-btn">Confirm</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast Notification -->
-    <div id="toast" class="toast">
-        <span id="toast-message"></span>
-    </div>
-
-    <!-- Hidden File Input for Import -->
-    <input type="file" id="import-file-input" accept=".json" style="display: none;">
-
-    <!-- Scripts -->
-    <script src="js/exercises.js"></script>
-    <script src="js/workouts.js"></script>
-    <script src="js/storage.js"></script>
+    
+    <script src="js/data.js"></script>
     <script src="js/app.js"></script>
     
-    <!-- Service Worker Registration -->
+    <!-- PWA Service Worker Registration -->
     <script>
+        // Register Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('SW registered'))
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('SW registered:', reg.scope))
                     .catch(err => console.log('SW registration failed:', err));
             });
+        }
+        
+        // Install prompt handling
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install prompt after 30 seconds if not installed
+            setTimeout(() => {
+                if (deferredPrompt && !localStorage.getItem('pwaInstallDismissed')) {
+                    document.getElementById('install-prompt').classList.add('show');
+                }
+            }, 30000);
+        });
+        
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choice) => {
+                    if (choice.outcome === 'accepted') {
+                        console.log('PWA installed');
+                    }
+                    deferredPrompt = null;
+                    document.getElementById('install-prompt').classList.remove('show');
+                });
+            }
+        }
+        
+        function dismissInstall() {
+            document.getElementById('install-prompt').classList.remove('show');
+            localStorage.setItem('pwaInstallDismissed', 'true');
+        }
+        
+        // Detect if running as PWA
+        if (window.matchMedia('(display-mode: standalone)').matches || 
+            window.navigator.standalone === true) {
+            document.body.classList.add('pwa-mode');
         }
     </script>
 </body>
