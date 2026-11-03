@@ -540,8 +540,9 @@ function openVideo(name, videoId, muscles, gifUrl) {
                      musclesData.secondary.map(m => `<span class="muscle-tag secondary">${m}</span>`).join('');
     }
     
-    // Create YouTube thumbnail as fallback for local testing
-    const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+    // Use exercise name to generate a search-friendly gif URL from a reliable source
+    const exerciseSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+    const gifSearchUrl = `https://www.musclewiki.com/exercises/${exerciseSlug}`;
     
     modal.innerHTML = `
         <div class="modal-content">
@@ -551,24 +552,28 @@ function openVideo(name, videoId, muscles, gifUrl) {
                 <button class="modal-close" onclick="closeVideo()">✕</button>
             </div>
             <div class="modal-body">
-                <div class="video-section">
-                    <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed/${videoId}?rel=0&playsinline=1" 
-                                frameborder="0" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                allowfullscreen
-                                onerror="this.style.display='none'"></iframe>
-                    </div>
-                    <div class="video-fallback" id="video-fallback">
-                        <img src="${thumbnailUrl}" alt="${name}" style="width:100%; border-radius:12px;">
-                        <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" class="watch-youtube-btn">
-                            ▶️ Watch on YouTube
-                        </a>
-                        <p style="font-size:12px; color:var(--text-secondary); margin-top:8px;">
-                            Video will play in-app once hosted online
-                        </p>
+                ${gifUrl ? `
+                <div class="gif-section">
+                    <div class="gif-container">
+                        <img src="${gifUrl}" alt="${name} animation" 
+                             onerror="this.parentElement.innerHTML='<div class=\\'gif-placeholder\\'><span>🏋️</span><p>Animation</p></div>'">
                     </div>
                 </div>
+                ` : `
+                <div class="gif-section">
+                    <div class="gif-container">
+                        <div class="gif-placeholder">
+                            <span>🏋️</span>
+                            <p>${name}</p>
+                        </div>
+                    </div>
+                </div>
+                `}
+                
+                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" class="youtube-btn">
+                    <span class="yt-icon">▶</span>
+                    Watch Full Video on YouTube
+                </a>
                 
                 <div class="muscle-info">
                     <h4>💪 Muscles Worked</h4>
@@ -585,16 +590,6 @@ function openVideo(name, videoId, muscles, gifUrl) {
     `;
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
-    
-    // Check if video loaded (for local file)
-    setTimeout(() => {
-        const iframe = modal.querySelector('iframe');
-        const fallback = document.getElementById('video-fallback');
-        if (iframe && fallback) {
-            // Show fallback with thumbnail and YouTube link
-            fallback.style.display = 'block';
-        }
-    }, 1000);
 }
 
 // Close Video

@@ -1164,14 +1164,67 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 200px;
+    min-height: 250px;
+    max-height: 350px;
 }
 
 .gif-container img {
     width: 100%;
-    max-height: 300px;
+    height: auto;
+    max-height: 350px;
     object-fit: contain;
     background: #1a1a1a;
+}
+
+.gif-placeholder {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+}
+
+.gif-placeholder span {
+    font-size: 64px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.gif-placeholder p {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* YouTube Button */
+.youtube-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #FF0000, #CC0000);
+    color: white;
+    text-decoration: none;
+    border-radius: 14px;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.youtube-btn:active {
+    transform: scale(0.95);
+}
+
+.yt-icon {
+    width: 32px;
+    height: 32px;
+    background: white;
+    color: #FF0000;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
 }
 
 .video-section {
