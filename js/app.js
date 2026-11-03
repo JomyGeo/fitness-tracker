@@ -3,6 +3,16 @@ let currentDay = 'day1';
 let currentWeek = 'week1';
 let workoutData = {};
 
+// Goal labels for badges
+const goalLabels = {
+    'belly-fat': '🔥 Belly Fat',
+    'chest-fat': '💪 Chest',
+    'lower-back': '🩹 Lower Back',
+    'posture': '🧍 Posture',
+    'neck-hump': '🦒 Neck Hump',
+    'bat-speed': '🏏 Bat Speed'
+};
+
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
     loadData();
