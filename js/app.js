@@ -782,7 +782,7 @@ function renderProgress(container) {
                 `}
             </div>
             
-            <button class="clear-btn" onclick="clearAllData()">🗑️ Clear All Data</button>
+            <button class="clear-btn" onclick="clearAllData()">🗑️ Clear All Data (All Devices)</button>
         </div>
     `;
 }
@@ -1234,11 +1234,23 @@ function formatDate(dateString) {
 }
 
 // Clear All Data
-function clearAllData() {
-    if (confirm('Clear all workout data? This cannot be undone.')) {
+async function clearAllData() {
+    if (confirm('Clear all workout data from ALL devices? This cannot be undone.')) {
+        // Clear local storage
         localStorage.removeItem('fitnessTrackerData');
         workoutData = {};
+        
+        // Clear from Firebase cloud (if signed in)
+        if (typeof clearCloudData === 'function') {
+            await clearCloudData();
+        }
+        
         renderContent();
         updateHeaderStats();
+        
+        // Show confirmation
+        if (typeof showToast === 'function') {
+            showToast('All data cleared from all devices ✓');
+        }
     }
 }

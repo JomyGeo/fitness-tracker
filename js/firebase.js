@@ -338,3 +338,26 @@ function showLoginModal() {
 
 // Replace saveData function
 window.saveData = saveDataWithSync;
+
+// Clear data from Firebase cloud
+async function clearCloudData() {
+    if (!currentUser) return;
+    
+    try {
+        const docRef = db.collection('users').doc(currentUser.uid);
+        await docRef.update({
+            workoutData: {},
+            lastCleared: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        console.log('Cloud data cleared');
+    } catch (error) {
+        console.error('Error clearing cloud data:', error);
+        // If document doesn't exist yet, that's fine
+        if (error.code !== 'not-found') {
+            throw error;
+        }
+    }
+}
+
+// Make clearCloudData available globally
+window.clearCloudData = clearCloudData;
