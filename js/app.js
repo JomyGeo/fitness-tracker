@@ -1,10 +1,21 @@
 // App State
 let currentDay = 'day1';
-let currentWeek = 'week1';
+let currentWeek = getAutoWeek(); // Auto-select based on actual week number
 let workoutData = {};
 let selectedDate = new Date(); // For date picker
 let expandedSets = {}; // Track which exercise sets are expanded
 let expandedExercises = {}; // Track which exercise cards are expanded
+
+// Auto-select week based on actual calendar week
+// Week 1 & 3 (odd weeks) = 'week1', Week 2 & 4 (even weeks) = 'week2'
+function getAutoWeek() {
+    const now = new Date();
+    const startOfYear = new Date(now.getFullYear(), 0, 1);
+    const days = Math.floor((now - startOfYear) / (24 * 60 * 60 * 1000));
+    const weekNumber = Math.ceil((days + startOfYear.getDay() + 1) / 7);
+    // Odd weeks = week1, Even weeks = week2
+    return weekNumber % 2 === 1 ? 'week1' : 'week2';
+}
 
 // Goal labels for badges
 const goalLabels = {
@@ -330,7 +341,7 @@ function renderWorkoutDay(container) {
                 
                 // Count completed sets
                 const completedSets = setsData.filter(s => s?.done).length;
-                const isExerciseExpanded = expandedExercises[exKey] !== false; // Default expanded
+                const isExerciseExpanded = expandedExercises[exKey] === true; // Default collapsed
                 
                 return `
                 <div class="exercise-card ${isCompleted ? 'completed' : ''}" id="exercise-${exKey}">
