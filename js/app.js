@@ -2,11 +2,13 @@
 let currentDay = 'day1';
 let currentWeek = 'week1';
 let workoutData = {};
+let selectedDate = new Date(); // For date picker
 
 // Goal labels for badges
 const goalLabels = {
     'belly-fat': '🔥 Belly Fat',
-    'chest-fat': '💪 Chest',
+    'man-boobs': '💪 Reduce Man Boobs',
+    'chest-fat': '💪 Reduce Man Boobs', // Alias for backward compatibility
     'lower-back': '🩹 Lower Back',
     'posture': '🧍 Posture',
     'neck-hump': '🦒 Neck Hump',
@@ -41,8 +43,37 @@ function saveData() {
 
 // Get today's key
 function getTodayKey() {
+    return selectedDate.toISOString().split('T')[0];
+}
+
+// Get selected date key for display
+function getSelectedDateDisplay() {
+    const options = { weekday: 'short', month: 'short', day: 'numeric' };
+    return selectedDate.toLocaleDateString('en-US', options);
+}
+
+// Change selected date
+function changeDate(days) {
+    selectedDate.setDate(selectedDate.getDate() + days);
+    renderContent();
+}
+
+// Set specific date
+function setDate(dateString) {
+    selectedDate = new Date(dateString);
+    renderContent();
+}
+
+// Check if selected date is today
+function isToday() {
     const today = new Date();
-    return today.toISOString().split('T')[0];
+    return selectedDate.toISOString().split('T')[0] === today.toISOString().split('T')[0];
+}
+
+// Parse sets string to get number of sets (e.g., "4 x 10-12" returns 4)
+function getSetCount(setsString) {
+    const match = setsString.match(/^(\d+)/);
+    return match ? parseInt(match[1]) : 3; // Default to 3 sets
 }
 
 // Highlight today's tab
@@ -217,6 +248,17 @@ function renderWorkoutDay(container) {
                 </div>
             </div>
             
+            <!-- Date Picker -->
+            <div class="date-picker">
+                <button class="date-nav-btn" onclick="changeDate(-1)">◀</button>
+                <div class="date-display" onclick="openDatePicker()">
+                    <span class="date-icon">📅</span>
+                    <span class="date-text">${getSelectedDateDisplay()}</span>
+                    ${isToday() ? '<span class="today-badge">Today</span>' : ''}
+                </div>
+                <button class="date-nav-btn" onclick="changeDate(1)">▶</button>
+            </div>
+            
             <div class="week-toggle">
                 <button class="week-btn ${currentWeek === 'week1' ? 'active' : ''}" data-week="week1" onclick="switchWeek('week1')">Week 1 & 3</button>
                 <button class="week-btn ${currentWeek === 'week2' ? 'active' : ''}" data-week="week2" onclick="switchWeek('week2')">Week 2 & 4</button>
@@ -251,6 +293,8 @@ function renderWorkoutDay(container) {
                 const exKey = `${currentWeek}_${index}`;
                 const exData = dayProgress[exKey] || {};
                 const isCompleted = exData.completed;
+                const setCount = getSetCount(ex.sets);
+                const setsData = exData.sets_data || [];
                 
                 return `
                 <div class="exercise-card ${isCompleted ? 'completed' : ''}" id="exercise-${exKey}">
@@ -283,22 +327,38 @@ function renderWorkoutDay(container) {
                     </button>
                     
                     <div class="tracking-section">
-                        <div class="tracking-grid">
-                            <div class="tracking-input">
-                                <label>Sets</label>
-                                <input type="number" inputmode="numeric" value="${exData.sets || ''}" 
-                                       onchange="updateExercise('${exKey}', 'sets', this.value)" min="0" max="10">
-                            </div>
-                            <div class="tracking-input">
-                                <label>Reps</label>
-                                <input type="number" inputmode="numeric" value="${exData.reps || ''}" 
-                                       onchange="updateExercise('${exKey}', 'reps', this.value)" min="0" max="50">
-                            </div>
-                            <div class="tracking-input">
-                                <label>Weight</label>
-                                <input type="number" inputmode="decimal" value="${exData.weight || ''}" 
-                                       onchange="updateExercise('${exKey}', 'weight', this.value)" min="0" max="500" placeholder="kg">
-                            </div>
+                        <div class="sets-header">
+                            <span class="sets-title">📝 Track Each Set</span>
+                        </div>
+                        <div class="sets-tracking">
+                            ${Array.from({length: setCount}, (_, setIndex) => {
+                                const setData = setsData[setIndex] || {};
+                                return `
+                                <div class="set-row ${setData.done ? 'set-done' : ''}">
+                                    <div class="set-label">Set ${setIndex + 1}</div>
+                                    <div class="set-inputs">
+                                        <div class="set-input-group">
+                                            <label>Reps</label>
+                                            <input type="number" inputmode="numeric" 
+                                                   value="${setData.reps || ''}" 
+                                                   onchange="updateSetData('${exKey}', ${setIndex}, 'reps', this.value)"
+                                                   placeholder="10" min="0" max="100">
+                                        </div>
+                                        <div class="set-input-group">
+                                            <label>kg</label>
+                                            <input type="number" inputmode="decimal" 
+                                                   value="${setData.weight || ''}" 
+                                                   onchange="updateSetData('${exKey}', ${setIndex}, 'weight', this.value)"
+                                                   placeholder="20" min="0" max="500" step="0.5">
+                                        </div>
+                                        <button class="set-done-btn ${setData.done ? 'done' : ''}" 
+                                                onclick="toggleSetDone('${exKey}', ${setIndex})">
+                                            ${setData.done ? '✓' : '○'}
+                                        </button>
+                                    </div>
+                                </div>
+                                `;
+                            }).join('')}
                         </div>
                         <button class="complete-btn ${isCompleted ? 'completed' : ''}" onclick="toggleComplete('${exKey}')">
                             ${isCompleted ? '✓ Completed' : 'Mark as Done'}
@@ -515,6 +575,106 @@ function updateExercise(exKey, field, value) {
     
     workoutData[todayKey][currentDay][exKey][field] = value;
     saveData();
+}
+
+// Update Set Data (for per-set tracking)
+function updateSetData(exKey, setIndex, field, value) {
+    const todayKey = getTodayKey();
+    
+    if (!workoutData[todayKey]) workoutData[todayKey] = {};
+    if (!workoutData[todayKey][currentDay]) workoutData[todayKey][currentDay] = {};
+    if (!workoutData[todayKey][currentDay][exKey]) workoutData[todayKey][currentDay][exKey] = {};
+    if (!workoutData[todayKey][currentDay][exKey].sets_data) workoutData[todayKey][currentDay][exKey].sets_data = [];
+    
+    // Ensure array has enough slots
+    while (workoutData[todayKey][currentDay][exKey].sets_data.length <= setIndex) {
+        workoutData[todayKey][currentDay][exKey].sets_data.push({});
+    }
+    
+    workoutData[todayKey][currentDay][exKey].sets_data[setIndex][field] = value;
+    saveData();
+}
+
+// Toggle Set Done
+function toggleSetDone(exKey, setIndex) {
+    const todayKey = getTodayKey();
+    
+    if (!workoutData[todayKey]) workoutData[todayKey] = {};
+    if (!workoutData[todayKey][currentDay]) workoutData[todayKey][currentDay] = {};
+    if (!workoutData[todayKey][currentDay][exKey]) workoutData[todayKey][currentDay][exKey] = {};
+    if (!workoutData[todayKey][currentDay][exKey].sets_data) workoutData[todayKey][currentDay][exKey].sets_data = [];
+    
+    // Ensure array has enough slots
+    while (workoutData[todayKey][currentDay][exKey].sets_data.length <= setIndex) {
+        workoutData[todayKey][currentDay][exKey].sets_data.push({});
+    }
+    
+    workoutData[todayKey][currentDay][exKey].sets_data[setIndex].done = 
+        !workoutData[todayKey][currentDay][exKey].sets_data[setIndex].done;
+    
+    // Haptic feedback
+    if (navigator.vibrate && workoutData[todayKey][currentDay][exKey].sets_data[setIndex].done) {
+        navigator.vibrate(10);
+    }
+    
+    saveData();
+    renderContent();
+}
+
+// Open Date Picker Modal
+function openDatePicker() {
+    const modal = document.getElementById('video-modal');
+    const currentDateStr = selectedDate.toISOString().split('T')[0];
+    
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width: 340px;">
+            <div class="modal-handle"></div>
+            <div class="modal-header">
+                <h3 class="modal-title">📅 Select Date</h3>
+                <button class="modal-close" onclick="closeVideo()">✕</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <input type="date" id="date-picker-input" value="${currentDateStr}" 
+                       style="width: 100%; padding: 16px; font-size: 18px; border-radius: 12px; 
+                              border: 2px solid var(--border); background: var(--bg-tertiary); 
+                              color: var(--text-primary);">
+                
+                <div style="display: flex; gap: 12px; margin-top: 20px;">
+                    <button onclick="setDateFromPicker()" 
+                            style="flex: 1; padding: 14px; background: linear-gradient(135deg, #007AFF, #5AC8FA); 
+                                   color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600;">
+                        Select Date
+                    </button>
+                </div>
+                
+                <div style="display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; justify-content: center;">
+                    <button onclick="setQuickDate(-1)" class="quick-date-btn">Yesterday</button>
+                    <button onclick="setQuickDate(0)" class="quick-date-btn">Today</button>
+                    <button onclick="setQuickDate(1)" class="quick-date-btn">Tomorrow</button>
+                </div>
+            </div>
+        </div>
+    `;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Set date from picker input
+function setDateFromPicker() {
+    const input = document.getElementById('date-picker-input');
+    if (input && input.value) {
+        selectedDate = new Date(input.value + 'T12:00:00'); // Use noon to avoid timezone issues
+        closeVideo();
+        renderContent();
+    }
+}
+
+// Set quick date (offset from today)
+function setQuickDate(offset) {
+    selectedDate = new Date();
+    selectedDate.setDate(selectedDate.getDate() + offset);
+    closeVideo();
+    renderContent();
 }
 
 // Toggle Complete

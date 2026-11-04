@@ -17,7 +17,7 @@ const exerciseData = {
         name: "Chest + Triceps",
         focus: "Upper body, chest fat appearance",
         week1: [
-            { name: "Incline DB Press", sets: "4 x 10-12", rest: "90s", why: "Upper chest - reduces chest fat appearance", video: "8iPEnn-ltC8", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif", muscles: { primary: ["Upper Chest"], secondary: ["Front Delts", "Triceps"] }, goal: "chest-fat" },
+            { name: "Incline DB Press", sets: "4 x 10-12", rest: "90s", why: "Upper chest - reduces chest fat appearance", video: "8iPEnn-ltC8", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif", muscles: { primary: ["Upper Chest"], secondary: ["Front Delts", "Triceps"] }, goal: "man-boobs" },
             { name: "Flat Bench Press", sets: "4 x 10", rest: "90s", why: "Main chest builder - compound movement", video: "rT7DgCr-3pg", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Bench-Press.gif", muscles: { primary: ["Chest"], secondary: ["Front Delts", "Triceps"] } },
             { name: "Cable Flyes", sets: "3 x 12-15", rest: "60s", why: "Chest squeeze - defines chest shape", video: "Iwe6AmxVf7o", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Crossover.gif", muscles: { primary: ["Chest"], secondary: [] } },
             { name: "Tricep Pushdowns", sets: "3 x 12", rest: "60s", why: "Tricep mass - arm definition", video: "2-LAMcpzODU", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pushdown.gif", muscles: { primary: ["Triceps"], secondary: [] } },
@@ -26,7 +26,7 @@ const exerciseData = {
             { name: "Plank", sets: "3 x 45s", rest: "45s", why: "CORE - overall stability", video: "ASdvN_XEl_c", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Plank.gif", muscles: { primary: ["Core"], secondary: ["Shoulders"] }, goal: "belly-fat" }
         ],
         week2: [
-            { name: "Incline DB Press", sets: "4 x 10-12", rest: "90s", why: "Upper chest - reduces chest fat appearance", video: "8iPEnn-ltC8", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif", muscles: { primary: ["Upper Chest"], secondary: ["Front Delts", "Triceps"] }, goal: "chest-fat" },
+            { name: "Incline DB Press", sets: "4 x 10-12", rest: "90s", why: "MAN BOOBS - Upper chest builder, tightens chest", video: "8iPEnn-ltC8", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif", muscles: { primary: ["Upper Chest"], secondary: ["Front Delts", "Triceps"] }, goal: "man-boobs" },
             { name: "Dumbbell Bench Press", sets: "4 x 10", rest: "90s", why: "Better stretch than barbell", video: "VmB1G1K7v94", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Press.gif", muscles: { primary: ["Chest"], secondary: ["Front Delts", "Triceps"] } },
             { name: "Pec Deck Machine", sets: "3 x 12-15", rest: "60s", why: "Isolates chest - good squeeze", video: "xUm0BiZCWlQ", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pec-Deck-Fly.gif", muscles: { primary: ["Chest"], secondary: [] } },
             { name: "Dips", sets: "3 x 10-12", rest: "60s", why: "Lower chest + triceps compound", video: "2z8JmcrW-As", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Chest-Dip.gif", muscles: { primary: ["Lower Chest", "Triceps"], secondary: ["Front Delts"] } },
@@ -273,9 +273,68 @@ const exerciseData = {
 // Goals reference for filtering
 const fitnessGoals = {
     'belly-fat': { name: 'Belly Fat Loss', icon: '🔥', color: '#FF6B6B' },
-    'chest-fat': { name: 'Chest Definition', icon: '💪', color: '#4ECDC4' },
+    'man-boobs': { name: 'Reduce Man Boobs', icon: '💪', color: '#4ECDC4' },
     'lower-back': { name: 'Lower Back Pain', icon: '🩹', color: '#45B7D1' },
     'posture': { name: 'Posture Fix', icon: '🧍', color: '#96CEB4' },
     'neck-hump': { name: 'Neck Hump Fix', icon: '🦒', color: '#FFEAA7' },
     'bat-speed': { name: 'Cricket Bat Speed', icon: '🏏', color: '#DDA0DD' }
+};
+
+
+// Diet Data for the Diet page
+const dietData = {
+    breakfast: {
+        time: "7:00 - 8:00 AM",
+        options: [
+            { name: "4 whole eggs + 2 toast + 1 fruit", protein: "28g" },
+            { name: "Oats with milk + banana + almonds", protein: "15g" },
+            { name: "Dosa/Idli + sambar + chutney + 2 eggs", protein: "20g" },
+            { name: "Greek yogurt + berries + granola", protein: "18g" }
+        ]
+    },
+    midMorning: {
+        time: "10:00 - 11:00 AM",
+        options: [
+            { name: "Handful of almonds (10-12)", protein: "6g" },
+            { name: "Greek yogurt + honey", protein: "12g" },
+            { name: "Protein shake with water", protein: "25g" },
+            { name: "Boiled eggs (2)", protein: "12g" }
+        ]
+    },
+    lunch: {
+        time: "1:00 - 2:00 PM",
+        options: [
+            { name: "Rice + dal + chicken (150g) + veggies", protein: "35g" },
+            { name: "Roti (2) + paneer curry + salad", protein: "25g" },
+            { name: "Grilled chicken salad + rice", protein: "40g" },
+            { name: "Fish curry + rice + vegetables", protein: "30g" }
+        ]
+    },
+    preWorkout: {
+        time: "30-45 min before gym",
+        options: [
+            { name: "Banana + peanut butter (1 tbsp)", protein: "5g" },
+            { name: "Toast + jam + coffee", protein: "3g" },
+            { name: "Apple + handful of nuts", protein: "4g" },
+            { name: "Small bowl of oats", protein: "6g" }
+        ]
+    },
+    postWorkout: {
+        time: "Within 1 hour after gym",
+        options: [
+            { name: "Whey protein shake + banana", protein: "30g" },
+            { name: "Chicken breast (150g) + rice", protein: "35g" },
+            { name: "4 eggs + 2 toast", protein: "28g" },
+            { name: "Paneer bhurji + roti", protein: "22g" }
+        ]
+    },
+    dinner: {
+        time: "8:00 - 9:00 PM",
+        options: [
+            { name: "Grilled fish/chicken + vegetables", protein: "35g" },
+            { name: "Roti (2) + dal + paneer", protein: "25g" },
+            { name: "Egg curry + rice (small)", protein: "20g" },
+            { name: "Soup + grilled chicken + salad", protein: "30g" }
+        ]
+    }
 };
