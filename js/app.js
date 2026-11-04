@@ -366,16 +366,10 @@ function renderWorkoutDay(container) {
                                 const prevSetData = setsData[setIndex - 1] || {};
                                 // Show set if: it's the first set, OR previous set is done
                                 const isVisible = setIndex === 0 || prevSetData.done;
-                                // Show as locked preview if not visible yet
-                                const isLocked = !isVisible;
                                 
-                                if (isLocked) {
-                                    return `
-                                    <div class="set-row set-locked">
-                                        <div class="set-label">Set ${setIndex + 1}</div>
-                                        <div class="set-locked-msg">🔒 Complete Set ${setIndex} first</div>
-                                    </div>
-                                    `;
+                                // Completely hide locked sets
+                                if (!isVisible) {
+                                    return '';
                                 }
                                 
                                 return `
@@ -422,6 +416,7 @@ function renderWorkoutDay(container) {
                                 </div>
                                 `;
                             }).join('')}
+                            ${completedSets < setCount ? `<div class="sets-remaining">${setCount - completedSets} set${setCount - completedSets > 1 ? 's' : ''} remaining</div>` : ''}
                         </div>
                         <button class="complete-btn ${isCompleted ? 'completed' : ''}" onclick="toggleComplete('${exKey}')">
                             ${isCompleted ? '✓ Completed' : 'Mark as Done'}
@@ -1102,6 +1097,12 @@ function toggleComplete(exKey) {
     
     saveData();
     renderContent();
+    updateHeaderStats();
+    
+    // Show feedback
+    if (typeof showToast === 'function') {
+        showToast(isCompleted ? 'Exercise completed! 💪' : 'Exercise unmarked');
+    }
 }
 
 // Open Video Modal
