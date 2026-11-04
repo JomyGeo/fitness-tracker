@@ -426,10 +426,10 @@ function renderWorkoutDay(container) {
                                         </div>
                                         <div class="set-input-group">
                                             <label>kg</label>
-                                            <input type="number" inputmode="decimal" 
+                                            <input type="text" inputmode="decimal" pattern="[0-9]*\.?[0-9]*"
                                                    value="${setData.weight || ''}" 
                                                    onchange="updateSetData('${exKey}', ${setIndex}, 'weight', this.value)"
-                                                   placeholder="20" min="0" max="500" step="0.5">
+                                                   placeholder="20">
                                         </div>
                                         `}
                                         <button class="set-done-btn ${setData.done ? 'done' : ''}" 
