@@ -411,6 +411,7 @@ function renderWorkoutDay(container) {
                         <button class="complete-btn ${isCompleted ? 'completed' : ''}" onclick="toggleComplete('${exKey}')">
                             ${isCompleted ? '✓ Completed' : 'Mark as Done'}
                         </button>
+                        ${isCompleted ? `<button class="clear-exercise-btn" onclick="clearCurrentExercise('${exKey}')">🗑️ Clear</button>` : ''}
                     </div>
                 </div>
                 `;
@@ -915,6 +916,10 @@ function openDayDetail(dateKey) {
             </div>
             <div class="modal-body">
                 ${workoutDetails}
+                
+                <button class="clear-date-btn" onclick="clearDateData('${dateKey}')">
+                    🗑️ Delete This Day's Data
+                </button>
             </div>
         </div>
     `;
@@ -1253,4 +1258,74 @@ async function clearAllData() {
             showToast('All data cleared from all devices ✓');
         }
     }
+}
+
+// Clear data for a specific date
+async function clearDateData(dateKey) {
+    const date = new Date(dateKey + 'T12:00:00');
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
+    const dateDisplay = date.toLocaleDateString('en-US', options);
+    
+    if (confirm(`Delete all workout data for ${dateDisplay}? This will sync across all devices.`)) {
+        // Remove from local data
+        delete workoutData[dateKey];
+        
+        // Save to local storage
+        localStorage.setItem('fitnessTrackerData', JSON.stringify(workoutData));
+        
+        // Sync to cloud (will update with removed date)
+        if (typeof syncDataToCloud === 'function') {
+            await syncDataToCloud();
+        }
+        
+        // Close modal and refresh
+        closeVideo();
+        renderContent();
+        updateHeaderStats();
+        
+        // Show confirmation
+        if (typeof showToast === 'function') {
+            showToast(`Data for ${dateDisplay} deleted ✓`);
+        }
+    }
+}
+
+// Clear a specific exercise
+async function clearExercise(dateKey, dayKey, exKey) {
+    if (confirm('Clear this exercise data?')) {
+        // Remove exercise from data
+        if (workoutData[dateKey] && workoutData[dateKey][dayKey]) {
+            delete workoutData[dateKey][dayKey][exKey];
+            
+            // Clean up empty day
+            if (Object.keys(workoutData[dateKey][dayKey]).length === 0) {
+                delete workoutData[dateKey][dayKey];
+            }
+            
+            // Clean up empty date
+            if (Object.keys(workoutData[dateKey]).length === 0) {
+                delete workoutData[dateKey];
+            }
+        }
+        
+        // Save and sync
+        localStorage.setItem('fitnessTrackerData', JSON.stringify(workoutData));
+        
+        if (typeof syncDataToCloud === 'function') {
+            await syncDataToCloud();
+        }
+        
+        renderContent();
+        updateHeaderStats();
+        
+        if (typeof showToast === 'function') {
+            showToast('Exercise cleared ✓');
+        }
+    }
+}
+
+// Clear exercise for current view (uses current date and day)
+async function clearCurrentExercise(exKey) {
+    const todayKey = getTodayKey();
+    await clearExercise(todayKey, currentDay, exKey);
 }
