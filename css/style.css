@@ -2346,3 +2346,58 @@ body {
     font-weight: 500;
     margin-top: 8px;
 }
+
+
+/* Collapsible Exercise Cards */
+.exercise-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    padding: 4px 0;
+    margin-bottom: 12px;
+    position: relative;
+}
+
+.exercise-header-info {
+    flex: 1;
+}
+
+.exercise-header .exercise-name {
+    padding-right: 0;
+    margin-bottom: 6px;
+}
+
+.exercise-header .exercise-meta {
+    margin-bottom: 0;
+}
+
+.exercise-header .exercise-number {
+    position: relative;
+    top: auto;
+    right: auto;
+}
+
+.exercise-expand-icon {
+    font-size: 14px;
+    color: var(--text-secondary);
+    transition: transform 0.2s ease;
+}
+
+.exercise-body {
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.exercise-body.collapsed {
+    display: none;
+}
+
+.exercise-card.completed .exercise-header {
+    opacity: 0.8;
+}
+
+.exercise-card.completed .exercise-name {
+    text-decoration: line-through;
+    text-decoration-color: var(--secondary);
+}

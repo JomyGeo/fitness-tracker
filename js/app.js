@@ -4,6 +4,7 @@ let currentWeek = 'week1';
 let workoutData = {};
 let selectedDate = new Date(); // For date picker
 let expandedSets = {}; // Track which exercise sets are expanded
+let expandedExercises = {}; // Track which exercise cards are expanded
 
 // Goal labels for badges
 const goalLabels = {
@@ -92,6 +93,12 @@ function getTargetTime(setsString) {
 // Toggle sets expansion
 function toggleSetsExpand(exKey) {
     expandedSets[exKey] = !expandedSets[exKey];
+    renderContent();
+}
+
+// Toggle exercise card expansion
+function toggleExerciseExpand(exKey) {
+    expandedExercises[exKey] = expandedExercises[exKey] === false ? true : false;
     renderContent();
 }
 
@@ -323,24 +330,30 @@ function renderWorkoutDay(container) {
                 
                 // Count completed sets
                 const completedSets = setsData.filter(s => s?.done).length;
+                const isExerciseExpanded = expandedExercises[exKey] !== false; // Default expanded
                 
                 return `
                 <div class="exercise-card ${isCompleted ? 'completed' : ''}" id="exercise-${exKey}">
-                    <span class="exercise-number">${index + 1}</span>
-                    <h3 class="exercise-name">${ex.name}</h3>
-                    
-                    <div class="exercise-meta">
-                        <div class="meta-item">
-                            <span class="icon">🔄</span>
-                            <span>${ex.sets}</span>
+                    <div class="exercise-header" onclick="toggleExerciseExpand('${exKey}')">
+                        <span class="exercise-number">${index + 1}</span>
+                        <div class="exercise-header-info">
+                            <h3 class="exercise-name">${ex.name}</h3>
+                            <div class="exercise-meta">
+                                <div class="meta-item">
+                                    <span class="icon">🔄</span>
+                                    <span>${ex.sets}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="icon">⏱️</span>
+                                    <span>Rest: ${ex.rest}</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="meta-item">
-                            <span class="icon">⏱️</span>
-                            <span>Rest: ${ex.rest}</span>
-                        </div>
+                        <span class="exercise-expand-icon">${isExerciseExpanded ? '▼' : '▶'}</span>
                     </div>
                     
-                    ${ex.goal ? `<div class="goal-badge ${ex.goal}">${goalLabels[ex.goal]}</div>` : ''}
+                    <div class="exercise-body ${isExerciseExpanded ? '' : 'collapsed'}">
+                        ${ex.goal ? `<div class="goal-badge ${ex.goal}">${goalLabels[ex.goal]}</div>` : ''}
                     
                     <div class="muscle-tags">
                         ${ex.muscles.primary.map(m => `<span class="muscle-tag primary">${m}</span>`).join('')}
@@ -422,6 +435,7 @@ function renderWorkoutDay(container) {
                             ${isCompleted ? '✓ Completed' : 'Mark as Done'}
                         </button>
                         ${isCompleted ? `<button class="clear-exercise-btn" onclick="clearCurrentExercise('${exKey}')">🗑️ Clear</button>` : ''}
+                    </div>
                     </div>
                 </div>
                 `;
