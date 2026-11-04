@@ -3,6 +3,7 @@ let currentDay = 'day1';
 let currentWeek = 'week1';
 let workoutData = {};
 let selectedDate = new Date(); // For date picker
+let expandedSets = {}; // Track which exercise sets are expanded
 
 // Goal labels for badges
 const goalLabels = {
@@ -73,6 +74,25 @@ function isToday() {
 function getSetCount(setsString) {
     const match = setsString.match(/^(\d+)/);
     return match ? parseInt(match[1]) : 3; // Default to 3 sets
+}
+
+// Check if exercise is time-based (like Plank, Hold, etc.)
+function isTimeBased(setsString) {
+    return setsString.toLowerCase().includes('s') || 
+           setsString.toLowerCase().includes('sec') || 
+           setsString.toLowerCase().includes('min');
+}
+
+// Parse time from sets string (e.g., "3 x 45s" returns 45)
+function getTargetTime(setsString) {
+    const match = setsString.match(/(\d+)\s*s/i);
+    return match ? parseInt(match[1]) : 30;
+}
+
+// Toggle sets expansion
+function toggleSetsExpand(exKey) {
+    expandedSets[exKey] = !expandedSets[exKey];
+    renderContent();
 }
 
 // Highlight today's tab
@@ -294,6 +314,12 @@ function renderWorkoutDay(container) {
                 const isCompleted = exData.completed;
                 const setCount = getSetCount(ex.sets);
                 const setsData = exData.sets_data || [];
+                const isExpanded = expandedSets[exKey] !== false; // Default expanded
+                const isTimeExercise = isTimeBased(ex.sets);
+                const targetTime = getTargetTime(ex.sets);
+                
+                // Count completed sets
+                const completedSets = setsData.filter(s => s?.done).length;
                 
                 return `
                 <div class="exercise-card ${isCompleted ? 'completed' : ''}" id="exercise-${exKey}">
@@ -326,16 +352,35 @@ function renderWorkoutDay(container) {
                     </button>
                     
                     <div class="tracking-section">
-                        <div class="sets-header">
-                            <span class="sets-title">📝 Track Each Set</span>
+                        <div class="sets-header" onclick="toggleSetsExpand('${exKey}')">
+                            <span class="sets-title">📝 Track Each Set ${completedSets > 0 ? `(${completedSets}/${setCount})` : ''}</span>
+                            <span class="expand-icon">${isExpanded ? '▼' : '▶'}</span>
                         </div>
-                        <div class="sets-tracking">
+                        
+                        <div class="sets-tracking ${isExpanded ? '' : 'collapsed'}">
                             ${Array.from({length: setCount}, (_, setIndex) => {
                                 const setData = setsData[setIndex] || {};
                                 return `
                                 <div class="set-row ${setData.done ? 'set-done' : ''}">
                                     <div class="set-label">Set ${setIndex + 1}</div>
                                     <div class="set-inputs">
+                                        ${isTimeExercise ? `
+                                        <div class="set-input-group time-group">
+                                            <label>Time</label>
+                                            <div class="time-inputs">
+                                                <input type="number" inputmode="numeric" 
+                                                       value="${setData.minutes || ''}" 
+                                                       onchange="updateSetData('${exKey}', ${setIndex}, 'minutes', this.value)"
+                                                       placeholder="0" min="0" max="60" class="time-input">
+                                                <span class="time-sep">m</span>
+                                                <input type="number" inputmode="numeric" 
+                                                       value="${setData.seconds || ''}" 
+                                                       onchange="updateSetData('${exKey}', ${setIndex}, 'seconds', this.value)"
+                                                       placeholder="${targetTime}" min="0" max="59" class="time-input">
+                                                <span class="time-sep">s</span>
+                                            </div>
+                                        </div>
+                                        ` : `
                                         <div class="set-input-group">
                                             <label>Reps</label>
                                             <input type="number" inputmode="numeric" 
@@ -350,6 +395,7 @@ function renderWorkoutDay(container) {
                                                    onchange="updateSetData('${exKey}', ${setIndex}, 'weight', this.value)"
                                                    placeholder="20" min="0" max="500" step="0.5">
                                         </div>
+                                        `}
                                         <button class="set-done-btn ${setData.done ? 'done' : ''}" 
                                                 onclick="toggleSetDone('${exKey}', ${setIndex})">
                                             ${setData.done ? '✓' : '○'}
@@ -511,10 +557,12 @@ function renderDiet(container) {
     `;
 }
 
-// Render Progress
+// Render Progress with Calendar
 function renderProgress(container) {
     const stats = calculateStats();
     const history = getWorkoutHistory();
+    const focusData = calculateFocusAreas();
+    const calendarData = generateCalendarData();
     
     container.innerHTML = `
         <div class="section active">
@@ -541,10 +589,59 @@ function renderProgress(container) {
                 </div>
             </div>
             
+            <!-- Workout Calendar -->
+            <div class="calendar-section">
+                <div class="calendar-header">
+                    <button class="calendar-nav" onclick="changeCalendarMonth(-1)">◀</button>
+                    <span class="calendar-month">${calendarData.monthName} ${calendarData.year}</span>
+                    <button class="calendar-nav" onclick="changeCalendarMonth(1)">▶</button>
+                </div>
+                <div class="calendar-weekdays">
+                    <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                </div>
+                <div class="calendar-days">
+                    ${calendarData.days.map(day => {
+                        if (!day.date) return '<span class="calendar-day empty"></span>';
+                        const hasWorkout = day.hasWorkout;
+                        const isToday = day.isToday;
+                        return `
+                            <span class="calendar-day ${hasWorkout ? 'worked' : ''} ${isToday ? 'today' : ''}" 
+                                  onclick="openDayDetail('${day.dateKey}')" 
+                                  title="${hasWorkout ? 'Click to see workout' : ''}">
+                                ${day.date}
+                                ${hasWorkout ? '<span class="workout-dot"></span>' : ''}
+                            </span>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+            
+            <!-- Focus Areas -->
+            <div class="focus-section">
+                <h3 class="focus-header">🎯 Your Focus Areas (Last 30 Days)</h3>
+                <div class="focus-bars">
+                    ${Object.entries(focusData).map(([goal, count]) => {
+                        const maxCount = Math.max(...Object.values(focusData), 1);
+                        const percentage = (count / maxCount) * 100;
+                        return `
+                            <div class="focus-bar-row">
+                                <span class="focus-label">${goalLabels[goal] || goal}</span>
+                                <div class="focus-bar-container">
+                                    <div class="focus-bar" style="width: ${percentage}%"></div>
+                                </div>
+                                <span class="focus-count">${count}</span>
+                            </div>
+                        `;
+                    }).join('')}
+                    ${Object.keys(focusData).length === 0 ? '<p style="color: var(--text-secondary); text-align: center; padding: 20px;">No workout data yet</p>' : ''}
+                </div>
+            </div>
+            
+            <!-- Recent History -->
             <div class="history-section">
                 <div class="history-header">Recent Activity</div>
                 ${history.length > 0 ? history.map(item => `
-                    <div class="history-item">
+                    <div class="history-item" onclick="openDayDetail('${item.date}')">
                         <div>
                             <div class="history-date">${formatDate(item.date)}</div>
                             <div class="history-day">${item.day}</div>
@@ -562,6 +659,171 @@ function renderProgress(container) {
             <button class="clear-btn" onclick="clearAllData()">🗑️ Clear All Data</button>
         </div>
     `;
+}
+
+// Calendar state
+let calendarMonth = new Date().getMonth();
+let calendarYear = new Date().getFullYear();
+
+// Change calendar month
+function changeCalendarMonth(delta) {
+    calendarMonth += delta;
+    if (calendarMonth > 11) {
+        calendarMonth = 0;
+        calendarYear++;
+    } else if (calendarMonth < 0) {
+        calendarMonth = 11;
+        calendarYear--;
+    }
+    renderContent();
+}
+
+// Generate calendar data
+function generateCalendarData() {
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                       'July', 'August', 'September', 'October', 'November', 'December'];
+    
+    const firstDay = new Date(calendarYear, calendarMonth, 1).getDay();
+    const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+    const today = new Date();
+    
+    const days = [];
+    
+    // Empty slots for days before the 1st
+    for (let i = 0; i < firstDay; i++) {
+        days.push({ date: null });
+    }
+    
+    // Days of the month
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dateKey = `${calendarYear}-${String(calendarMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const hasWorkout = workoutData[dateKey] && Object.keys(workoutData[dateKey]).some(key => {
+            if (key.startsWith('day')) {
+                return Object.values(workoutData[dateKey][key]).some(ex => ex?.completed);
+            }
+            return false;
+        });
+        const isToday = today.getDate() === day && today.getMonth() === calendarMonth && today.getFullYear() === calendarYear;
+        
+        days.push({ date: day, dateKey, hasWorkout, isToday });
+    }
+    
+    return {
+        monthName: monthNames[calendarMonth],
+        year: calendarYear,
+        days
+    };
+}
+
+// Open day detail modal
+function openDayDetail(dateKey) {
+    const dayData = workoutData[dateKey];
+    if (!dayData) {
+        // No data for this day
+        return;
+    }
+    
+    const modal = document.getElementById('video-modal');
+    const date = new Date(dateKey + 'T12:00:00');
+    const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+    const dateDisplay = date.toLocaleDateString('en-US', options);
+    
+    let workoutDetails = '';
+    
+    Object.entries(dayData).forEach(([dayKey, exercises]) => {
+        if (dayKey.startsWith('day') && exerciseData[dayKey]) {
+            const dayName = exerciseData[dayKey].name;
+            const completedExercises = Object.entries(exercises).filter(([_, ex]) => ex?.completed);
+            
+            if (completedExercises.length > 0) {
+                workoutDetails += `
+                    <div class="day-detail-section">
+                        <h4 class="day-detail-title">${dayName}</h4>
+                        <div class="day-detail-exercises">
+                            ${completedExercises.map(([exKey, exData]) => {
+                                const weekIndex = exKey.split('_')[0];
+                                const exerciseIndex = parseInt(exKey.split('_')[1]);
+                                const exercise = exerciseData[dayKey][weekIndex]?.[exerciseIndex];
+                                const exerciseName = exercise?.name || 'Exercise';
+                                
+                                // Get sets summary
+                                let setsSummary = '';
+                                if (exData.sets_data && exData.sets_data.length > 0) {
+                                    const completedSets = exData.sets_data.filter(s => s?.done);
+                                    if (completedSets.length > 0) {
+                                        setsSummary = completedSets.map((s, i) => {
+                                            if (s.minutes || s.seconds) {
+                                                return `${s.minutes || 0}m ${s.seconds || 0}s`;
+                                            } else if (s.reps || s.weight) {
+                                                return `${s.reps || '-'}×${s.weight || '-'}kg`;
+                                            }
+                                            return '';
+                                        }).filter(s => s).join(', ');
+                                    }
+                                }
+                                
+                                return `
+                                    <div class="detail-exercise-row">
+                                        <span class="detail-exercise-name">✓ ${exerciseName}</span>
+                                        ${setsSummary ? `<span class="detail-exercise-sets">${setsSummary}</span>` : ''}
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+    });
+    
+    if (!workoutDetails) {
+        workoutDetails = '<p style="text-align: center; color: var(--text-secondary); padding: 20px;">No completed exercises on this day</p>';
+    }
+    
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-handle"></div>
+            <div class="modal-header">
+                <h3 class="modal-title">📅 ${dateDisplay}</h3>
+                <button class="modal-close" onclick="closeVideo()">✕</button>
+            </div>
+            <div class="modal-body">
+                ${workoutDetails}
+            </div>
+        </div>
+    `;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Calculate focus areas from workout data
+function calculateFocusAreas() {
+    const focusCount = {};
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    
+    Object.entries(workoutData).forEach(([dateKey, dayData]) => {
+        const date = new Date(dateKey);
+        if (date < thirtyDaysAgo) return;
+        
+        Object.entries(dayData).forEach(([dayKey, exercises]) => {
+            if (dayKey.startsWith('day') && exerciseData[dayKey]) {
+                Object.entries(exercises).forEach(([exKey, exData]) => {
+                    if (exData?.completed) {
+                        const weekIndex = exKey.split('_')[0];
+                        const exerciseIndex = parseInt(exKey.split('_')[1]);
+                        const exercise = exerciseData[dayKey][weekIndex]?.[exerciseIndex];
+                        
+                        if (exercise?.goal) {
+                            focusCount[exercise.goal] = (focusCount[exercise.goal] || 0) + 1;
+                        }
+                    }
+                });
+            }
+        });
+    });
+    
+    return focusCount;
 }
 
 // Update Exercise
@@ -662,7 +924,7 @@ function openDatePicker() {
 function setDateFromPicker() {
     const input = document.getElementById('date-picker-input');
     if (input && input.value) {
-        selectedDate = new Date(input.value + 'T12:00:00'); // Use noon to avoid timezone issues
+        selectedDate = new Date(input.value + 'T12:00:00');
         closeVideo();
         renderContent();
     }
@@ -676,7 +938,7 @@ function setQuickDate(offset) {
     renderContent();
 }
 
-// Toggle Complete
+// Toggle Complete - now works even with partial sets
 function toggleComplete(exKey) {
     const todayKey = getTodayKey();
     
@@ -708,10 +970,6 @@ function openVideo(name, videoId, muscles, gifUrl) {
         muscleList = musclesData.primary.map(m => `<span class="muscle-tag primary">${m}</span>`).join('') +
                      musclesData.secondary.map(m => `<span class="muscle-tag secondary">${m}</span>`).join('');
     }
-    
-    // Use exercise name to generate a search-friendly gif URL from a reliable source
-    const exerciseSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
-    const gifSearchUrl = `https://www.musclewiki.com/exercises/${exerciseSlug}`;
     
     modal.innerHTML = `
         <div class="modal-content">
