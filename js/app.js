@@ -107,9 +107,18 @@ function toggleSetsExpand(exKey) {
     renderContent();
 }
 
-// Toggle exercise card expansion
+// Toggle exercise card expansion (accordion - only one at a time)
 function toggleExerciseExpand(exKey) {
-    expandedExercises[exKey] = expandedExercises[exKey] === false ? true : false;
+    // If clicking the same one that's open, close it
+    if (expandedExercises[exKey] === true) {
+        expandedExercises[exKey] = false;
+    } else {
+        // Close all others, open this one
+        Object.keys(expandedExercises).forEach(key => {
+            expandedExercises[key] = false;
+        });
+        expandedExercises[exKey] = true;
+    }
     renderContent();
 }
 
@@ -337,6 +346,7 @@ function renderWorkoutDay(container) {
                 const setsData = exData.sets_data || [];
                 const isExpanded = expandedSets[exKey] !== false; // Default expanded
                 const isTimeExercise = isTimeBased(ex.sets);
+                const isBodyweight = ex.bodyweight === true;
                 const targetTime = getTargetTime(ex.sets);
                 
                 // Count completed sets
@@ -424,13 +434,15 @@ function renderWorkoutDay(container) {
                                                    onchange="updateSetData('${exKey}', ${setIndex}, 'reps', this.value)"
                                                    placeholder="10" min="0" max="100">
                                         </div>
+                                        ${!isBodyweight ? `
                                         <div class="set-input-group">
                                             <label>kg</label>
-                                            <input type="text" inputmode="decimal" pattern="[0-9]*\.?[0-9]*"
+                                            <input type="text" inputmode="decimal" pattern="[0-9]*\\.?[0-9]*"
                                                    value="${setData.weight || ''}" 
                                                    onchange="updateSetData('${exKey}', ${setIndex}, 'weight', this.value)"
                                                    placeholder="20">
                                         </div>
+                                        ` : ''}
                                         `}
                                         <button class="set-done-btn ${setData.done ? 'done' : ''}" 
                                                 onclick="toggleSetDone('${exKey}', ${setIndex})">
@@ -445,7 +457,12 @@ function renderWorkoutDay(container) {
                         <button class="complete-btn ${isCompleted ? 'completed' : ''}" onclick="toggleComplete('${exKey}')">
                             ${isCompleted ? '✓ Completed' : 'Mark as Done'}
                         </button>
-                        ${isCompleted ? `<button class="clear-exercise-btn" onclick="clearCurrentExercise('${exKey}')">🗑️ Clear</button>` : ''}
+                        ${isCompleted ? `
+                        <div class="exercise-actions">
+                            <button class="edit-exercise-btn" onclick="editExercise('${exKey}')">✏️ Edit</button>
+                            <button class="clear-exercise-btn" onclick="clearCurrentExercise('${exKey}')">🗑️ Clear</button>
+                        </div>
+                        ` : ''}
                     </div>
                     </div>
                 </div>
@@ -1369,4 +1386,27 @@ async function clearExercise(dateKey, dayKey, exKey) {
 async function clearCurrentExercise(exKey) {
     const todayKey = getTodayKey();
     await clearExercise(todayKey, currentDay, exKey);
+}
+
+// Edit exercise - unmark completed so user can modify values
+function editExercise(exKey) {
+    const todayKey = getTodayKey();
+    
+    if (workoutData[todayKey] && workoutData[todayKey][currentDay] && workoutData[todayKey][currentDay][exKey]) {
+        // Unmark as completed but keep the set data
+        workoutData[todayKey][currentDay][exKey].completed = false;
+        
+        // Expand this exercise
+        Object.keys(expandedExercises).forEach(key => {
+            expandedExercises[key] = false;
+        });
+        expandedExercises[exKey] = true;
+        
+        saveData();
+        renderContent();
+        
+        if (typeof showToast === 'function') {
+            showToast('Edit mode - update your values');
+        }
+    }
 }
