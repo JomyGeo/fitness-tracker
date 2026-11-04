@@ -141,13 +141,8 @@ function highlightToday() {
 function renderNavigation() {
     const navContainer = document.getElementById('nav-tabs');
     const days = [
+        { id: 'day1', label: 'Workout', icon: '💪' },
         { id: 'warmup', label: 'Warm', icon: '🔥' },
-        { id: 'day1', label: 'Day 1', icon: '💪' },
-        { id: 'day2', label: 'Day 2', icon: '🏋️' },
-        { id: 'day3', label: 'Day 3', icon: '🦵' },
-        { id: 'day4', label: 'Day 4', icon: '🎯' },
-        { id: 'day5', label: 'Day 5', icon: '🦿' },
-        { id: 'day6', label: 'Day 6', icon: '⚡' },
         { id: 'day7', label: 'Rest', icon: '😴' },
         { id: 'plan', label: 'Plan', icon: '📋' },
         { id: 'diet', label: 'Diet', icon: '🍽️' },
@@ -155,7 +150,7 @@ function renderNavigation() {
     ];
     
     navContainer.innerHTML = days.map(day => `
-        <button class="nav-tab ${day.id === currentDay ? 'active' : ''}" 
+        <button class="nav-tab ${day.id === currentDay || (day.id === 'day1' && currentDay.startsWith('day') && currentDay !== 'day7') ? 'active' : ''}" 
                 data-day="${day.id}" onclick="switchDay('${day.id}')">
             <span class="icon">${day.icon}</span>
             <span>${day.label}</span>
