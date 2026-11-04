@@ -122,6 +122,7 @@ function renderNavigation() {
         { id: 'day5', label: 'Day 5', icon: '🦿' },
         { id: 'day6', label: 'Day 6', icon: '⚡' },
         { id: 'day7', label: 'Rest', icon: '😴' },
+        { id: 'plan', label: 'Plan', icon: '📋' },
         { id: 'diet', label: 'Diet', icon: '🍽️' },
         { id: 'progress', label: 'Stats', icon: '📊' }
     ];
@@ -192,6 +193,8 @@ function renderContent() {
         renderDiet(container);
     } else if (currentDay === 'progress') {
         renderProgress(container);
+    } else if (currentDay === 'plan') {
+        renderPlan(container);
     } else {
         renderWorkoutDay(container);
     }
@@ -555,6 +558,129 @@ function renderDiet(container) {
             </div>
         </div>
     `;
+}
+
+// Render Complete Workout Plan
+function renderPlan(container) {
+    const dayStyles = {
+        day1: { icon: '💪', color: '#FF3B30', gradient: 'linear-gradient(135deg, #FF3B30, #FF2D55)', name: 'Day 1' },
+        day2: { icon: '🏋️', color: '#007AFF', gradient: 'linear-gradient(135deg, #007AFF, #5AC8FA)', name: 'Day 2' },
+        day3: { icon: '🦵', color: '#34C759', gradient: 'linear-gradient(135deg, #34C759, #30D158)', name: 'Day 3' },
+        day4: { icon: '🎯', color: '#FF9500', gradient: 'linear-gradient(135deg, #FF9500, #FFCC00)', name: 'Day 4' },
+        day5: { icon: '🦿', color: '#AF52DE', gradient: 'linear-gradient(135deg, #AF52DE, #BF5AF2)', name: 'Day 5' },
+        day6: { icon: '⚡', color: '#5AC8FA', gradient: 'linear-gradient(135deg, #5AC8FA, #007AFF)', name: 'Day 6' }
+    };
+    
+    // State for which week to show in plan view
+    if (typeof window.planWeek === 'undefined') {
+        window.planWeek = 'week1';
+    }
+    
+    container.innerHTML = `
+        <div class="section active">
+            <div class="section-header">
+                <div class="section-icon" style="background: linear-gradient(135deg, #FF9500, #FFCC00);">📋</div>
+                <div>
+                    <h2 class="section-title">Complete Workout Plan</h2>
+                    <p class="section-subtitle">Your 6-day training program</p>
+                </div>
+            </div>
+            
+            <div class="week-toggle" style="margin-bottom: 20px;">
+                <button class="week-btn ${window.planWeek === 'week1' ? 'active' : ''}" onclick="switchPlanWeek('week1')">Week 1 & 3</button>
+                <button class="week-btn ${window.planWeek === 'week2' ? 'active' : ''}" onclick="switchPlanWeek('week2')">Week 2 & 4</button>
+            </div>
+            
+            <!-- Warm-up Section -->
+            <div class="plan-day-card">
+                <div class="plan-day-header" style="background: linear-gradient(135deg, #FF9500, #FF3B30);">
+                    <span class="plan-day-icon">🔥</span>
+                    <div class="plan-day-info">
+                        <h3>Warm-up</h3>
+                        <p>Do before every workout • 8-10 mins</p>
+                    </div>
+                </div>
+                <div class="plan-exercises">
+                    ${exerciseData.warmup.map(ex => `
+                        <div class="plan-exercise-row">
+                            <span class="plan-exercise-name">${ex.name}</span>
+                            <span class="plan-exercise-detail">${ex.duration}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            
+            <!-- Day 1-6 -->
+            ${['day1', 'day2', 'day3', 'day4', 'day5', 'day6'].map(dayKey => {
+                const day = exerciseData[dayKey];
+                const style = dayStyles[dayKey];
+                const exercises = day[window.planWeek];
+                
+                return `
+                <div class="plan-day-card">
+                    <div class="plan-day-header" style="background: ${style.gradient};">
+                        <span class="plan-day-icon">${style.icon}</span>
+                        <div class="plan-day-info">
+                            <h3>${style.name}: ${day.name}</h3>
+                            <p>${day.focus}</p>
+                        </div>
+                        <button class="plan-go-btn" onclick="switchDay('${dayKey}')">Go →</button>
+                    </div>
+                    <div class="plan-exercises">
+                        ${exercises.map((ex, i) => `
+                            <div class="plan-exercise-row">
+                                <span class="plan-exercise-num">${i + 1}</span>
+                                <div class="plan-exercise-info">
+                                    <span class="plan-exercise-name">${ex.name}</span>
+                                    ${ex.goal ? `<span class="plan-goal-badge ${ex.goal}">${goalLabels[ex.goal]}</span>` : ''}
+                                </div>
+                                <span class="plan-exercise-detail">${ex.sets}</span>
+                            </div>
+                        `).join('')}
+                        <div class="plan-cooldown-label">+ Cool-down (${day.cooldown.length} stretches)</div>
+                    </div>
+                </div>
+                `;
+            }).join('')}
+            
+            <!-- Rest Day -->
+            <div class="plan-day-card">
+                <div class="plan-day-header" style="background: linear-gradient(135deg, #8E8E93, #636366);">
+                    <span class="plan-day-icon">😴</span>
+                    <div class="plan-day-info">
+                        <h3>Day 7: Rest Day</h3>
+                        <p>${exerciseData.day7.focus}</p>
+                    </div>
+                </div>
+                <div class="plan-exercises">
+                    ${exerciseData.day7.tips.slice(0, 4).map(tip => `
+                        <div class="plan-exercise-row">
+                            <span class="plan-tip-icon">✓</span>
+                            <span class="plan-exercise-name" style="font-size: 13px;">${tip}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            
+            <!-- Goals Summary -->
+            <div class="plan-goals-section">
+                <h3 class="plan-goals-title">🎯 Your Training Goals</h3>
+                <div class="plan-goals-grid">
+                    ${Object.entries(goalLabels).map(([key, label]) => `
+                        <div class="plan-goal-item">
+                            <span class="plan-goal-badge ${key}">${label}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Switch week in plan view
+function switchPlanWeek(week) {
+    window.planWeek = week;
+    renderContent();
 }
 
 // Render Progress with Calendar
