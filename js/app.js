@@ -427,13 +427,6 @@ function renderWorkoutDay(container) {
                                             </div>
                                         </div>
                                         ` : `
-                                        <div class="set-input-group">
-                                            <label>Reps</label>
-                                            <input type="number" inputmode="numeric" 
-                                                   value="${setData.reps || ''}" 
-                                                   onchange="updateSetData('${exKey}', ${setIndex}, 'reps', this.value)"
-                                                   placeholder="10" min="0" max="100">
-                                        </div>
                                         ${!isBodyweight ? `
                                         <div class="set-input-group">
                                             <label>kg</label>
@@ -443,6 +436,13 @@ function renderWorkoutDay(container) {
                                                    placeholder="20">
                                         </div>
                                         ` : ''}
+                                        <div class="set-input-group">
+                                            <label>Reps</label>
+                                            <input type="number" inputmode="numeric" 
+                                                   value="${setData.reps || ''}" 
+                                                   onchange="updateSetData('${exKey}', ${setIndex}, 'reps', this.value)"
+                                                   placeholder="10" min="0" max="100">
+                                        </div>
                                         `}
                                         <button class="set-done-btn ${setData.done ? 'done' : ''}" 
                                                 onclick="toggleSetDone('${exKey}', ${setIndex})">
