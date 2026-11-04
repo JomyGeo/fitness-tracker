@@ -199,23 +199,28 @@ async function loadDataFromCloud() {
         
         if (doc.exists) {
             const cloudData = doc.data().workoutData || {};
-            const localData = JSON.parse(localStorage.getItem('fitnessTrackerData') || '{}');
             
-            // Merge cloud and local data (cloud takes priority for same dates)
-            workoutData = mergeWorkoutData(localData, cloudData);
+            // Cloud is the source of truth - use cloud data directly
+            // This ensures clearing from one device clears everywhere
+            workoutData = cloudData;
             
-            // Save merged data back to local storage
+            // Save cloud data to local storage
             localStorage.setItem('fitnessTrackerData', JSON.stringify(workoutData));
             
-            console.log('Data loaded from cloud');
+            console.log('Data loaded from cloud:', Object.keys(workoutData).length, 'dates');
         } else {
-            // No cloud data, upload local data
-            loadData();
-            await syncDataToCloud();
+            // No cloud data exists yet - check local and upload if exists
+            const localData = JSON.parse(localStorage.getItem('fitnessTrackerData') || '{}');
+            if (Object.keys(localData).length > 0) {
+                workoutData = localData;
+                await syncDataToCloud();
+            } else {
+                workoutData = {};
+            }
         }
     } catch (error) {
         console.error('Error loading from cloud:', error);
-        // Fall back to local data
+        // Fall back to local data only on error
         loadData();
     }
 }
