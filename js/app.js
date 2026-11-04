@@ -143,6 +143,7 @@ function renderNavigation() {
     const days = [
         { id: 'day1', label: 'Workout', icon: '💪' },
         { id: 'warmup', label: 'Warm', icon: '🔥' },
+        { id: 'library', label: 'Library', icon: '📚' },
         { id: 'plan', label: 'Plan', icon: '📋' },
         { id: 'diet', label: 'Diet', icon: '🍽️' },
         { id: 'progress', label: 'Stats', icon: '📊' }
@@ -216,6 +217,8 @@ function renderContent() {
         renderProgress(container);
     } else if (currentDay === 'plan') {
         renderPlan(container);
+    } else if (currentDay === 'library') {
+        renderLibrary(container);
     } else {
         renderWorkoutDay(container);
     }
@@ -849,6 +852,131 @@ function renderProgress(container) {
 // Calendar state
 let calendarMonth = new Date().getMonth();
 let calendarYear = new Date().getFullYear();
+
+// Library state
+let selectedCategory = null;
+
+// Render Exercise Library by body part
+function renderLibrary(container) {
+    const categories = [
+        { id: 'chest', name: 'Chest', icon: '🏋️', color: '#FF3B30' },
+        { id: 'back', name: 'Back', icon: '🔙', color: '#007AFF' },
+        { id: 'shoulders', name: 'Shoulders', icon: '💪', color: '#FF9500' },
+        { id: 'arms', name: 'Arms', icon: '💪', color: '#AF52DE' },
+        { id: 'legs', name: 'Legs', icon: '🦵', color: '#34C759' },
+        { id: 'core', name: 'Core', icon: '🎯', color: '#5AC8FA' }
+    ];
+    
+    // Collect all exercises and categorize by muscle group
+    const exercisesByCategory = {
+        chest: [],
+        back: [],
+        shoulders: [],
+        arms: [],
+        legs: [],
+        core: []
+    };
+    
+    // Go through all days and collect exercises
+    ['day1', 'day2', 'day3', 'day4', 'day5', 'day6'].forEach(dayKey => {
+        const dayData = exerciseData[dayKey];
+        ['week1', 'week2'].forEach(weekKey => {
+            if (dayData[weekKey]) {
+                dayData[weekKey].forEach(ex => {
+                    const category = getCategoryForExercise(ex);
+                    if (category && !exercisesByCategory[category].find(e => e.name === ex.name)) {
+                        exercisesByCategory[category].push(ex);
+                    }
+                });
+            }
+        });
+    });
+    
+    if (selectedCategory) {
+        // Show exercises for selected category
+        const cat = categories.find(c => c.id === selectedCategory);
+        const exercises = exercisesByCategory[selectedCategory];
+        
+        container.innerHTML = `
+            <div class="section active">
+                <div class="library-back" onclick="selectedCategory = null; renderContent();">
+                    <span>← Back to Categories</span>
+                </div>
+                
+                <div class="section-header">
+                    <div class="section-icon" style="background: ${cat.color};">${cat.icon}</div>
+                    <div>
+                        <h2 class="section-title">${cat.name} Exercises</h2>
+                        <p class="section-subtitle">${exercises.length} exercises</p>
+                    </div>
+                </div>
+                
+                <div class="library-exercises">
+                    ${exercises.map(ex => `
+                        <div class="library-exercise-card" onclick="openVideo('${ex.name}', '${ex.video}', ${JSON.stringify(ex.muscles).replace(/"/g, '&quot;')}, '${ex.gif || ''}')">
+                            <div class="library-exercise-gif">
+                                ${ex.gif ? `<img src="${ex.gif}" alt="${ex.name}" loading="lazy">` : `<span class="gif-placeholder-icon">🏋️</span>`}
+                            </div>
+                            <div class="library-exercise-info">
+                                <h4>${ex.name}</h4>
+                                <p>${ex.sets || ''}</p>
+                            </div>
+                            <span class="library-play-btn">▶</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    } else {
+        // Show category grid
+        container.innerHTML = `
+            <div class="section active">
+                <div class="section-header">
+                    <div class="section-icon" style="background: linear-gradient(135deg, #007AFF, #5AC8FA);">📚</div>
+                    <div>
+                        <h2 class="section-title">Exercise Library</h2>
+                        <p class="section-subtitle">Browse by muscle group</p>
+                    </div>
+                </div>
+                
+                <div class="library-grid">
+                    ${categories.map(cat => `
+                        <div class="library-card" onclick="selectedCategory = '${cat.id}'; renderContent();" style="--card-color: ${cat.color};">
+                            <div class="library-card-icon">${cat.icon}</div>
+                            <div class="library-card-info">
+                                <h3>${cat.name}</h3>
+                                <p>${exercisesByCategory[cat.id].length} exercises</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+}
+
+// Get category for exercise based on primary muscles
+function getCategoryForExercise(ex) {
+    const muscles = ex.muscles;
+    let primaryMuscles = [];
+    
+    if (Array.isArray(muscles)) {
+        primaryMuscles = muscles;
+    } else if (muscles && muscles.primary) {
+        primaryMuscles = muscles.primary;
+    }
+    
+    const muscleStr = primaryMuscles.join(' ').toLowerCase();
+    
+    if (muscleStr.includes('chest') || muscleStr.includes('pec')) return 'chest';
+    if (muscleStr.includes('lat') || muscleStr.includes('back') || muscleStr.includes('trap') || muscleStr.includes('rear delt')) return 'back';
+    if (muscleStr.includes('delt') || muscleStr.includes('shoulder')) return 'shoulders';
+    if (muscleStr.includes('bicep') || muscleStr.includes('tricep') || muscleStr.includes('forearm') || muscleStr.includes('arm')) return 'arms';
+    if (muscleStr.includes('quad') || muscleStr.includes('ham') || muscleStr.includes('glute') || muscleStr.includes('calf') || muscleStr.includes('leg')) return 'legs';
+    if (muscleStr.includes('core') || muscleStr.includes('oblique') || muscleStr.includes('ab')) return 'core';
+    
+    return null;
+}
 
 // Change calendar month
 function changeCalendarMonth(delta) {
