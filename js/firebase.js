@@ -62,22 +62,23 @@ function updateConnectionStatus() {
 // Auth state observer
 auth.onAuthStateChanged(async (user) => {
     currentUser = user;
-    updateUserUI();
     
     if (user) {
         console.log('User signed in:', user.displayName || user.uid);
+        // Hide login screen, show app
+        hideLoginScreen();
+        updateUserUI();
         // Load data from cloud
         await loadDataFromCloud();
+        // Re-render the app
+        if (typeof renderContent === 'function') {
+            renderContent();
+            updateHeaderStats();
+        }
     } else {
-        console.log('User signed out');
-        // Use local storage only
-        loadData();
-    }
-    
-    // Re-render the app
-    if (typeof renderContent === 'function') {
-        renderContent();
-        updateHeaderStats();
+        console.log('User not signed in');
+        // Show login screen, hide app
+        showLoginScreen();
     }
 });
 
@@ -156,15 +157,36 @@ async function signInAnonymously() {
 
 // Sign out
 async function signOutUser() {
-    try {
-        await auth.signOut();
-        showToast('Signed out');
-        // Clear cloud data reference, keep local
-        loadData();
-        renderContent();
-    } catch (error) {
-        console.error('Sign out error:', error);
+    if (confirm('Sign out? You can sign back in anytime.')) {
+        try {
+            await auth.signOut();
+            showToast('Signed out');
+        } catch (error) {
+            console.error('Sign out error:', error);
+        }
     }
+}
+
+// Show login screen (mandatory)
+function showLoginScreen() {
+    const loginScreen = document.getElementById('login-screen');
+    const appContainer = document.querySelector('.container');
+    const navContainer = document.querySelector('.nav-container');
+    
+    if (loginScreen) loginScreen.style.display = 'flex';
+    if (appContainer) appContainer.style.display = 'none';
+    if (navContainer) navContainer.style.display = 'none';
+}
+
+// Hide login screen, show app
+function hideLoginScreen() {
+    const loginScreen = document.getElementById('login-screen');
+    const appContainer = document.querySelector('.container');
+    const navContainer = document.querySelector('.nav-container');
+    
+    if (loginScreen) loginScreen.style.display = 'none';
+    if (appContainer) appContainer.style.display = 'block';
+    if (navContainer) navContainer.style.display = 'block';
 }
 
 // Load data from Firestore
