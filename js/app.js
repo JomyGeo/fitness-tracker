@@ -7,8 +7,7 @@ let selectedDate = new Date(); // For date picker
 // Goal labels for badges
 const goalLabels = {
     'belly-fat': '🔥 Belly Fat',
-    'man-boobs': '💪 Reduce Man Boobs',
-    'chest-fat': '💪 Reduce Man Boobs', // Alias for backward compatibility
+    'chest-fat': '💪 Chest Fat',
     'lower-back': '🩹 Lower Back',
     'posture': '🧍 Posture',
     'neck-hump': '🦒 Neck Hump',

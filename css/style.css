@@ -1479,8 +1479,8 @@ body {
     color: white;
 }
 
-/* Man Boobs Goal Badge (alias for chest-fat) */
-.goal-badge.man-boobs { 
+/* Chest Fat Goal Badge - targets man boobs */
+.goal-badge.chest-fat { 
     background: rgba(255, 59, 48, 0.2); 
     color: #FF6B6B; 
     border: 1px solid rgba(255, 59, 48, 0.3);

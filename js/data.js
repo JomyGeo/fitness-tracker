@@ -15,21 +15,21 @@ const exerciseData = {
     
     day1: {
         name: "Chest + Triceps",
-        focus: "Upper body, chest fat appearance",
+        focus: "Man boobs reduction - build muscle, burn chest fat",
         week1: [
-            { name: "Incline DB Press", sets: "4 x 10-12", rest: "90s", why: "Upper chest - reduces chest fat appearance", video: "8iPEnn-ltC8", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif", muscles: { primary: ["Upper Chest"], secondary: ["Front Delts", "Triceps"] }, goal: "man-boobs" },
-            { name: "Flat Bench Press", sets: "4 x 10", rest: "90s", why: "Main chest builder - compound movement", video: "rT7DgCr-3pg", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Bench-Press.gif", muscles: { primary: ["Chest"], secondary: ["Front Delts", "Triceps"] } },
-            { name: "Cable Flyes", sets: "3 x 12-15", rest: "60s", why: "Chest squeeze - defines chest shape", video: "Iwe6AmxVf7o", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Crossover.gif", muscles: { primary: ["Chest"], secondary: [] } },
+            { name: "Incline DB Press", sets: "4 x 10-12", rest: "90s", why: "MAN BOOBS KILLER - targets upper chest to lift & tighten sagging area", video: "8iPEnn-ltC8", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif", muscles: { primary: ["Upper Chest"], secondary: ["Front Delts", "Triceps"] }, goal: "chest-fat" },
+            { name: "Flat Bench Press", sets: "4 x 10", rest: "90s", why: "MAN BOOBS - builds overall chest muscle to replace fat", video: "rT7DgCr-3pg", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Bench-Press.gif", muscles: { primary: ["Chest"], secondary: ["Front Delts", "Triceps"] }, goal: "chest-fat" },
+            { name: "Cable Flyes", sets: "3 x 12-15", rest: "60s", why: "MAN BOOBS - squeezes chest, defines shape & burns fat", video: "Iwe6AmxVf7o", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Crossover.gif", muscles: { primary: ["Chest"], secondary: [] }, goal: "chest-fat" },
             { name: "Tricep Pushdowns", sets: "3 x 12", rest: "60s", why: "Tricep mass - arm definition", video: "2-LAMcpzODU", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pushdown.gif", muscles: { primary: ["Triceps"], secondary: [] } },
             { name: "Overhead Tricep Extension", sets: "3 x 12", rest: "60s", why: "Long head tricep - arm shape", video: "YbX7Wd8jQ-Q", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Triceps-Extension.gif", muscles: { primary: ["Triceps (Long Head)"], secondary: [] } },
             { name: "Dead Bugs", sets: "3 x 10 each", rest: "45s", why: "CORE + LOWER BACK stability", video: "I5xbsA71v4c", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dead-Bug.gif", muscles: { primary: ["Core"], secondary: ["Hip Flexors"] }, goal: "lower-back" },
             { name: "Plank", sets: "3 x 45s", rest: "45s", why: "CORE - overall stability", video: "ASdvN_XEl_c", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Plank.gif", muscles: { primary: ["Core"], secondary: ["Shoulders"] }, goal: "belly-fat" }
         ],
         week2: [
-            { name: "Incline DB Press", sets: "4 x 10-12", rest: "90s", why: "MAN BOOBS - Upper chest builder, tightens chest", video: "8iPEnn-ltC8", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif", muscles: { primary: ["Upper Chest"], secondary: ["Front Delts", "Triceps"] }, goal: "man-boobs" },
-            { name: "Dumbbell Bench Press", sets: "4 x 10", rest: "90s", why: "Better stretch than barbell", video: "VmB1G1K7v94", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Press.gif", muscles: { primary: ["Chest"], secondary: ["Front Delts", "Triceps"] } },
-            { name: "Pec Deck Machine", sets: "3 x 12-15", rest: "60s", why: "Isolates chest - good squeeze", video: "xUm0BiZCWlQ", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pec-Deck-Fly.gif", muscles: { primary: ["Chest"], secondary: [] } },
-            { name: "Dips", sets: "3 x 10-12", rest: "60s", why: "Lower chest + triceps compound", video: "2z8JmcrW-As", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Chest-Dip.gif", muscles: { primary: ["Lower Chest", "Triceps"], secondary: ["Front Delts"] } },
+            { name: "Incline DB Press", sets: "4 x 10-12", rest: "90s", why: "MAN BOOBS KILLER - lifts upper chest, tightens saggy area", video: "8iPEnn-ltC8", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif", muscles: { primary: ["Upper Chest"], secondary: ["Front Delts", "Triceps"] }, goal: "chest-fat" },
+            { name: "Dumbbell Bench Press", sets: "4 x 10", rest: "90s", why: "MAN BOOBS - better stretch than barbell, more muscle activation", video: "VmB1G1K7v94", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Press.gif", muscles: { primary: ["Chest"], secondary: ["Front Delts", "Triceps"] }, goal: "chest-fat" },
+            { name: "Pec Deck Machine", sets: "3 x 12-15", rest: "60s", why: "MAN BOOBS - isolates chest with maximum squeeze", video: "xUm0BiZCWlQ", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pec-Deck-Fly.gif", muscles: { primary: ["Chest"], secondary: [] }, goal: "chest-fat" },
+            { name: "Dips", sets: "3 x 10-12", rest: "60s", why: "MAN BOOBS - hits lower chest, creates chest line definition", video: "2z8JmcrW-As", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Chest-Dip.gif", muscles: { primary: ["Lower Chest", "Triceps"], secondary: ["Front Delts"] }, goal: "chest-fat" },
             { name: "Skull Crushers", sets: "3 x 12", rest: "60s", why: "Tricep mass - different angle", video: "d_KZxkY_0cM", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Skull-Crusher.gif", muscles: { primary: ["Triceps"], secondary: [] } },
             { name: "Dead Bugs", sets: "3 x 10 each", rest: "45s", why: "CORE + LOWER BACK stability", video: "I5xbsA71v4c", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dead-Bug.gif", muscles: { primary: ["Core"], secondary: ["Hip Flexors"] }, goal: "lower-back" },
             { name: "Side Plank", sets: "3 x 30s each", rest: "45s", why: "Obliques - waist definition", video: "K2VljzCC16g", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Side-Plank.gif", muscles: { primary: ["Obliques"], secondary: ["Core"] }, goal: "belly-fat" }
@@ -273,7 +273,7 @@ const exerciseData = {
 // Goals reference for filtering
 const fitnessGoals = {
     'belly-fat': { name: 'Belly Fat Loss', icon: '🔥', color: '#FF6B6B' },
-    'man-boobs': { name: 'Reduce Man Boobs', icon: '💪', color: '#4ECDC4' },
+    'chest-fat': { name: 'Chest Fat / Man Boobs', icon: '💪', color: '#4ECDC4' },
     'lower-back': { name: 'Lower Back Pain', icon: '🩹', color: '#45B7D1' },
     'posture': { name: 'Posture Fix', icon: '🧍', color: '#96CEB4' },
     'neck-hump': { name: 'Neck Hump Fix', icon: '🦒', color: '#FFEAA7' },
