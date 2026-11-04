@@ -289,6 +289,18 @@ function renderWorkoutDay(container) {
     
     container.innerHTML = `
         <div class="section active">
+            <!-- Day Selector Dropdown -->
+            <div class="day-selector">
+                <select class="day-dropdown" onchange="switchDay(this.value)">
+                    <option value="day1" ${currentDay === 'day1' ? 'selected' : ''}>💪 Day 1 - Chest + Triceps</option>
+                    <option value="day2" ${currentDay === 'day2' ? 'selected' : ''}>🏋️ Day 2 - Back + Biceps</option>
+                    <option value="day3" ${currentDay === 'day3' ? 'selected' : ''}>🦵 Day 3 - Legs (Quads)</option>
+                    <option value="day4" ${currentDay === 'day4' ? 'selected' : ''}>🎯 Day 4 - Shoulders + Power</option>
+                    <option value="day5" ${currentDay === 'day5' ? 'selected' : ''}>🦿 Day 5 - Legs (Hams/Glutes)</option>
+                    <option value="day6" ${currentDay === 'day6' ? 'selected' : ''}>⚡ Day 6 - Upper + Posture</option>
+                </select>
+            </div>
+            
             <div class="section-header">
                 <div class="section-icon" style="background: ${style.gradient};">${style.icon}</div>
                 <div>
