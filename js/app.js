@@ -143,7 +143,6 @@ function renderNavigation() {
     const days = [
         { id: 'day1', label: 'Workout', icon: '💪' },
         { id: 'warmup', label: 'Warm', icon: '🔥' },
-        { id: 'day7', label: 'Rest', icon: '😴' },
         { id: 'plan', label: 'Plan', icon: '📋' },
         { id: 'diet', label: 'Diet', icon: '🍽️' },
         { id: 'progress', label: 'Stats', icon: '📊' }
