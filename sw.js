@@ -1,11 +1,12 @@
 // Service Worker for Fitness Tracker PWA
-const CACHE_NAME = 'fitness-tracker-v9';
+const CACHE_NAME = 'fitness-tracker-v10';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
     '/css/style.css',
     '/js/app.js',
     '/js/data.js',
+    '/js/firebase.js',
     '/manifest.json',
     '/icons/icon-192.png',
     '/icons/icon-512.png'
