@@ -263,16 +263,13 @@ async function syncDataToCloud() {
 const originalSaveData = typeof saveData === 'function' ? saveData : null;
 
 function saveDataWithSync() {
-    // Save to localStorage
+    // Save to localStorage immediately
     localStorage.setItem('fitnessTrackerData', JSON.stringify(workoutData));
     updateHeaderStats();
     
-    // Sync to cloud (debounced)
+    // Sync to cloud immediately (no delay)
     if (currentUser) {
-        clearTimeout(window.syncTimeout);
-        window.syncTimeout = setTimeout(() => {
-            syncDataToCloud();
-        }, 2000); // Wait 2 seconds before syncing to avoid too many writes
+        syncDataToCloud();
     }
 }
 

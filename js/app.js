@@ -363,8 +363,23 @@ function renderWorkoutDay(container) {
                         <div class="sets-tracking ${isExpanded ? '' : 'collapsed'}">
                             ${Array.from({length: setCount}, (_, setIndex) => {
                                 const setData = setsData[setIndex] || {};
+                                const prevSetData = setsData[setIndex - 1] || {};
+                                // Show set if: it's the first set, OR previous set is done
+                                const isVisible = setIndex === 0 || prevSetData.done;
+                                // Show as locked preview if not visible yet
+                                const isLocked = !isVisible;
+                                
+                                if (isLocked) {
+                                    return `
+                                    <div class="set-row set-locked">
+                                        <div class="set-label">Set ${setIndex + 1}</div>
+                                        <div class="set-locked-msg">🔒 Complete Set ${setIndex} first</div>
+                                    </div>
+                                    `;
+                                }
+                                
                                 return `
-                                <div class="set-row ${setData.done ? 'set-done' : ''}">
+                                <div class="set-row ${setData.done ? 'set-done' : 'set-active'}">
                                     <div class="set-label">Set ${setIndex + 1}</div>
                                     <div class="set-inputs">
                                         ${isTimeExercise ? `

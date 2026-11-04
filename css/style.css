@@ -2299,3 +2299,36 @@ body {
     transform: scale(0.98);
     background: rgba(255, 59, 48, 0.1);
 }
+
+
+/* Progressive Set Display */
+.set-row.set-active {
+    border-color: var(--primary);
+    background: rgba(0, 122, 255, 0.1);
+    animation: setAppear 0.3s ease;
+}
+
+@keyframes setAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.set-row.set-locked {
+    opacity: 0.5;
+    background: var(--bg-tertiary);
+    border: 1px dashed var(--border);
+    justify-content: space-between;
+    padding: 12px 16px;
+}
+
+.set-locked-msg {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    font-style: italic;
+}
