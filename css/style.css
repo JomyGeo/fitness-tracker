@@ -563,6 +563,56 @@ body {
 .goal-badge.bat-speed { background: rgba(255, 214, 10, 0.2); color: #FFD60A; }
 
 /* Why Text */
+/* Last Performance Box - Progressive Overload */
+.last-performance-box {
+    background: linear-gradient(135deg, rgba(52, 199, 89, 0.15) 0%, rgba(90, 200, 250, 0.1) 100%);
+    border: 1px solid rgba(52, 199, 89, 0.3);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+}
+
+.last-performance-box.no-data {
+    background: rgba(142, 142, 147, 0.1);
+    border-color: rgba(142, 142, 147, 0.2);
+}
+
+.last-perf-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.last-perf-header.no-data {
+    color: var(--text-secondary);
+}
+
+.last-perf-icon {
+    font-size: 16px;
+}
+
+.last-perf-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.last-perf-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: #34C759;
+}
+
+.progression-suggestion {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 14px;
+    font-weight: 600;
+    color: #5AC8FA;
+}
+
 .exercise-why {
     font-size: 13px;
     color: var(--text-secondary);

@@ -123,6 +123,109 @@ function toggleExerciseExpand(exKey) {
 }
 
 // Highlight today's tab
+
+// Find last performance for an exercise (for progressive overload tracking)
+function getLastPerformance(exerciseName, currentDateKey) {
+    let lastPerformance = null;
+    let lastDate = null;
+    
+    // Get all dates sorted in descending order (most recent first)
+    const sortedDates = Object.keys(workoutData)
+        .filter(dateKey => dateKey !== currentDateKey && dateKey < currentDateKey)
+        .sort((a, b) => b.localeCompare(a));
+    
+    // Search through dates to find the exercise
+    for (const dateKey of sortedDates) {
+        const dayData = workoutData[dateKey];
+        
+        // Search all days (day1, day2, etc.)
+        for (const dayKey of Object.keys(dayData)) {
+            if (!dayKey.startsWith('day')) continue;
+            
+            const exercises = dayData[dayKey];
+            
+            // Search all exercises in that day
+            for (const exKey of Object.keys(exercises)) {
+                const exData = exercises[exKey];
+                if (!exData?.sets_data || !exData.completed) continue;
+                
+                // Get the exercise name from exerciseData
+                const weekIndex = exKey.split('_')[0];
+                const exerciseIndex = parseInt(exKey.split('_')[1]);
+                const exercise = exerciseData[dayKey]?.[weekIndex]?.[exerciseIndex];
+                
+                if (exercise?.name === exerciseName) {
+                    // Found it! Get the best set (highest weight with good reps)
+                    const completedSets = exData.sets_data.filter(s => s?.done && (s.weight || s.reps));
+                    
+                    if (completedSets.length > 0) {
+                        // Find best set (highest weight, or most reps if no weight)
+                        const bestSet = completedSets.reduce((best, current) => {
+                            const currentWeight = parseFloat(current.weight) || 0;
+                            const bestWeight = parseFloat(best.weight) || 0;
+                            const currentReps = parseInt(current.reps) || 0;
+                            const bestReps = parseInt(best.reps) || 0;
+                            
+                            if (currentWeight > bestWeight) return current;
+                            if (currentWeight === bestWeight && currentReps > bestReps) return current;
+                            return best;
+                        }, completedSets[0]);
+                        
+                        lastPerformance = {
+                            weight: bestSet.weight,
+                            reps: bestSet.reps,
+                            date: dateKey,
+                            allSets: completedSets
+                        };
+                        lastDate = dateKey;
+                        return lastPerformance; // Return first (most recent) found
+                    }
+                }
+            }
+        }
+    }
+    
+    return lastPerformance;
+}
+
+// Generate progression suggestion based on last performance
+function getProgressionSuggestion(lastPerformance, targetRepsRange) {
+    if (!lastPerformance) return null;
+    
+    const weight = parseFloat(lastPerformance.weight) || 0;
+    const reps = parseInt(lastPerformance.reps) || 0;
+    
+    // Parse target reps (e.g., "10-12" -> max 12)
+    const repsMatch = targetRepsRange?.match(/(\d+)(?:-(\d+))?/);
+    const minReps = repsMatch ? parseInt(repsMatch[1]) : 10;
+    const maxReps = repsMatch && repsMatch[2] ? parseInt(repsMatch[2]) : minReps;
+    
+    // If no weight recorded (bodyweight exercise)
+    if (weight === 0) {
+        if (reps >= maxReps) {
+            return { type: 'reps', message: `Try: ${reps + 2} reps (bodyweight)` };
+        } else {
+            return { type: 'reps', message: `Try: ${maxReps} reps` };
+        }
+    }
+    
+    // If hit max reps, suggest weight increase
+    if (reps >= maxReps) {
+        const newWeight = weight < 10 ? weight + 1 : weight + 2.5;
+        return { 
+            type: 'weight', 
+            message: `💪 Try: ${newWeight}kg × ${minReps} reps`,
+            icon: '⬆️'
+        };
+    }
+    
+    // If didn't hit max reps, suggest same weight with more reps
+    return { 
+        type: 'reps', 
+        message: `🎯 Try: ${weight}kg × ${Math.min(reps + 1, maxReps)} reps`,
+        icon: '➡️'
+    };
+}
 function highlightToday() {
     const dayOfWeek = new Date().getDay();
     const dayMap = { 1: 'day1', 2: 'day2', 3: 'day3', 4: 'day4', 5: 'day5', 6: 'day6', 0: 'day7' };
@@ -362,6 +465,10 @@ function renderWorkoutDay(container) {
                 const completedSets = setsData.filter(s => s?.done).length;
                 const isExerciseExpanded = expandedExercises[exKey] === true; // Default collapsed
                 
+                // Get last performance for progressive overload
+                const lastPerf = getLastPerformance(ex.name, todayKey);
+                const progression = lastPerf ? getProgressionSuggestion(lastPerf, ex.sets) : null;
+                
                 return `
                 <div class="exercise-card ${isCompleted ? 'completed' : ''}" id="exercise-${exKey}">
                     <div class="exercise-header" onclick="toggleExerciseExpand('${exKey}')">
@@ -389,6 +496,28 @@ function renderWorkoutDay(container) {
                         ${ex.muscles.primary.map(m => `<span class="muscle-tag primary">${m}</span>`).join('')}
                         ${ex.muscles.secondary.map(m => `<span class="muscle-tag secondary">${m}</span>`).join('')}
                     </div>
+                    
+                    ${!isTimeExercise ? `
+                    <div class="last-performance-box ${lastPerf ? '' : 'no-data'}">
+                        ${lastPerf ? `
+                            <div class="last-perf-header">
+                                <span class="last-perf-icon">📊</span>
+                                <span class="last-perf-label">Last time:</span>
+                                <span class="last-perf-value">${lastPerf.weight ? lastPerf.weight + 'kg × ' : ''}${lastPerf.reps || '-'} reps</span>
+                            </div>
+                            ${progression ? `
+                            <div class="progression-suggestion">
+                                ${progression.message}
+                            </div>
+                            ` : ''}
+                        ` : `
+                            <div class="last-perf-header no-data">
+                                <span class="last-perf-icon">📊</span>
+                                <span class="last-perf-label">First time - track your sets!</span>
+                            </div>
+                        `}
+                    </div>
+                    ` : ''}
                     
                     <p class="exercise-why">💡 ${ex.why}</p>
                     
