@@ -86,7 +86,8 @@ const exerciseData = {
             { name: "Chest Doorway Stretch", duration: "30s each arm", why: "Releases tight chest, improves posture", video: "WTjkS3b8pFA", muscles: ["Chest"], goal: "posture" },
             { name: "Tricep Stretch", duration: "30s each arm", why: "Releases worked triceps", video: "4aosnF1FPkA", muscles: ["Triceps"] },
             { name: "Shoulder Stretch", duration: "30s each", why: "Releases pressing muscles", video: "Yf1LYAC4otc", muscles: ["Shoulders"] },
-            { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump" , bodyweight: true}
+            { name: "Cat-Cow Stretch", duration: "10 reps", why: "LOWER BACK - spinal mobility after pressing", video: "kqnua4rHVVA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Cat-Cow-Stretch.gif", muscles: ["Spine", "Core"], goal: "lower-back" },
+            { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump", bodyweight: true }
         ]
     },
     
@@ -121,7 +122,7 @@ const exerciseData = {
     
     day3: {
         name: "Legs (Quads Focus)",
-        focus: "Burns most calories - skip heavy lower back work here, do daily routine instead",
+        focus: "Burns most calories - lower back work in cooldown",
         week1: [
             { name: "Barbell Squats", sets: "4 x 10-12", rest: "90s", why: "Best leg builder - burns most calories", video: "ultWZbUMPL8", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/BARBELL-SQUAT.gif", muscles: { primary: ["Quads", "Glutes"], secondary: ["Hamstrings", "Core"] }, goal: "belly-fat" },
             { name: "Leg Press", sets: "4 x 12", rest: "90s", why: "Quad focus - safer for back", video: "IZxyjW7MPJQ", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Leg-Press.gif", muscles: { primary: ["Quads"], secondary: ["Glutes"] } },
@@ -142,8 +143,8 @@ const exerciseData = {
             { name: "Quad Stretch", duration: "30s each leg", why: "Releases tight quads from squats", video: "3hRO1YkJN_U", muscles: ["Quads"] },
             { name: "Hip Flexor Stretch", duration: "30s each", why: "POSTURE + LOWER BACK relief", video: "YQmpO9VT2X4", muscles: ["Hip Flexors"], goal: "lower-back" },
             { name: "Hamstring Stretch", duration: "30s each", why: "Releases hamstrings", video: "FDwpEdxZ4H4", muscles: ["Hamstrings"] },
-            { name: "Child's Pose", duration: "45s", why: "LOWER BACK decompression", video: "2MJGg-dUKh0", muscles: ["Lower Back"], goal: "lower-back" },
-            { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump" , bodyweight: true}
+            { name: "Bird Dog", duration: "8 reps each side", why: "LOWER BACK - gentle core stability (on hands/knees)", video: "wiFNA3sqjCA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Bird-Dog.gif", muscles: ["Core", "Lower Back"], goal: "lower-back" },
+            { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump", bodyweight: true }
         ]
     },
     
@@ -172,7 +173,8 @@ const exerciseData = {
             { name: "Shoulder Cross-Body Stretch", duration: "30s each", why: "Releases worked delts", video: "Yf1LYAC4otc", muscles: ["Shoulders"] },
             { name: "Chest Doorway Stretch", duration: "30s each", why: "Opens chest - POSTURE", video: "WTjkS3b8pFA", muscles: ["Chest"], goal: "posture" },
             { name: "Torso Twist Stretch", duration: "30s each", why: "Releases rotational muscles", video: "cSZAmTvvnuw", muscles: ["Obliques", "Lower Back"] },
-            { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump" , bodyweight: true}
+            { name: "Dead Bug", duration: "8 reps each side", why: "LOWER BACK + CORE - stabilizes after rotation work", video: "I5xbsA71v4c", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dead-Bug.gif", muscles: ["Core", "Lower Back"], goal: "lower-back" },
+            { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump", bodyweight: true }
         ]
     },
     
@@ -201,8 +203,8 @@ const exerciseData = {
             { name: "Hamstring Stretch", duration: "30s each leg", why: "Releases tight hamstrings", video: "FDwpEdxZ4H4", muscles: ["Hamstrings"] },
             { name: "Pigeon Pose", duration: "30s each side", why: "Deep glute release", video: "c1iwMP0Bknk", muscles: ["Glutes", "Hip Flexors"] },
             { name: "Hip Flexor Stretch", duration: "30s each", why: "POSTURE + LOWER BACK relief", video: "YQmpO9VT2X4", muscles: ["Hip Flexors"], goal: "lower-back" },
-            { name: "Child's Pose", duration: "45s", why: "LOWER BACK decompression", video: "2MJGg-dUKh0", muscles: ["Lower Back"], goal: "lower-back" },
-            { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump" , bodyweight: true}
+            { name: "Glute Bridge Hold", duration: "2 x 20s hold", why: "LOWER BACK - gentle glute activation to protect back", video: "OUgsJ8-Vi0E", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Glute-Bridge.gif", muscles: ["Glutes", "Lower Back"], goal: "lower-back" },
+            { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump", bodyweight: true }
         ]
     },
     
@@ -232,9 +234,10 @@ const exerciseData = {
         cooldown: [
             { name: "Chest Doorway Stretch", duration: "30s each", why: "Opens chest - POSTURE fix", video: "WTjkS3b8pFA", muscles: ["Chest"], goal: "posture" },
             { name: "Lat Stretch", duration: "30s each", why: "Releases back from rows", video: "pYPkPx2wE1I", muscles: ["Lats"] },
+            { name: "Cat-Cow Stretch", duration: "10 reps", why: "LOWER BACK - spinal mobility after upper work", video: "kqnua4rHVVA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Cat-Cow-Stretch.gif", muscles: ["Spine", "Core"], goal: "lower-back" },
             { name: "Neck Stretches", duration: "60s total", why: "NECK HUMP - releases all sides", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump" },
             { name: "Wall Angels", duration: "10 reps", why: "POSTURE - shoulder mobility", video: "M_ooIhKYs7c", muscles: ["Shoulders"], goal: "posture" },
-            { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump" , bodyweight: true}
+            { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump", bodyweight: true }
         ]
     },
     
