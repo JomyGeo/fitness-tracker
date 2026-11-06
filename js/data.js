@@ -4,13 +4,16 @@
 const exerciseData = {
     warmup: [
         { name: "Jumping Jacks", duration: "60 sec", why: "Raises heart rate, warms entire body", video: "iSSAk4XCsRA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Jumping-Jack.gif", muscles: ["Full Body"] },
-        { name: "Arm Circles", duration: "30s each way", why: "Loosens shoulder joints for pressing", video: "140RTsLGFyY", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Arm-Circles.gif", muscles: ["Shoulders"] },
-        { name: "Leg Swings", duration: "10 each leg", why: "Loosens hips for squats/lunges", video: "Of8TL8X6SHU", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Front-Back-Leg-Swings.gif", muscles: ["Hip Flexors", "Hamstrings"] },
+        { name: "Arm Circles", duration: "30s each way", why: "WEAK SHOULDERS - loosens shoulder joints", video: "140RTsLGFyY", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Arm-Circles.gif", muscles: ["Shoulders"] },
+        { name: "Band Pull-Aparts", duration: "15 reps", why: "WEAK SHOULDERS - activates rear delts, stabilizers", video: "JObYtU7Y7ag", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Resistance-Band-Pull-Apart.gif", muscles: ["Rear Delts", "Upper Back"] },
+        { name: "Shoulder Dislocates", duration: "10 reps", why: "WEAK SHOULDERS - full range mobility", video: "02HdChcpyBs", gif: "https://fitnessprogramer.com/wp-content/uploads/2022/02/Band-Shoulder-Dislocate.gif", muscles: ["Shoulders", "Chest"] },
+        { name: "Leg Swings", duration: "10 each leg", why: "TIGHT HAMSTRINGS - dynamic stretch", video: "Of8TL8X6SHU", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Front-Back-Leg-Swings.gif", muscles: ["Hip Flexors", "Hamstrings"] },
+        { name: "Toe Touch Walk", duration: "10 each leg", why: "TIGHT HAMSTRINGS - warms hamstrings dynamically", video: "gN9Q8VPlow4", gif: "https://fitnessprogramer.com/wp-content/uploads/2022/02/Toe-Touch-Walk.gif", muscles: ["Hamstrings", "Calves"] },
         { name: "Hip Circles", duration: "10 each way", why: "Mobilizes hip joints, prevents injury", video: "QxCNkVT70JM", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Hip-Circles.gif", muscles: ["Hips"] },
         { name: "Bodyweight Squats", duration: "10 reps", why: "Activates legs, prepares for leg day", video: "aclHkVaku9U", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Squat.gif", muscles: ["Quads", "Glutes"] },
         { name: "Walkouts", duration: "5 reps", why: "Warms core, shoulders, hamstrings", video: "ancMYBD4Pgg", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Inchworm.gif", muscles: ["Core", "Shoulders", "Hamstrings"] },
         { name: "Cat-Cow Stretch", duration: "10 reps", why: "LOWER BACK - Mobilizes spine", video: "kqnua4rHVVA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Cat-Cow-Stretch.gif", muscles: ["Spine", "Core"], goal: "lower-back" },
-        { name: "Chin Tucks", duration: "10 reps", why: "NECK HUMP - Daily fix, never skip", video: "wQylqaCl8Zo", gif: "https://fitnessprogramer.com/wp-content/uploads/2022/02/Chin-Tuck.gif", muscles: ["Neck", "Upper Back"], goal: "neck-hump" , bodyweight: true}
+        { name: "Chin Tucks", duration: "10 reps", why: "NECK HUMP - Daily fix, never skip", video: "wQylqaCl8Zo", gif: "https://fitnessprogramer.com/wp-content/uploads/2022/02/Chin-Tuck.gif", muscles: ["Neck", "Upper Back"], goal: "neck-hump", bodyweight: true }
     ],
     
     // Daily Lower Back Strengthening - Do these EVERY workout day (light versions)
@@ -122,29 +125,30 @@ const exerciseData = {
     
     day3: {
         name: "Legs (Quads Focus)",
-        focus: "Burns most calories - lower back work in cooldown",
+        focus: "Building leg strength progressively - adapting to squats & lunges",
         week1: [
-            { name: "Barbell Squats", sets: "4 x 10-12", rest: "90s", why: "Best leg builder - burns most calories", video: "ultWZbUMPL8", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/BARBELL-SQUAT.gif", muscles: { primary: ["Quads", "Glutes"], secondary: ["Hamstrings", "Core"] }, goal: "belly-fat" },
-            { name: "Leg Press", sets: "4 x 12", rest: "90s", why: "Quad focus - safer for back", video: "IZxyjW7MPJQ", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Leg-Press.gif", muscles: { primary: ["Quads"], secondary: ["Glutes"] } },
-            { name: "Walking Lunges", sets: "3 x 10 each", rest: "60s", why: "Balance + glute activation", video: "L8fvypPrzzs", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Walking-Lunge.gif", muscles: { primary: ["Quads", "Glutes"], secondary: ["Hamstrings"] , bodyweight: true} },
+            { name: "Goblet Squat", sets: "4 x 12", rest: "90s", why: "BEGINNER FRIENDLY - kettlebell, easier on back, learn squat form", video: "MeIiIdhvXT4", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Goblet-Squat.gif", muscles: { primary: ["Quads", "Glutes"], secondary: ["Core"] } },
+            { name: "Leg Press", sets: "4 x 12", rest: "90s", why: "Quad focus - machine guided, safe for back", video: "IZxyjW7MPJQ", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Leg-Press.gif", muscles: { primary: ["Quads"], secondary: ["Glutes"] } },
+            { name: "Reverse Lunges (Bodyweight)", sets: "3 x 8 each", rest: "60s", why: "EASIER than walking - no weight, build balance first", video: "xrPteyQLGAo", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Rear-Lunge.gif", muscles: { primary: ["Quads", "Glutes"], secondary: ["Hamstrings"] }, bodyweight: true },
             { name: "Leg Extensions", sets: "3 x 12-15", rest: "60s", why: "Quad isolation - definition", video: "YyvSfVjQeL0", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/LEG-EXTENSION.gif", muscles: { primary: ["Quads"], secondary: [] } },
             { name: "Leg Curl", sets: "3 x 12", rest: "60s", why: "Hamstring balance for knee health", video: "1Tq3QdYUuHs", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Leg-Curl.gif", muscles: { primary: ["Hamstrings"], secondary: [] } },
             { name: "Calf Raises", sets: "4 x 15-20", rest: "45s", why: "Calf development", video: "gwLzBJYoWlI", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Standing-Calf-Raise.gif", muscles: { primary: ["Calves"], secondary: [] } }
         ],
         week2: [
-            { name: "Goblet Squats", sets: "4 x 12", rest: "90s", why: "Easier form - use kettlebell", video: "MeIiIdhvXT4", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Goblet-Squat.gif", muscles: { primary: ["Quads", "Glutes"], secondary: ["Core"] } },
-            { name: "Hack Squat", sets: "4 x 12", rest: "90s", why: "Quad focus - machine guided", video: "0tn5K9NlCfo", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Hack-Squat.gif", muscles: { primary: ["Quads"], secondary: ["Glutes"] } },
-            { name: "Reverse Lunges", sets: "3 x 10 each", rest: "60s", why: "Easier on knees than forward", video: "xrPteyQLGAo", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Rear-Lunge.gif", muscles: { primary: ["Quads", "Glutes"], secondary: ["Hamstrings"] , bodyweight: true} },
-            { name: "Sissy Squats", sets: "3 x 12", rest: "60s", why: "Quad stretch - definition", video: "o97gfM16T-w", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Sissy-Squat.gif", muscles: { primary: ["Quads"], secondary: [] } },
+            { name: "Barbell Squats (Light)", sets: "4 x 10", rest: "90s", why: "PROGRESSION - start light, focus on form, adapt gradually", video: "ultWZbUMPL8", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/BARBELL-SQUAT.gif", muscles: { primary: ["Quads", "Glutes"], secondary: ["Hamstrings", "Core"] }, goal: "belly-fat" },
+            { name: "Hack Squat", sets: "4 x 12", rest: "90s", why: "Machine guided - builds confidence for free squats", video: "0tn5K9NlCfo", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Hack-Squat.gif", muscles: { primary: ["Quads"], secondary: ["Glutes"] } },
+            { name: "Walking Lunges (Light DB)", sets: "3 x 8 each", rest: "60s", why: "PROGRESSION - add light dumbbells, build lunge strength", video: "L8fvypPrzzs", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Walking-Lunge.gif", muscles: { primary: ["Quads", "Glutes"], secondary: ["Hamstrings"] } },
+            { name: "Sissy Squats", sets: "3 x 10", rest: "60s", why: "Quad stretch - builds knee strength", video: "o97gfM16T-w", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Sissy-Squat.gif", muscles: { primary: ["Quads"], secondary: [] }, bodyweight: true },
             { name: "Leg Curl", sets: "3 x 12", rest: "60s", why: "Hamstring balance for knee health", video: "1Tq3QdYUuHs", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Leg-Curl.gif", muscles: { primary: ["Hamstrings"], secondary: [] } },
             { name: "Seated Calf Raise", sets: "4 x 15-20", rest: "45s", why: "Soleus focus - lower calf", video: "JbyjNymZOt0", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Seated-Calf-Raise.gif", muscles: { primary: ["Soleus"], secondary: [] } }
         ],
         cooldown: [
-            { name: "Quad Stretch", duration: "30s each leg", why: "Releases tight quads from squats", video: "3hRO1YkJN_U", muscles: ["Quads"] },
-            { name: "Hip Flexor Stretch", duration: "30s each", why: "POSTURE + LOWER BACK relief", video: "YQmpO9VT2X4", muscles: ["Hip Flexors"], goal: "lower-back" },
-            { name: "Hamstring Stretch", duration: "30s each", why: "Releases hamstrings", video: "FDwpEdxZ4H4", muscles: ["Hamstrings"] },
-            { name: "Bird Dog", duration: "8 reps each side", why: "LOWER BACK - gentle core stability (on hands/knees)", video: "wiFNA3sqjCA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Bird-Dog.gif", muscles: ["Core", "Lower Back"], goal: "lower-back" },
-            { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump", bodyweight: true }
+            { name: "Quad Stretch", duration: "30s each leg", why: "Releases tight quads from squats", video: "3hRO1YkJN_U", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Standing-Quadriceps-Stretch.gif", muscles: ["Quads"] },
+            { name: "Standing Hamstring Stretch", duration: "45s each leg", why: "TIGHT HAMSTRINGS - longer hold for flexibility", video: "FDwpEdxZ4H4", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Standing-Hamstring-Stretch.gif", muscles: ["Hamstrings"] },
+            { name: "Seated Forward Fold", duration: "45s", why: "TIGHT HAMSTRINGS - deep stretch, relax into it", video: "g_tea8ZNk5A", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Seated-Forward-Bend.gif", muscles: ["Hamstrings", "Lower Back"] },
+            { name: "Hip Flexor Stretch", duration: "30s each", why: "POSTURE + LOWER BACK relief", video: "YQmpO9VT2X4", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Hip-Flexor-Stretch.gif", muscles: ["Hip Flexors"], goal: "lower-back" },
+            { name: "Bird Dog", duration: "8 reps each side", why: "LOWER BACK - gentle core stability", video: "wiFNA3sqjCA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Bird-Dog.gif", muscles: ["Core", "Lower Back"], goal: "lower-back" },
+            { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", gif: "https://fitnessprogramer.com/wp-content/uploads/2022/02/Chin-Tuck.gif", muscles: ["Neck"], goal: "neck-hump", bodyweight: true }
         ]
     },
     
@@ -200,11 +204,11 @@ const exerciseData = {
             { name: "Single Leg RDL", sets: "3 x 10 each", rest: "60s", why: "Balance + hamstring stretch", video: "cR6Y-XLVMtA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/05/Single-Leg-Romanian-Deadlift.gif", muscles: { primary: ["Hamstrings", "Glutes"], secondary: ["Core"] } }
         ],
         cooldown: [
-            { name: "Hamstring Stretch", duration: "30s each leg", why: "Releases tight hamstrings", video: "FDwpEdxZ4H4", muscles: ["Hamstrings"] },
-            { name: "Pigeon Pose", duration: "30s each side", why: "Deep glute release", video: "c1iwMP0Bknk", muscles: ["Glutes", "Hip Flexors"] },
-            { name: "Hip Flexor Stretch", duration: "30s each", why: "POSTURE + LOWER BACK relief", video: "YQmpO9VT2X4", muscles: ["Hip Flexors"], goal: "lower-back" },
-            { name: "Glute Bridge Hold", duration: "2 x 20s hold", why: "LOWER BACK - gentle glute activation to protect back", video: "OUgsJ8-Vi0E", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Glute-Bridge.gif", muscles: ["Glutes", "Lower Back"], goal: "lower-back" },
-            { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump", bodyweight: true }
+            { name: "Standing Hamstring Stretch", duration: "45s each leg", why: "TIGHT HAMSTRINGS - longer hold after hamstring work", video: "FDwpEdxZ4H4", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Standing-Hamstring-Stretch.gif", muscles: ["Hamstrings"] },
+            { name: "Pigeon Pose", duration: "45s each side", why: "Deep glute release - hold longer", video: "c1iwMP0Bknk", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Pigeon-Pose.gif", muscles: ["Glutes", "Hip Flexors"] },
+            { name: "Hip Flexor Stretch", duration: "30s each", why: "POSTURE + LOWER BACK relief", video: "YQmpO9VT2X4", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Hip-Flexor-Stretch.gif", muscles: ["Hip Flexors"], goal: "lower-back" },
+            { name: "Glute Bridge Hold", duration: "2 x 20s hold", why: "LOWER BACK - gentle glute activation", video: "OUgsJ8-Vi0E", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Glute-Bridge.gif", muscles: ["Glutes", "Lower Back"], goal: "lower-back" },
+            { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", gif: "https://fitnessprogramer.com/wp-content/uploads/2022/02/Chin-Tuck.gif", muscles: ["Neck"], goal: "neck-hump", bodyweight: true }
         ]
     },
     
