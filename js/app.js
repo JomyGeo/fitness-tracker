@@ -491,6 +491,24 @@ function renderWorkoutDay(container) {
                     <button class="warmup-btn" onclick="openVideo('${ex.name}', '${ex.video}', ${JSON.stringify(ex.muscles).replace(/"/g, '&quot;')}, '${ex.gif || ''}')">▶</button>
                 </div>
             `).join('')}
+            
+            <!-- Daily Lower Back Strengthening Section -->
+            <div class="daily-lower-back-section">
+                <h3 class="subsection-title"><span class="icon">🩹</span> Daily Lower Back (Do EVERY day - Light!)</h3>
+                <p class="daily-back-note">These are gentle exercises to strengthen your lower back daily. Light sets, not tiring!</p>
+                
+                ${exerciseData.lowerBackDaily.map((ex, i) => `
+                    <div class="warmup-card lower-back-card">
+                        <div class="warmup-number" style="background: linear-gradient(135deg, #45B7D1, #96CEB4);">${i + 1}</div>
+                        <div class="warmup-info">
+                            <div class="warmup-name">${ex.name}</div>
+                            <div class="warmup-duration">${ex.sets} • Rest: ${ex.rest}</div>
+                            <span class="goal-badge lower-back" style="margin-top: 6px; font-size: 10px;">🩹 Lower Back</span>
+                        </div>
+                        <button class="warmup-btn" onclick="openVideo('${ex.name}', '${ex.video}', ${JSON.stringify(ex.muscles).replace(/"/g, '&quot;')}, '${ex.gif || ''}')">▶</button>
+                    </div>
+                `).join('')}
+            </div>
         </div>
     `;
 }

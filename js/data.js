@@ -13,6 +13,54 @@ const exerciseData = {
         { name: "Chin Tucks", duration: "10 reps", why: "NECK HUMP - Daily fix, never skip", video: "wQylqaCl8Zo", gif: "https://fitnessprogramer.com/wp-content/uploads/2022/02/Chin-Tuck.gif", muscles: ["Neck", "Upper Back"], goal: "neck-hump" , bodyweight: true}
     ],
     
+    // Daily Lower Back Strengthening - Do these EVERY workout day (light versions)
+    // These are separate from the main workout - do at the END of each session
+    lowerBackDaily: [
+        { name: "Cat-Cow Stretch", sets: "2 x 10", rest: "30s", why: "DAILY - Spinal mobility, do slowly", video: "kqnua4rHVVA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Cat-Cow-Stretch.gif", muscles: { primary: ["Spine", "Core"], secondary: [] }, goal: "lower-back", bodyweight: true },
+        { name: "Dead Bug", sets: "2 x 8 each", rest: "30s", why: "DAILY - Core + back stability, gentle", video: "I5xbsA71v4c", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dead-Bug.gif", muscles: { primary: ["Core"], secondary: ["Hip Flexors"] }, goal: "lower-back", bodyweight: true },
+        { name: "Bird Dog", sets: "2 x 8 each", rest: "30s", why: "DAILY - Core stability, balance", video: "wiFNA3sqjCA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Bird-Dog.gif", muscles: { primary: ["Core", "Lower Back"], secondary: ["Glutes"] }, goal: "lower-back", bodyweight: true },
+        { name: "Glute Bridge", sets: "2 x 12", rest: "30s", why: "DAILY - Glute activation protects back", video: "OUgsJ8-Vi0E", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Glute-Bridge.gif", muscles: { primary: ["Glutes"], secondary: ["Hamstrings"] }, goal: "lower-back", bodyweight: true },
+        { name: "Child's Pose", sets: "1 x 45s", rest: "-", why: "DAILY - Spine decompression, relaxation", video: "2MJGg-dUKh0", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Childs-Pose.gif", muscles: { primary: ["Lower Back"], secondary: ["Lats"] }, goal: "lower-back", bodyweight: true }
+    ],
+    
+    // Available gym equipment for reference
+    gymEquipment: {
+        kettlebell: true,
+        medicineBall: true,
+        stabilityBall: true,  // Big plastic ball
+        resistanceBands: true,
+        dumbbells: true,
+        barbells: true,
+        cables: true,
+        machines: true
+    },
+    
+    // Equipment-based exercise alternatives (Kettlebell, Medicine Ball, Stability Ball)
+    equipmentExercises: {
+        kettlebell: [
+            { name: "Kettlebell Swing", sets: "3 x 15", rest: "60s", why: "LOWER BACK + Glutes - hip hinge power", video: "YSxHifyI6s8", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Kettlebell-Swing.gif", muscles: { primary: ["Glutes", "Hamstrings"], secondary: ["Core", "Lower Back"] }, goal: "lower-back" },
+            { name: "Goblet Squat (Kettlebell)", sets: "3 x 12", rest: "60s", why: "Front-loaded squat - easier on back", video: "MeIiIdhvXT4", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Goblet-Squat.gif", muscles: { primary: ["Quads", "Glutes"], secondary: ["Core"] } },
+            { name: "Kettlebell Deadlift", sets: "3 x 12", rest: "60s", why: "LOWER BACK - safe deadlift variation", video: "sVpB5xdGCvQ", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/04/Kettlebell-Deadlift.gif", muscles: { primary: ["Hamstrings", "Glutes"], secondary: ["Lower Back"] }, goal: "lower-back" },
+            { name: "Kettlebell Turkish Get-up", sets: "2 x 3 each", rest: "60s", why: "CORE + LOWER BACK - full body stability", video: "0bWRPC49-KI", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Kettlebell-Turkish-Get-Up.gif", muscles: { primary: ["Core", "Shoulders"], secondary: ["Glutes", "Lower Back"] }, goal: "lower-back" },
+            { name: "Kettlebell Halo", sets: "2 x 10 each way", rest: "45s", why: "Shoulder mobility + core stability", video: "MxhCmFP0YWU", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/04/Kettlebell-Halo.gif", muscles: { primary: ["Shoulders"], secondary: ["Core"] } }
+        ],
+        medicineBall: [
+            { name: "Med Ball Rotational Throw", sets: "3 x 8 each", rest: "60s", why: "BAT SPEED - explosive hip rotation", video: "Cf_2gRh1FZU", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/09/Medicine-Ball-Rotational-Throw.gif", muscles: { primary: ["Obliques", "Core"], secondary: ["Hips"] }, goal: "bat-speed" },
+            { name: "Med Ball Slam", sets: "3 x 10", rest: "60s", why: "Power + core - stress relief!", video: "5xIubW3D5KU", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/04/Medicine-Ball-Slam.gif", muscles: { primary: ["Core", "Lats"], secondary: ["Shoulders"] } },
+            { name: "Med Ball Russian Twist", sets: "3 x 20 total", rest: "45s", why: "BAT SPEED - weighted rotation", video: "wkD8rjkodUI", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Russian-Twist.gif", muscles: { primary: ["Obliques"], secondary: ["Core"] }, goal: "bat-speed" },
+            { name: "Med Ball Chest Pass", sets: "3 x 10", rest: "45s", why: "Explosive chest power", video: "xPjpuf3bQpM", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/09/Medicine-Ball-Chest-Pass.gif", muscles: { primary: ["Chest"], secondary: ["Triceps", "Shoulders"] } },
+            { name: "Med Ball Woodchop", sets: "3 x 10 each", rest: "45s", why: "BAT SPEED - rotational power", video: "IKWPZ4mCmf4", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/04/Medicine-Ball-Wood-Chop.gif", muscles: { primary: ["Obliques", "Core"], secondary: ["Shoulders"] }, goal: "bat-speed" }
+        ],
+        stabilityBall: [
+            { name: "Stability Ball Back Extension", sets: "3 x 12", rest: "45s", why: "LOWER BACK - gentle strengthening", video: "ph3pddpKzzw", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Exercise-Ball-Back-Extension.gif", muscles: { primary: ["Lower Back"], secondary: ["Glutes"] }, goal: "lower-back", bodyweight: true },
+            { name: "Stability Ball Crunch", sets: "3 x 15", rest: "45s", why: "Core - full range of motion", video: "CbJRl5hkua4", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Exercise-Ball-Crunch.gif", muscles: { primary: ["Core"], secondary: [] }, goal: "belly-fat", bodyweight: true },
+            { name: "Stability Ball Hamstring Curl", sets: "3 x 12", rest: "45s", why: "Hamstrings + glutes - no machine needed", video: "HnlaOp3Djwo", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Exercise-Ball-Leg-Curl.gif", muscles: { primary: ["Hamstrings"], secondary: ["Glutes"] }, bodyweight: true },
+            { name: "Stability Ball Plank", sets: "3 x 30s", rest: "45s", why: "CORE - unstable surface = harder", video: "E_Gm6VQvxHI", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Exercise-Ball-Plank.gif", muscles: { primary: ["Core"], secondary: ["Shoulders"] }, goal: "belly-fat", bodyweight: true },
+            { name: "Stability Ball Pike", sets: "3 x 10", rest: "45s", why: "Advanced core - hip flexors too", video: "FWiKa-CPMXY", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Stability-Ball-Pike.gif", muscles: { primary: ["Core"], secondary: ["Hip Flexors", "Shoulders"] }, bodyweight: true },
+            { name: "Stability Ball Hip Thrust", sets: "3 x 15", rest: "45s", why: "LOWER BACK - glutes on unstable surface", video: "H7lphNq71VE", gif: "https://fitnessprogramer.com/wp-content/uploads/2022/02/Stability-Ball-Hip-Thrust.gif", muscles: { primary: ["Glutes"], secondary: ["Hamstrings"] }, goal: "lower-back", bodyweight: true }
+        ]
+    },
+    
     day1: {
         name: "Chest + Triceps",
         focus: "Man boobs reduction - build muscle, burn chest fat",
@@ -72,27 +120,23 @@ const exerciseData = {
     },
     
     day3: {
-        name: "Legs (Quads) + Lower Back",
-        focus: "Burns most calories, back rehab",
+        name: "Legs (Quads Focus)",
+        focus: "Burns most calories - skip heavy lower back work here, do daily routine instead",
         week1: [
             { name: "Barbell Squats", sets: "4 x 10-12", rest: "90s", why: "Best leg builder - burns most calories", video: "ultWZbUMPL8", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/BARBELL-SQUAT.gif", muscles: { primary: ["Quads", "Glutes"], secondary: ["Hamstrings", "Core"] }, goal: "belly-fat" },
             { name: "Leg Press", sets: "4 x 12", rest: "90s", why: "Quad focus - safer for back", video: "IZxyjW7MPJQ", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Leg-Press.gif", muscles: { primary: ["Quads"], secondary: ["Glutes"] } },
             { name: "Walking Lunges", sets: "3 x 10 each", rest: "60s", why: "Balance + glute activation", video: "L8fvypPrzzs", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Walking-Lunge.gif", muscles: { primary: ["Quads", "Glutes"], secondary: ["Hamstrings"] , bodyweight: true} },
             { name: "Leg Extensions", sets: "3 x 12-15", rest: "60s", why: "Quad isolation - definition", video: "YyvSfVjQeL0", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/LEG-EXTENSION.gif", muscles: { primary: ["Quads"], secondary: [] } },
-            { name: "Calf Raises", sets: "4 x 15-20", rest: "45s", why: "Calf development", video: "gwLzBJYoWlI", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Standing-Calf-Raise.gif", muscles: { primary: ["Calves"], secondary: [] } },
-            { name: "Glute Bridge", sets: "3 x 15", rest: "60s", why: "LOWER BACK - glute activation", video: "OUgsJ8-Vi0E", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Glute-Bridge.gif", muscles: { primary: ["Glutes"], secondary: ["Hamstrings"] , bodyweight: true}, goal: "lower-back" },
-            { name: "Bird Dog", sets: "3 x 10 each", rest: "45s", why: "LOWER BACK - core stability", video: "wiFNA3sqjCA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Bird-Dog.gif", muscles: { primary: ["Core", "Lower Back"], secondary: ["Glutes"] , bodyweight: true}, goal: "lower-back" },
-            { name: "Leg Curl", sets: "3 x 12", rest: "60s", why: "Hamstring balance for knee health", video: "1Tq3QdYUuHs", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Leg-Curl.gif", muscles: { primary: ["Hamstrings"], secondary: [] } }
+            { name: "Leg Curl", sets: "3 x 12", rest: "60s", why: "Hamstring balance for knee health", video: "1Tq3QdYUuHs", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Leg-Curl.gif", muscles: { primary: ["Hamstrings"], secondary: [] } },
+            { name: "Calf Raises", sets: "4 x 15-20", rest: "45s", why: "Calf development", video: "gwLzBJYoWlI", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Standing-Calf-Raise.gif", muscles: { primary: ["Calves"], secondary: [] } }
         ],
         week2: [
-            { name: "Goblet Squats", sets: "4 x 12", rest: "90s", why: "Easier form - front loaded", video: "MeIiIdhvXT4", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Goblet-Squat.gif", muscles: { primary: ["Quads", "Glutes"], secondary: ["Core"] } },
+            { name: "Goblet Squats", sets: "4 x 12", rest: "90s", why: "Easier form - use kettlebell", video: "MeIiIdhvXT4", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Goblet-Squat.gif", muscles: { primary: ["Quads", "Glutes"], secondary: ["Core"] } },
             { name: "Hack Squat", sets: "4 x 12", rest: "90s", why: "Quad focus - machine guided", video: "0tn5K9NlCfo", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Hack-Squat.gif", muscles: { primary: ["Quads"], secondary: ["Glutes"] } },
             { name: "Reverse Lunges", sets: "3 x 10 each", rest: "60s", why: "Easier on knees than forward", video: "xrPteyQLGAo", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Rear-Lunge.gif", muscles: { primary: ["Quads", "Glutes"], secondary: ["Hamstrings"] , bodyweight: true} },
             { name: "Sissy Squats", sets: "3 x 12", rest: "60s", why: "Quad stretch - definition", video: "o97gfM16T-w", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Sissy-Squat.gif", muscles: { primary: ["Quads"], secondary: [] } },
-            { name: "Seated Calf Raise", sets: "4 x 15-20", rest: "45s", why: "Soleus focus - lower calf", video: "JbyjNymZOt0", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Seated-Calf-Raise.gif", muscles: { primary: ["Soleus"], secondary: [] } },
-            { name: "Hip Thrust", sets: "3 x 12", rest: "60s", why: "LOWER BACK - best glute exercise", video: "SEdqd1n0cvg", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Hip-Thrust.gif", muscles: { primary: ["Glutes"], secondary: ["Hamstrings"] , bodyweight: true}, goal: "lower-back" },
-            { name: "Dead Bug", sets: "3 x 10 each", rest: "45s", why: "LOWER BACK + CORE stability", video: "I5xbsA71v4c", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dead-Bug.gif", muscles: { primary: ["Core"], secondary: ["Hip Flexors"] }, goal: "lower-back" },
-            { name: "Good Mornings", sets: "3 x 12", rest: "60s", why: "LOWER BACK - posterior chain", video: "YA-h3n9L4YU", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Good-Morning.gif", muscles: { primary: ["Lower Back", "Hamstrings"], secondary: ["Glutes"] }, goal: "lower-back" }
+            { name: "Leg Curl", sets: "3 x 12", rest: "60s", why: "Hamstring balance for knee health", video: "1Tq3QdYUuHs", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Leg-Curl.gif", muscles: { primary: ["Hamstrings"], secondary: [] } },
+            { name: "Seated Calf Raise", sets: "4 x 15-20", rest: "45s", why: "Soleus focus - lower calf", video: "JbyjNymZOt0", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Seated-Calf-Raise.gif", muscles: { primary: ["Soleus"], secondary: [] } }
         ],
         cooldown: [
             { name: "Quad Stretch", duration: "30s each leg", why: "Releases tight quads from squats", video: "3hRO1YkJN_U", muscles: ["Quads"] },

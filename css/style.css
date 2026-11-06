@@ -1058,6 +1058,31 @@ body {
     flex-shrink: 0;
 }
 
+/* Daily Lower Back Section */
+.daily-lower-back-section {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+}
+
+.daily-back-note {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    padding: 12px;
+    background: rgba(69, 183, 209, 0.1);
+    border-radius: 12px;
+    border-left: 3px solid #45B7D1;
+}
+
+.lower-back-card {
+    border-left: 3px solid #45B7D1;
+}
+
+.lower-back-card .warmup-btn {
+    background: linear-gradient(135deg, #45B7D1 0%, #96CEB4 100%);
+}
+
 /* Subsection Title */
 .subsection-title {
     font-size: 17px;
