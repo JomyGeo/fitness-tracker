@@ -89,6 +89,7 @@ const exerciseData = {
             { name: "Chest Doorway Stretch", duration: "30s each arm", why: "Releases tight chest, improves posture", video: "WTjkS3b8pFA", muscles: ["Chest"], goal: "posture" },
             { name: "Tricep Stretch", duration: "30s each arm", why: "Releases worked triceps", video: "4aosnF1FPkA", muscles: ["Triceps"] },
             { name: "Shoulder Stretch", duration: "30s each", why: "Releases pressing muscles", video: "Yf1LYAC4otc", muscles: ["Shoulders"] },
+            { name: "Pigeon Pose", duration: "45s each side", why: "DEEP HIP OPENER - releases tight hip flexors, helps lower back", video: "c1iwMP0Bknk", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Pigeon-Pose.gif", muscles: ["Glutes", "Hip Flexors"], goal: "lower-back" },
             { name: "Cat-Cow Stretch", duration: "10 reps", why: "LOWER BACK - spinal mobility after pressing", video: "kqnua4rHVVA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Cat-Cow-Stretch.gif", muscles: ["Spine", "Core"], goal: "lower-back" },
             { name: "Dead Bug", duration: "8 reps each side", why: "LOWER BACK - core stability, protects spine", video: "I5xbsA71v4c", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dead-Bug.gif", muscles: ["Core", "Lower Back"], goal: "lower-back" },
             { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump", bodyweight: true }
@@ -119,6 +120,8 @@ const exerciseData = {
         cooldown: [
             { name: "Lat Stretch", duration: "30s each side", why: "Releases lats from pulling", video: "pYPkPx2wE1I", muscles: ["Lats"] },
             { name: "Bicep Wall Stretch", duration: "30s each arm", why: "Releases worked biceps", video: "3uHV4Cb5Tck", muscles: ["Biceps"] },
+            { name: "Pigeon Pose", duration: "45s each side", why: "DEEP HIP OPENER - releases tight hip flexors", video: "c1iwMP0Bknk", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Pigeon-Pose.gif", muscles: ["Glutes", "Hip Flexors"], goal: "lower-back" },
+            { name: "Seated Forward Fold", duration: "45s", why: "TIGHT HAMSTRINGS - deep stretch for back and hamstrings", video: "g_tea8ZNk5A", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Seated-Forward-Bend.gif", muscles: ["Hamstrings", "Lower Back"] },
             { name: "Child's Pose", duration: "45s", why: "LOWER BACK relief + relaxation", video: "2MJGg-dUKh0", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Childs-Pose.gif", muscles: ["Lower Back", "Lats"], goal: "lower-back" },
             { name: "Cat-Cow Stretch", duration: "10 reps", why: "LOWER BACK - spinal mobility", video: "kqnua4rHVVA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Cat-Cow-Stretch.gif", muscles: ["Spine", "Core"], goal: "lower-back" },
             { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump", bodyweight: true }
@@ -147,6 +150,7 @@ const exerciseData = {
         cooldown: [
             { name: "Quad Stretch", duration: "30s each leg", why: "Releases tight quads from squats", video: "3hRO1YkJN_U", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Standing-Quadriceps-Stretch.gif", muscles: ["Quads"] },
             { name: "Standing Hamstring Stretch", duration: "45s each leg", why: "TIGHT HAMSTRINGS - longer hold for flexibility", video: "FDwpEdxZ4H4", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Standing-Hamstring-Stretch.gif", muscles: ["Hamstrings"] },
+            { name: "Pigeon Pose", duration: "45s each side", why: "DEEP HIP OPENER - releases glutes and hip flexors after squats", video: "c1iwMP0Bknk", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Pigeon-Pose.gif", muscles: ["Glutes", "Hip Flexors"], goal: "lower-back" },
             { name: "Seated Forward Fold", duration: "45s", why: "TIGHT HAMSTRINGS - deep stretch, relax into it", video: "g_tea8ZNk5A", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Seated-Forward-Bend.gif", muscles: ["Hamstrings", "Lower Back"] },
             { name: "Hip Flexor Stretch", duration: "30s each", why: "POSTURE + LOWER BACK relief", video: "YQmpO9VT2X4", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Hip-Flexor-Stretch.gif", muscles: ["Hip Flexors"], goal: "lower-back" },
             { name: "Bird Dog", duration: "8 reps each side", why: "LOWER BACK - gentle core stability", video: "wiFNA3sqjCA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Bird-Dog.gif", muscles: ["Core", "Lower Back"], goal: "lower-back" },
@@ -178,7 +182,9 @@ const exerciseData = {
         cooldown: [
             { name: "Shoulder Cross-Body Stretch", duration: "30s each", why: "Releases worked delts", video: "Yf1LYAC4otc", muscles: ["Shoulders"] },
             { name: "Chest Doorway Stretch", duration: "30s each", why: "Opens chest - POSTURE", video: "WTjkS3b8pFA", muscles: ["Chest"], goal: "posture" },
+            { name: "Pigeon Pose", duration: "45s each side", why: "DEEP HIP OPENER - releases hip flexors after rotation work", video: "c1iwMP0Bknk", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Pigeon-Pose.gif", muscles: ["Glutes", "Hip Flexors"], goal: "lower-back" },
             { name: "Torso Twist Stretch", duration: "30s each", why: "Releases rotational muscles", video: "cSZAmTvvnuw", muscles: ["Obliques", "Lower Back"] },
+            { name: "Child's Pose", duration: "45s", why: "LOWER BACK relief + full body relaxation", video: "2MJGg-dUKh0", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Childs-Pose.gif", muscles: ["Lower Back", "Lats"], goal: "lower-back" },
             { name: "Dead Bug", duration: "8 reps each side", why: "LOWER BACK + CORE - stabilizes after rotation work", video: "I5xbsA71v4c", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dead-Bug.gif", muscles: ["Core", "Lower Back"], goal: "lower-back" },
             { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump", bodyweight: true }
         ]
@@ -240,6 +246,8 @@ const exerciseData = {
         cooldown: [
             { name: "Chest Doorway Stretch", duration: "30s each", why: "Opens chest - POSTURE fix", video: "WTjkS3b8pFA", muscles: ["Chest"], goal: "posture" },
             { name: "Lat Stretch", duration: "30s each", why: "Releases back from rows", video: "pYPkPx2wE1I", muscles: ["Lats"] },
+            { name: "Pigeon Pose", duration: "45s each side", why: "DEEP HIP OPENER - flexibility for entire body", video: "c1iwMP0Bknk", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Pigeon-Pose.gif", muscles: ["Glutes", "Hip Flexors"], goal: "lower-back" },
+            { name: "Seated Forward Fold", duration: "45s", why: "TIGHT HAMSTRINGS - deep stretch for back chain", video: "g_tea8ZNk5A", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Seated-Forward-Bend.gif", muscles: ["Hamstrings", "Lower Back"] },
             { name: "Cat-Cow Stretch", duration: "10 reps", why: "LOWER BACK - spinal mobility after upper work", video: "kqnua4rHVVA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Cat-Cow-Stretch.gif", muscles: ["Spine", "Core"], goal: "lower-back" },
             { name: "Bird Dog", duration: "8 reps each side", why: "LOWER BACK - core stability", video: "wiFNA3sqjCA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Bird-Dog.gif", muscles: ["Core", "Lower Back"], goal: "lower-back" },
             { name: "Neck Stretches", duration: "60s total", why: "NECK HUMP - releases all sides", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump" },
