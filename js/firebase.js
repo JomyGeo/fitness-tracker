@@ -12,22 +12,42 @@ const firebaseConfig = {
     measurementId: "G-MJ3W4TP5KK"
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+// Initialize Firebase with error handling
+try {
+    firebase.initializeApp(firebaseConfig);
+} catch (error) {
+    console.error('Firebase init error:', error);
+}
 
 // Initialize services
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Enable offline persistence
-db.enablePersistence({ synchronizeTabs: true })
-    .catch((err) => {
-        if (err.code === 'failed-precondition') {
-            console.log('Persistence failed: Multiple tabs open');
-        } else if (err.code === 'unimplemented') {
-            console.log('Persistence not available');
-        }
-    });
+// Enable offline persistence with Safari-safe handling
+try {
+    db.enablePersistence({ synchronizeTabs: true })
+        .catch((err) => {
+            if (err.code === 'failed-precondition') {
+                console.log('Persistence failed: Multiple tabs open');
+            } else if (err.code === 'unimplemented') {
+                console.log('Persistence not available in this browser');
+            }
+        });
+} catch (e) {
+    console.log('Persistence setup skipped');
+}
+
+// Handle redirect result for Safari/mobile (must be called early)
+auth.getRedirectResult().then((result) => {
+    if (result.user) {
+        console.log('Redirect sign-in successful:', result.user.displayName);
+    }
+}).catch((error) => {
+    // Handle redirect errors silently - these are common on page load
+    if (error.code !== 'auth/no-auth-event') {
+        console.log('Redirect check:', error.code);
+    }
+});
 
 // Current user state
 let currentUser = null;
@@ -124,23 +144,35 @@ async function signInWithGoogle() {
         const provider = new firebase.auth.GoogleAuthProvider();
         provider.setCustomParameters({ prompt: 'select_account' });
         
-        // Try popup first, fall back to redirect on mobile
-        try {
-            await auth.signInWithPopup(provider);
-        } catch (popupError) {
-            if (popupError.code === 'auth/popup-blocked' || 
-                popupError.code === 'auth/popup-closed-by-user') {
-                // Try redirect instead
-                await auth.signInWithRedirect(provider);
-            } else {
-                throw popupError;
+        // Check if Safari or iOS (they have issues with popups)
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        
+        if (isSafari || isIOS) {
+            // Use redirect for Safari/iOS - more reliable
+            await auth.signInWithRedirect(provider);
+        } else {
+            // Try popup first for other browsers
+            try {
+                await auth.signInWithPopup(provider);
+            } catch (popupError) {
+                if (popupError.code === 'auth/popup-blocked' || 
+                    popupError.code === 'auth/popup-closed-by-user' ||
+                    popupError.code === 'auth/cancelled-popup-request') {
+                    // Fall back to redirect
+                    await auth.signInWithRedirect(provider);
+                } else {
+                    throw popupError;
+                }
             }
         }
         
         showToast('Signed in successfully! ☁️');
     } catch (error) {
         console.error('Sign in error:', error);
-        showToast('Sign in failed: ' + error.message, 'error');
+        if (error.code !== 'auth/redirect-cancelled-by-user') {
+            showToast('Sign in failed. Try again.', 'error');
+        }
     }
 }
 
