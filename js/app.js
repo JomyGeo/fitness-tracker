@@ -747,6 +747,85 @@ function renderDiet(container) {
                     </div>
                 </div>
             </div>
+            
+            <!-- CORTISOL MANAGEMENT SECTION -->
+            <div style="margin-top: 24px; background: linear-gradient(135deg, rgba(175, 82, 222, 0.15), rgba(88, 86, 214, 0.15)); border: 1px solid rgba(175, 82, 222, 0.4); border-radius: 20px; padding: 20px;">
+                <h4 style="color: #AF52DE; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                    🧠 Cortisol & Neck Hump Management
+                </h4>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">
+                    High cortisol causes fat deposits in neck/upper back (buffalo hump), belly fat, and muscle weakness.
+                </p>
+                
+                <!-- Cortisol-Lowering Foods -->
+                <div style="background: rgba(52, 199, 89, 0.1); border-radius: 16px; padding: 16px; margin-bottom: 16px;">
+                    <h5 style="color: #34C759; margin-bottom: 12px;">✅ Foods That Lower Cortisol</h5>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        ${exerciseData.cortisolManagement.dietTips.eat.slice(0, 6).map(item => `
+                            <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-tertiary); padding: 10px 12px; border-radius: 10px;">
+                                <div>
+                                    <div style="font-weight: 600; font-size: 14px;">${item.food}</div>
+                                    <div style="font-size: 11px; color: var(--text-secondary);">${item.why}</div>
+                                </div>
+                                <span style="font-size: 11px; color: #34C759; white-space: nowrap;">${item.amount}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div style="margin-top: 12px; padding: 12px; background: rgba(255, 214, 10, 0.1); border-radius: 12px;">
+                        <div style="font-weight: 600; color: #FFD60A; margin-bottom: 6px;">⭐ Ashwagandha + Turmeric Milk</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">1 glass before bed - proven to reduce cortisol by 30%</div>
+                    </div>
+                </div>
+                
+                <!-- Foods to Avoid -->
+                <div style="background: rgba(255, 59, 48, 0.1); border-radius: 16px; padding: 16px; margin-bottom: 16px;">
+                    <h5 style="color: #FF3B30; margin-bottom: 12px;">❌ Foods That Raise Cortisol</h5>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        ${exerciseData.cortisolManagement.dietTips.avoid.map(item => `
+                            <div style="background: var(--bg-tertiary); padding: 8px 12px; border-radius: 20px; font-size: 13px;">
+                                <span style="color: #FF3B30;">✕</span> ${item.food}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <!-- Exercise Tips -->
+                <div style="background: rgba(0, 122, 255, 0.1); border-radius: 16px; padding: 16px; margin-bottom: 16px;">
+                    <h5 style="color: #007AFF; margin-bottom: 12px;">🏋️ Exercise Tips for High Cortisol</h5>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.8;">
+                        ${exerciseData.cortisolManagement.exerciseTips.do.slice(0, 5).map(tip => `
+                            <li style="color: var(--text-primary);">${tip}</li>
+                        `).join('')}
+                    </ul>
+                </div>
+                
+                <!-- Lifestyle Tips -->
+                <div style="background: rgba(175, 82, 222, 0.1); border-radius: 16px; padding: 16px;">
+                    <h5 style="color: #AF52DE; margin-bottom: 12px;">🌙 Daily Habits to Lower Cortisol</h5>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        ${exerciseData.cortisolManagement.lifestyleTips.tips.filter(t => t.priority === 'critical' || t.priority === 'high').map(tip => `
+                            <div style="display: flex; align-items: center; gap: 12px; background: var(--bg-tertiary); padding: 10px 12px; border-radius: 10px;">
+                                <span style="font-size: 18px;">${tip.priority === 'critical' ? '🔴' : '🟡'}</span>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 14px;">${tip.habit}</div>
+                                    <div style="font-size: 11px; color: var(--text-secondary);">${tip.why}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <!-- Neck Hump Connection -->
+                <div style="margin-top: 16px; padding: 16px; background: var(--bg-tertiary); border-radius: 16px; border-left: 4px solid #AF52DE;">
+                    <h5 style="color: #AF52DE; margin-bottom: 8px;">🦒 Why This Helps Your Neck Hump</h5>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.8; color: var(--text-secondary);">
+                        <li>Lower cortisol = less fat deposited in neck/upper back</li>
+                        <li>Your face pulls, rows, Y-T-W build muscle to counteract it</li>
+                        <li>Better sleep = faster recovery + lower cortisol</li>
+                        <li>Combined approach gives best results in 8-12 weeks</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     `;
 }

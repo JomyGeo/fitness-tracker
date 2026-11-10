@@ -329,6 +329,93 @@ const exerciseData = {
             "No eating 2 hours before sleep",
             "Weekend cheat meal is OK"
         ]
+    },
+    
+    // CORTISOL MANAGEMENT SECTION
+    cortisolManagement: {
+        title: "Cortisol & Neck Hump Management",
+        explanation: "High cortisol causes fat deposits in upper back/neck area (buffalo hump), belly fat, and weakens muscles. Managing cortisol through diet, exercise, and lifestyle is key to reducing neck hump.",
+        
+        dietTips: {
+            title: "Cortisol-Lowering Foods",
+            eat: [
+                { food: "Dark Chocolate (70%+)", why: "Contains flavonoids that reduce cortisol", amount: "1-2 squares daily" },
+                { food: "Fatty Fish (Salmon, Mackerel)", why: "Omega-3 lowers cortisol and inflammation", amount: "2-3 times per week" },
+                { food: "Bananas", why: "Potassium regulates cortisol", amount: "1-2 daily" },
+                { food: "Spinach/Leafy Greens", why: "Magnesium is a natural stress reducer", amount: "Daily with meals" },
+                { food: "Almonds/Walnuts", why: "Vitamin E and healthy fats reduce stress hormones", amount: "Handful daily" },
+                { food: "Oranges/Citrus", why: "Vitamin C directly lowers cortisol", amount: "1-2 fruits daily" },
+                { food: "Ashwagandha Tea", why: "Proven to reduce cortisol by 30%", amount: "1 cup daily or 300-500mg supplement" },
+                { food: "Green Tea", why: "L-theanine promotes calm without drowsiness", amount: "2-3 cups daily (before 2pm)" },
+                { food: "Turmeric/Haldi Milk", why: "Anti-inflammatory, reduces stress response", amount: "1 glass before bed" },
+                { food: "Yogurt/Curd", why: "Probiotics reduce cortisol via gut-brain axis", amount: "1 bowl daily" }
+            ],
+            avoid: [
+                { food: "Caffeine after 2 PM", why: "Spikes cortisol and disrupts sleep" },
+                { food: "Sugar/Refined carbs", why: "Causes cortisol spikes, increases belly fat" },
+                { food: "Alcohol", why: "Temporarily lowers cortisol but causes rebound spike" },
+                { food: "Processed/Fried foods", why: "Inflammation increases cortisol" },
+                { food: "Very low-calorie diets", why: "Starvation raises cortisol significantly" },
+                { food: "Excess salt", why: "High sodium correlates with higher cortisol" }
+            ]
+        },
+        
+        exerciseTips: {
+            title: "Exercise Modifications for High Cortisol",
+            do: [
+                "Keep workouts under 60 minutes - longer sessions spike cortisol",
+                "Low-intensity cardio (30 min walking) is better than HIIT for high cortisol",
+                "Yoga/stretching directly lowers cortisol - your 10 min warmup/cooldown helps",
+                "Strength training is good but avoid overtraining",
+                "Deep breathing for 5 minutes post-workout reduces cortisol",
+                "Rest days are ESSENTIAL - 2 per week minimum",
+                "Morning workouts are better - cortisol naturally high, use it"
+            ],
+            avoid: [
+                "Very long cardio sessions (60+ min running)",
+                "Training when sleep-deprived - cortisol already high",
+                "Overtraining - if constantly sore/tired, take extra rest",
+                "Working out late at night - raises cortisol before bed"
+            ]
+        },
+        
+        lifestyleTips: {
+            title: "Daily Habits to Lower Cortisol",
+            tips: [
+                { habit: "Sleep 7-8 hours", why: "Sleep deprivation doubles cortisol levels", priority: "critical" },
+                { habit: "Morning sunlight (10-15 min)", why: "Regulates cortisol rhythm naturally", priority: "critical" },
+                { habit: "Deep breathing 5 min", why: "Activates parasympathetic nervous system", priority: "high" },
+                { habit: "Limit phone before bed", why: "Blue light and stress content raise cortisol", priority: "high" },
+                { habit: "Cold shower finish (30 sec)", why: "Trains stress response, lowers baseline cortisol", priority: "medium" },
+                { habit: "Laugh/Social time", why: "Genuine laughter reduces cortisol by 39%", priority: "medium" },
+                { habit: "Nature walk", why: "20 min in nature significantly lowers cortisol", priority: "medium" },
+                { habit: "Limit news/social media", why: "Constant negative info keeps cortisol elevated", priority: "medium" }
+            ]
+        },
+        
+        neckHumpConnection: {
+            title: "Why Cortisol Causes Neck Hump",
+            points: [
+                "Cortisol signals body to store fat in upper back, neck, face, and belly",
+                "It also weakens muscles (especially upper back/traps) worsening posture",
+                "Your desk work + forward head posture + cortisol fat = neck hump appearance",
+                "Reducing cortisol prevents further fat accumulation in that area",
+                "Your exercises (face pulls, rows, Y-T-W) build muscle to counteract it",
+                "Combined approach: lower cortisol + strengthen muscles + fix posture = results"
+            ]
+        },
+        
+        supplements: {
+            title: "Supplements That May Help",
+            disclaimer: "Consult a doctor before starting any supplement",
+            options: [
+                { name: "Ashwagandha", dose: "300-500mg daily", effect: "Reduces cortisol 11-32%" },
+                { name: "Magnesium Glycinate", dose: "200-400mg before bed", effect: "Calms nervous system, improves sleep" },
+                { name: "Vitamin C", dose: "500-1000mg daily", effect: "Directly lowers cortisol after stress" },
+                { name: "Fish Oil (Omega-3)", dose: "1-2g daily", effect: "Reduces cortisol and inflammation" },
+                { name: "Vitamin D", dose: "1000-2000 IU daily", effect: "Deficiency linked to high cortisol" }
+            ]
+        }
     }
 };
 
