@@ -659,22 +659,18 @@ function renderRestDay(container) {
 
 // Render Diet
 function renderDiet(container) {
-    const mealIcons = {
-        breakfast: { icon: '🌅', color: 'linear-gradient(135deg, #FF9500, #FFCC00)' },
-        midMorning: { icon: '☀️', color: 'linear-gradient(135deg, #FFCC00, #FF9500)' },
-        lunch: { icon: '🍽️', color: 'linear-gradient(135deg, #34C759, #30D158)' },
-        preWorkout: { icon: '⚡', color: 'linear-gradient(135deg, #007AFF, #5AC8FA)' },
+    // Icons and colors for each meal time
+    const mealStyles = {
+        wakeUp: { icon: '💧', color: 'linear-gradient(135deg, #5AC8FA, #007AFF)' },
+        preWorkout: { icon: '⚡', color: 'linear-gradient(135deg, #FF9500, #FFCC00)' },
         postWorkout: { icon: '💪', color: 'linear-gradient(135deg, #FF3B30, #FF2D55)' },
-        dinner: { icon: '🌙', color: 'linear-gradient(135deg, #AF52DE, #5856D6)' }
-    };
-    
-    const mealNames = {
-        breakfast: 'Breakfast',
-        midMorning: 'Mid-Morning',
-        lunch: 'Lunch',
-        preWorkout: 'Pre-Workout',
-        postWorkout: 'Post-Workout',
-        dinner: 'Dinner'
+        breakfast: { icon: '🍳', color: 'linear-gradient(135deg, #FFCC00, #FF9500)' },
+        officeSnack: { icon: '🥜', color: 'linear-gradient(135deg, #8E8E93, #636366)' },
+        lunch: { icon: '🍽️', color: 'linear-gradient(135deg, #34C759, #30D158)' },
+        afternoon: { icon: '🍵', color: 'linear-gradient(135deg, #30D158, #34C759)' },
+        preBadminton: { icon: '🏸', color: 'linear-gradient(135deg, #5856D6, #AF52DE)' },
+        dinner: { icon: '🌙', color: 'linear-gradient(135deg, #AF52DE, #5856D6)' },
+        beforeBed: { icon: '😴', color: 'linear-gradient(135deg, #1C1C1E, #2C2C2E)' }
     };
     
     container.innerHTML = `
@@ -682,68 +678,101 @@ function renderDiet(container) {
             <div class="section-header">
                 <div class="section-icon" style="background: linear-gradient(135deg, #34C759, #30D158);">🍽️</div>
                 <div>
-                    <h2 class="section-title">Diet Plan</h2>
-                    <p class="section-subtitle">Your daily nutrition guide</p>
+                    <h2 class="section-title">Your Daily Diet Plan</h2>
+                    <p class="section-subtitle">Personalized for your schedule & goals</p>
                 </div>
             </div>
             
             <div class="stats-grid" style="margin-bottom: 24px;">
                 <div class="stat-card">
-                    <div class="stat-card-value blue">300-500</div>
-                    <div class="stat-card-label">Calorie Deficit</div>
+                    <div class="stat-card-value green">~130g</div>
+                    <div class="stat-card-label">Daily Protein</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-card-value green">1.6-2g/kg</div>
-                    <div class="stat-card-label">Protein Target</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-card-value orange">3-4L</div>
+                    <div class="stat-card-value blue">3-4L</div>
                     <div class="stat-card-label">Water Daily</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-card-value blue">7-8hr</div>
-                    <div class="stat-card-label">Sleep</div>
+                    <div class="stat-card-value orange">3 tbsp</div>
+                    <div class="stat-card-label">Seeds Mix</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-value purple">7-8hr</div>
+                    <div class="stat-card-label">Sleep Target</div>
                 </div>
             </div>
             
-            ${Object.entries(dietData).map(([key, meal]) => `
-                <div class="meal-card">
-                    <div class="meal-header">
-                        <div class="meal-icon" style="background: ${mealIcons[key].color};">${mealIcons[key].icon}</div>
-                        <div>
-                            <div class="meal-time">${meal.time}</div>
-                            <div class="meal-title">${mealNames[key]}</div>
+            <!-- Timeline Diet Plan -->
+            <div style="position: relative; padding-left: 20px; border-left: 3px solid rgba(52, 199, 89, 0.3);">
+                ${Object.entries(dietData).map(([key, meal]) => `
+                    <div class="meal-card" style="margin-bottom: 16px; position: relative;">
+                        <div style="position: absolute; left: -32px; top: 20px; width: 24px; height: 24px; border-radius: 50%; background: ${mealStyles[key]?.color || 'linear-gradient(135deg, #8E8E93, #636366)'}; display: flex; align-items: center; justify-content: center; font-size: 12px;">
+                            ${mealStyles[key]?.icon || '🍴'}
+                        </div>
+                        <div class="meal-header">
+                            <div>
+                                <div class="meal-time" style="font-size: 12px; color: var(--text-secondary);">${meal.time}</div>
+                                <div class="meal-title" style="font-size: 16px; font-weight: 600;">${meal.title || key}</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px;">
+                            ${meal.options.map(opt => `
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 12px; background: var(--bg-tertiary); border-radius: 10px; margin-bottom: 8px;">
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 500;">${opt.name}</div>
+                                        ${opt.note ? `<div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">${opt.note}</div>` : ''}
+                                    </div>
+                                    ${opt.protein && opt.protein !== '-' ? `<span class="protein-badge" style="background: rgba(52, 199, 89, 0.2); color: #34C759; padding: 4px 8px; border-radius: 8px; font-size: 12px; font-weight: 600;">${opt.protein}</span>` : ''}
+                                </div>
+                            `).join('')}
                         </div>
                     </div>
-                    <ul class="meal-options">
-                        ${meal.options.map(opt => `
-                            <li class="meal-option">
-                                <span>${opt.name}</span>
-                                ${opt.protein !== '-' ? `<span class="protein-badge">${opt.protein}</span>` : ''}
-                            </li>
-                        `).join('')}
-                    </ul>
-                </div>
-            `).join('')}
+                `).join('')}
+            </div>
             
-            <div style="margin-top: 24px; background: rgba(255, 214, 10, 0.1); border: 1px solid rgba(255, 214, 10, 0.3); border-radius: 20px; padding: 20px;">
-                <h4 style="color: #FFD60A; margin-bottom: 16px;">🥜 Daily Seeds & Nuts</h4>
+            <!-- Daily Supplements Summary -->
+            <div style="margin-top: 24px; background: rgba(175, 82, 222, 0.1); border: 1px solid rgba(175, 82, 222, 0.3); border-radius: 20px; padding: 20px;">
+                <h4 style="color: #AF52DE; margin-bottom: 16px;">💊 Daily Supplements</h4>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                     <div style="background: var(--bg-tertiary); padding: 12px; border-radius: 12px;">
-                        <div style="font-weight: 600; margin-bottom: 4px;">Pumpkin Seeds</div>
-                        <div style="font-size: 12px; color: var(--text-secondary);">1 tbsp • Morning</div>
+                        <div style="font-weight: 600; margin-bottom: 4px;">Omega-3</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">1 tablet • With breakfast</div>
                     </div>
                     <div style="background: var(--bg-tertiary); padding: 12px; border-radius: 12px;">
-                        <div style="font-weight: 600; margin-bottom: 4px;">Flaxseeds</div>
-                        <div style="font-size: 12px; color: var(--text-secondary);">1 tbsp • Morning</div>
+                        <div style="font-weight: 600; margin-bottom: 4px;">Whey Protein</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">1 scoop • Post-workout</div>
+                    </div>
+                    <div style="background: var(--bg-tertiary); padding: 12px; border-radius: 12px;">
+                        <div style="font-weight: 600; margin-bottom: 4px;">Ashwagandha</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">1/2 tsp • Before bed</div>
+                    </div>
+                    <div style="background: var(--bg-tertiary); padding: 12px; border-radius: 12px;">
+                        <div style="font-weight: 600; margin-bottom: 4px;">Turmeric Milk</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">1 glass • Before bed</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Seeds & Dry Fruits -->
+            <div style="margin-top: 24px; background: rgba(255, 214, 10, 0.1); border: 1px solid rgba(255, 214, 10, 0.3); border-radius: 20px; padding: 20px;">
+                <h4 style="color: #FFD60A; margin-bottom: 16px;">🥜 Daily Seeds & Dry Fruits</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div style="background: var(--bg-tertiary); padding: 12px; border-radius: 12px;">
+                        <div style="font-weight: 600; margin-bottom: 4px;">Roasted Seeds Mix</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">3 tbsp • With breakfast</div>
+                        <div style="font-size: 10px; color: #FFD60A; margin-top: 4px;">Pumpkin + Sunflower + Flax + Chia</div>
                     </div>
                     <div style="background: var(--bg-tertiary); padding: 12px; border-radius: 12px;">
                         <div style="font-weight: 600; margin-bottom: 4px;">Almonds</div>
-                        <div style="font-size: 12px; color: var(--text-secondary);">8-10 • Breakfast</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">8-10 pieces • Office snack</div>
                     </div>
                     <div style="background: var(--bg-tertiary); padding: 12px; border-radius: 12px;">
                         <div style="font-weight: 600; margin-bottom: 4px;">Walnuts</div>
-                        <div style="font-size: 12px; color: var(--text-secondary);">4-5 halves • Mid-morning</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">4-5 halves • Office snack</div>
+                    </div>
+                    <div style="background: var(--bg-tertiary); padding: 12px; border-radius: 12px;">
+                        <div style="font-weight: 600; margin-bottom: 4px;">Dates</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">2-3 pieces • Office snack</div>
                     </div>
                 </div>
             </div>

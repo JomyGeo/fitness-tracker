@@ -430,60 +430,88 @@ const fitnessGoals = {
 };
 
 
-// Diet Data for the Diet page
+// Diet Data for the Diet page - Personalized for Jomy's Schedule
+// Wake: 7 AM | Gym: 8-9 AM | Office | Badminton: Evening | Sleep: 10-11 PM
 const dietData = {
-    breakfast: {
-        time: "7:00 - 8:00 AM",
+    wakeUp: {
+        time: "7:00 AM",
+        title: "Wake Up",
         options: [
-            { name: "4 whole eggs + 2 toast + 1 fruit", protein: "28g" },
-            { name: "Oats with milk + banana + almonds", protein: "15g" },
-            { name: "Dosa/Idli + sambar + chutney + 2 eggs", protein: "20g" },
-            { name: "Greek yogurt + berries + granola", protein: "18g" }
-        ]
-    },
-    midMorning: {
-        time: "10:00 - 11:00 AM",
-        options: [
-            { name: "Handful of almonds (10-12)", protein: "6g" },
-            { name: "Greek yogurt + honey", protein: "12g" },
-            { name: "Protein shake with water", protein: "25g" },
-            { name: "Boiled eggs (2)", protein: "12g" }
-        ]
-    },
-    lunch: {
-        time: "1:00 - 2:00 PM",
-        options: [
-            { name: "Rice + dal + chicken (150g) + veggies", protein: "35g" },
-            { name: "Roti (2) + paneer curry + salad", protein: "25g" },
-            { name: "Grilled chicken salad + rice", protein: "40g" },
-            { name: "Fish curry + rice + vegetables", protein: "30g" }
+            { name: "Glass of water", protein: "-", note: "Hydration first" }
         ]
     },
     preWorkout: {
-        time: "30-45 min before gym",
+        time: "7:30 AM (Before Gym)",
+        title: "Pre-Workout",
         options: [
-            { name: "Banana + peanut butter (1 tbsp)", protein: "5g" },
-            { name: "Toast + jam + coffee", protein: "3g" },
-            { name: "Apple + handful of nuts", protein: "4g" },
-            { name: "Small bowl of oats", protein: "6g" }
+            { name: "1 Banana + Small black coffee", protein: "1g", note: "Quick energy, caffeine OK in morning" }
         ]
     },
     postWorkout: {
-        time: "Within 1 hour after gym",
+        time: "9:00 - 9:30 AM",
+        title: "Post-Workout Shake",
         options: [
-            { name: "Whey protein shake + banana", protein: "30g" },
-            { name: "Chicken breast (150g) + rice", protein: "35g" },
-            { name: "4 eggs + 2 toast", protein: "28g" },
-            { name: "Paneer bhurji + roti", protein: "22g" }
+            { name: "Whey Protein (1 scoop) + Water", protein: "25g", note: "Within 30 min of workout" }
+        ]
+    },
+    breakfast: {
+        time: "10:00 AM",
+        title: "Breakfast",
+        options: [
+            { name: "4 whole eggs + 2 toast", protein: "28g", note: "Keep yolks - need healthy fats" },
+            { name: "Roasted seeds mix (3 tbsp)", protein: "6g", note: "Pumpkin+Sunflower+Flax+Chia" },
+            { name: "Omega-3 tablet (1)", protein: "-", note: "Take with food for absorption" }
+        ]
+    },
+    officeSnack: {
+        time: "12:00 - 1:00 PM",
+        title: "Office Snack",
+        options: [
+            { name: "Almonds (8-10) + Walnuts (4-5)", protein: "8g", note: "Keep box at desk" },
+            { name: "Dates (2-3 pieces)", protein: "1g", note: "Natural energy boost" },
+            { name: "Dark chocolate 70%+ (2 squares)", protein: "1g", note: "Cortisol control" }
+        ]
+    },
+    lunch: {
+        time: "1:30 - 2:00 PM",
+        title: "Lunch",
+        options: [
+            { name: "Rice (1 cup) + Dal (1 bowl)", protein: "12g", note: "Carbs are fine" },
+            { name: "Chicken/Fish (150g) OR Paneer (100g)", protein: "30g", note: "Main protein" },
+            { name: "Vegetables + Curd (1 bowl each)", protein: "8g", note: "Include leafy greens" }
+        ]
+    },
+    afternoon: {
+        time: "4:00 PM",
+        title: "Afternoon",
+        options: [
+            { name: "Green tea (1 cup)", protein: "-", note: "NO coffee after 2pm!" },
+            { name: "1 Fruit (Orange/Apple)", protein: "-", note: "Vitamin C for cortisol" }
+        ]
+    },
+    preBadminton: {
+        time: "5:30 - 6:00 PM",
+        title: "Pre-Badminton (If Playing)",
+        options: [
+            { name: "1 Banana OR Toast + Peanut butter", protein: "3g", note: "Quick energy for game" }
         ]
     },
     dinner: {
-        time: "8:00 - 9:00 PM",
+        time: "8:00 PM",
+        title: "Dinner",
         options: [
-            { name: "Grilled fish/chicken + vegetables", protein: "35g" },
-            { name: "Roti (2) + dal + paneer", protein: "25g" },
-            { name: "Egg curry + rice (small)", protein: "20g" },
-            { name: "Soup + grilled chicken + salad", protein: "30g" }
+            { name: "Roti (2) + Dal (1 bowl)", protein: "15g", note: "Lighter than lunch" },
+            { name: "Vegetables/Sabzi (1 bowl)", protein: "3g", note: "Any vegetable" },
+            { name: "Chicken/Paneer (small, optional)", protein: "15g", note: "If still hungry" }
+        ]
+    },
+    beforeBed: {
+        time: "10:00 PM",
+        title: "Before Bed",
+        options: [
+            { name: "Turmeric milk (Haldi doodh)", protein: "4g", note: "Milk + turmeric + black pepper" },
+            { name: "Ashwagandha (1/2 tsp or tablet)", protein: "-", note: "Cortisol reduction + better sleep" }
         ]
     }
 };
+
