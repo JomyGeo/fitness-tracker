@@ -37,15 +37,32 @@ try {
     console.log('Persistence setup skipped');
 }
 
-// Handle redirect result for Safari/mobile (must be called early)
+// Handle redirect result for Safari/mobile/PWA (must be called early)
 auth.getRedirectResult().then((result) => {
-    if (result.user) {
-        console.log('Redirect sign-in successful:', result.user.displayName);
+    // Clear pending flag and reset loading state
+    sessionStorage.removeItem('firebase_auth_pending');
+    setSignInLoading(false);
+    
+    if (result && result.user) {
+        console.log('Redirect sign-in successful:', result.user.displayName || result.user.email);
+        showToast('Signed in successfully! ☁️');
+    } else if (sessionStorage.getItem('firebase_auth_pending')) {
+        // We were expecting a redirect but didn't get a user
+        console.log('Redirect returned but no user');
     }
 }).catch((error) => {
-    // Handle redirect errors silently - these are common on page load
-    if (error.code !== 'auth/no-auth-event') {
-        console.log('Redirect check:', error.code);
+    sessionStorage.removeItem('firebase_auth_pending');
+    setSignInLoading(false);
+    
+    // Handle specific errors
+    if (error.code === 'auth/web-storage-unsupported') {
+        console.error('Web storage not supported - enable cookies');
+        showToast('Please enable cookies and try again', 'error');
+    } else if (error.code === 'auth/operation-not-supported-in-this-environment') {
+        console.error('Auth not supported in this environment');
+        showToast('Please open in browser instead of PWA for first login', 'error');
+    } else if (error.code !== 'auth/no-auth-event') {
+        console.log('Redirect error:', error.code, error.message);
     }
 });
 
@@ -138,38 +155,79 @@ function updateUserUI() {
     updateConnectionStatus();
 }
 
+// Check if running as installed PWA (standalone mode)
+function isRunningAsPWA() {
+    return (window.matchMedia('(display-mode: standalone)').matches) ||
+           (window.navigator.standalone === true) || // iOS Safari
+           document.referrer.includes('android-app://');
+}
+
+// Show/hide loading state on sign-in button
+function setSignInLoading(loading) {
+    const btn = document.getElementById('google-signin-btn');
+    const text = document.getElementById('signin-text');
+    if (btn && text) {
+        if (loading) {
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+            text.textContent = 'Signing in...';
+        } else {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            text.textContent = 'Sign in with Google';
+        }
+    }
+}
+
 // Sign in with Google
 async function signInWithGoogle() {
     try {
+        setSignInLoading(true);
+        
         const provider = new firebase.auth.GoogleAuthProvider();
         provider.setCustomParameters({ prompt: 'select_account' });
         
-        // Check if Safari or iOS (they have issues with popups)
+        // Check environment
         const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isPWA = isRunningAsPWA();
         
-        if (isSafari || isIOS) {
-            // Use redirect for Safari/iOS - more reliable
+        console.log('Auth environment:', { isSafari, isIOS, isPWA });
+        
+        // PWA standalone mode OR Safari/iOS = ALWAYS use redirect
+        // Popups don't work properly in standalone mode
+        if (isPWA || isSafari || isIOS) {
+            console.log('Using redirect sign-in (PWA/Safari/iOS)');
+            // Store a flag so we know we're expecting a redirect return
+            sessionStorage.setItem('firebase_auth_pending', 'true');
             await auth.signInWithRedirect(provider);
-        } else {
-            // Try popup first for other browsers
-            try {
-                await auth.signInWithPopup(provider);
-            } catch (popupError) {
-                if (popupError.code === 'auth/popup-blocked' || 
-                    popupError.code === 'auth/popup-closed-by-user' ||
-                    popupError.code === 'auth/cancelled-popup-request') {
-                    // Fall back to redirect
-                    await auth.signInWithRedirect(provider);
-                } else {
-                    throw popupError;
-                }
-            }
+            return; // Page will redirect, code stops here
         }
         
-        showToast('Signed in successfully! ☁️');
+        // Desktop browsers - try popup first
+        try {
+            console.log('Using popup sign-in (Desktop)');
+            const result = await auth.signInWithPopup(provider);
+            if (result.user) {
+                showToast('Signed in successfully! ☁️');
+            }
+        } catch (popupError) {
+            console.log('Popup failed:', popupError.code);
+            if (popupError.code === 'auth/popup-blocked' || 
+                popupError.code === 'auth/popup-closed-by-user' ||
+                popupError.code === 'auth/cancelled-popup-request') {
+                // Fall back to redirect
+                console.log('Falling back to redirect');
+                sessionStorage.setItem('firebase_auth_pending', 'true');
+                await auth.signInWithRedirect(provider);
+            } else {
+                throw popupError;
+            }
+        }
     } catch (error) {
         console.error('Sign in error:', error);
+        setSignInLoading(false);
+        sessionStorage.removeItem('firebase_auth_pending');
         if (error.code !== 'auth/redirect-cancelled-by-user') {
             showToast('Sign in failed. Try again.', 'error');
         }
