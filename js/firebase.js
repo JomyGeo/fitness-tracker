@@ -155,11 +155,12 @@ function updateUserUI() {
         if (userInfo) {
             userInfo.style.display = 'flex';
             
-            const photoURL = currentUser.photoURL || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%23007AFF"/><text x="50" y="60" text-anchor="middle" fill="white" font-size="40">' + (currentUser.displayName?.[0]?.toUpperCase() || 'J') + '</text></svg>';
             const displayName = currentUser.displayName || 'User';
+            const initial = (displayName[0] || 'J').toUpperCase();
             
+            // Use a simple colored circle with initial
             userInfo.innerHTML = `
-                <img src="${photoURL}" alt="Profile" class="user-avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23007AFF%22/><text x=%2250%22 y=%2260%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2240%22>J</text></svg>'">
+                <div class="user-avatar-circle">${initial}</div>
                 <div class="user-details">
                     <span class="user-name">${displayName}</span>
                     <span class="user-status">☁️ Synced</span>
