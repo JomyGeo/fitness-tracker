@@ -96,8 +96,15 @@ function updateConnectionStatus() {
     }
 }
 
-// Auth state observer
+// Auth state observer - skip if using simple auth
 auth.onAuthStateChanged(async (user) => {
+    // Skip Firebase auth if simple auth is active
+    const simpleAuth = checkSimpleAuth();
+    if (simpleAuth) {
+        console.log('Simple auth active, skipping Firebase auth');
+        return;
+    }
+    
     currentUser = user;
     
     if (user) {
@@ -114,8 +121,8 @@ auth.onAuthStateChanged(async (user) => {
         }
     } else {
         console.log('User not signed in');
-        // Show login screen, hide app
-        showLoginScreen();
+        // Initialize simple auth (shows login form)
+        initSimpleAuth();
     }
 });
 
@@ -129,27 +136,31 @@ function updateUserUI() {
     
     if (currentUser) {
         // User is signed in
-        loginBtn.style.display = 'none';
-        userInfo.style.display = 'flex';
-        
-        const photoURL = currentUser.photoURL || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%23007AFF"/><text x="50" y="60" text-anchor="middle" fill="white" font-size="40">' + (currentUser.displayName?.[0] || '?') + '</text></svg>';
-        const displayName = currentUser.displayName || 'Guest User';
-        
-        userInfo.innerHTML = `
-            <img src="${photoURL}" alt="Profile" class="user-avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23007AFF%22/><text x=%2250%22 y=%2260%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2240%22>?</text></svg>'">
-            <div class="user-details">
-                <span class="user-name">${displayName}</span>
-                <span class="user-status">☁️ Synced</span>
-            </div>
-            <button class="logout-btn" onclick="signOutUser()" title="Sign Out">
-                <span>↪</span>
-            </button>
-        `;
+        if (loginBtn) loginBtn.style.display = 'none';
+        if (userInfo) {
+            userInfo.style.display = 'flex';
+            
+            const photoURL = currentUser.photoURL || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%23007AFF"/><text x="50" y="60" text-anchor="middle" fill="white" font-size="40">' + (currentUser.displayName?.[0]?.toUpperCase() || 'J') + '</text></svg>';
+            const displayName = currentUser.displayName || 'User';
+            
+            userInfo.innerHTML = `
+                <img src="${photoURL}" alt="Profile" class="user-avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23007AFF%22/><text x=%2250%22 y=%2260%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2240%22>J</text></svg>'">
+                <div class="user-details">
+                    <span class="user-name">${displayName}</span>
+                    <span class="user-status">☁️ Synced</span>
+                </div>
+                <button class="logout-btn" onclick="signOutUser()" title="Sign Out">
+                    <span>↪</span>
+                </button>
+            `;
+        }
     } else {
         // User is signed out
-        loginBtn.style.display = 'flex';
-        userInfo.style.display = 'none';
-        userInfo.innerHTML = '';
+        if (loginBtn) loginBtn.style.display = 'flex';
+        if (userInfo) {
+            userInfo.style.display = 'none';
+            userInfo.innerHTML = '';
+        }
     }
     
     updateConnectionStatus();
@@ -179,159 +190,154 @@ function setSignInLoading(loading) {
     }
 }
 
-// Sign in with Google
-async function signInWithGoogle() {
-    try {
-        setSignInLoading(true);
-        
-        const provider = new firebase.auth.GoogleAuthProvider();
-        provider.setCustomParameters({ prompt: 'select_account' });
-        
-        // Check environment
-        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-        const isPWA = isRunningAsPWA();
-        
-        console.log('Auth environment:', { isSafari, isIOS, isPWA });
-        
-        // For PWA standalone mode: Show modal with options
-        // Google OAuth redirects don't work properly in standalone PWA mode
-        if (isPWA) {
-            console.log('PWA detected - showing login options modal');
-            setSignInLoading(false);
-            showPWALoginModal();
-            return;
+// Simple username/password login (temporary - no Firebase Auth needed)
+// Credentials stored locally, but data syncs to Firebase with a fixed user ID
+const VALID_CREDENTIALS = {
+    username: 'Jomy',
+    password: 'Jomy@123'
+};
+
+// Fixed user ID for simple login (ensures data syncs to same place)
+const SIMPLE_LOGIN_USER_ID = 'jomy-fitness-user';
+
+// Check if user is logged in via simple auth
+function checkSimpleAuth() {
+    const simpleAuth = localStorage.getItem('fitnessTracker_simpleAuth');
+    if (simpleAuth) {
+        const authData = JSON.parse(simpleAuth);
+        if (authData.loggedIn && authData.username) {
+            return authData;
         }
+    }
+    return null;
+}
+
+// Simple login function
+function simpleLogin(username, password) {
+    if (username === VALID_CREDENTIALS.username && password === VALID_CREDENTIALS.password) {
+        const authData = {
+            loggedIn: true,
+            username: username,
+            userId: SIMPLE_LOGIN_USER_ID,
+            loginTime: new Date().toISOString()
+        };
+        localStorage.setItem('fitnessTracker_simpleAuth', JSON.stringify(authData));
         
-        // Safari/iOS in browser (not PWA) - use redirect
-        if (isSafari || isIOS) {
-            console.log('Using redirect sign-in (Safari/iOS browser)');
-            sessionStorage.setItem('firebase_auth_pending', 'true');
-            await auth.signInWithRedirect(provider);
-            return;
-        }
+        // Set current user for Firebase sync
+        currentUser = {
+            uid: SIMPLE_LOGIN_USER_ID,
+            displayName: username,
+            email: null,
+            photoURL: null,
+            isSimpleAuth: true
+        };
         
-        // Desktop browsers - try popup first
-        try {
-            console.log('Using popup sign-in (Desktop)');
-            const result = await auth.signInWithPopup(provider);
-            setSignInLoading(false);
-            if (result.user) {
-                showToast('Signed in successfully! ☁️');
-            }
-        } catch (popupError) {
-            console.log('Popup failed:', popupError.code);
-            if (popupError.code === 'auth/popup-blocked' || 
-                popupError.code === 'auth/popup-closed-by-user' ||
-                popupError.code === 'auth/cancelled-popup-request') {
-                // Fall back to redirect
-                console.log('Falling back to redirect');
-                sessionStorage.setItem('firebase_auth_pending', 'true');
-                await auth.signInWithRedirect(provider);
-            } else {
-                throw popupError;
-            }
-        }
-    } catch (error) {
-        console.error('Sign in error:', error);
-        setSignInLoading(false);
-        sessionStorage.removeItem('firebase_auth_pending');
-        if (error.code !== 'auth/redirect-cancelled-by-user') {
-            showToast('Sign in failed. Try again.', 'error');
-        }
+        // Hide login, show app
+        hideLoginScreen();
+        updateUserUI();
+        
+        // Load data from cloud
+        loadDataFromCloud();
+        
+        showToast(`Welcome, ${username}! ☁️`);
+        return true;
+    } else {
+        showToast('Invalid username or password', 'error');
+        return false;
     }
 }
 
-// Show PWA login options modal
-function showPWALoginModal() {
-    // Create modal overlay
-    const modalOverlay = document.createElement('div');
-    modalOverlay.className = 'pwa-login-modal-overlay';
-    modalOverlay.innerHTML = `
-        <div class="pwa-login-modal">
-            <div class="pwa-login-header">
-                <span style="font-size: 32px;">📱</span>
-                <h3>App Login</h3>
+// Simple logout function
+function simpleLogout() {
+    localStorage.removeItem('fitnessTracker_simpleAuth');
+    currentUser = null;
+    showLoginScreen();
+    updateUserUI();
+    showToast('Signed out');
+}
+
+// Show simple login form
+function showSimpleLoginForm() {
+    const loginContent = document.querySelector('.login-content');
+    if (!loginContent) return;
+    
+    loginContent.innerHTML = `
+        <div class="login-icon">💪</div>
+        <h1 class="login-title">Fitness Tracker</h1>
+        <p class="login-subtitle">Your Personal Training Assistant</p>
+        
+        <div class="simple-login-form">
+            <div class="input-group">
+                <label for="username-input">Username</label>
+                <input type="text" id="username-input" placeholder="Enter username" autocomplete="username">
             </div>
-            <div class="pwa-login-body">
-                <p class="pwa-login-note">
-                    Google sign-in doesn't work directly in installed apps. 
-                    Choose an option below:
-                </p>
-                
-                <button class="pwa-login-btn guest" onclick="closePWAModal(); signInAnonymously();">
-                    <span class="btn-icon">👤</span>
-                    <div class="btn-text">
-                        <strong>Continue as Guest</strong>
-                        <small>Data syncs to cloud, works instantly</small>
-                    </div>
-                </button>
-                
-                <div class="pwa-login-divider">
-                    <span>or for Google account</span>
-                </div>
-                
-                <button class="pwa-login-btn browser" onclick="openInBrowser();">
-                    <span class="btn-icon">🌐</span>
-                    <div class="btn-text">
-                        <strong>Open in Browser</strong>
-                        <small>Login there, then reopen this app</small>
-                    </div>
-                </button>
-                
-                <p class="pwa-login-hint">
-                    💡 After logging in via browser, your login will automatically 
-                    sync to this app next time you open it.
-                </p>
+            <div class="input-group">
+                <label for="password-input">Password</label>
+                <input type="password" id="password-input" placeholder="Enter password" autocomplete="current-password">
             </div>
-            <button class="pwa-login-close" onclick="closePWAModal();">Cancel</button>
+            <button onclick="handleSimpleLogin()" class="simple-login-btn">
+                <span>🔐</span> Sign In
+            </button>
         </div>
+        
+        <p class="login-note" style="margin-top: 20px;">Your workouts sync to the cloud automatically</p>
     `;
     
-    document.body.appendChild(modalOverlay);
+    // Add enter key support
+    const passwordInput = document.getElementById('password-input');
+    const usernameInput = document.getElementById('username-input');
     
-    // Animate in
-    requestAnimationFrame(() => {
-        modalOverlay.classList.add('active');
-    });
-}
-
-// Close PWA login modal
-function closePWAModal() {
-    const modal = document.querySelector('.pwa-login-modal-overlay');
-    if (modal) {
-        modal.classList.remove('active');
-        setTimeout(() => modal.remove(), 300);
+    if (passwordInput) {
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSimpleLogin();
+        });
+    }
+    if (usernameInput) {
+        usernameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') document.getElementById('password-input').focus();
+        });
     }
 }
 
-// Open app in browser for login
-function openInBrowser() {
-    closePWAModal();
+// Handle login button click
+function handleSimpleLogin() {
+    const username = document.getElementById('username-input')?.value?.trim();
+    const password = document.getElementById('password-input')?.value;
     
-    // Copy URL to clipboard for easy access
-    const url = 'https://jomygeo.github.io/fitness-tracker/';
+    if (!username || !password) {
+        showToast('Please enter username and password', 'error');
+        return;
+    }
     
-    // Try to open in browser - different methods for different platforms
-    // Using location.href with a special URL scheme to force browser
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    
-    if (isIOS) {
-        // iOS: Show instructions since we can't force Safari
-        showToast('Opening in Safari...', 'info');
-        // This opens in Safari on iOS
-        window.location.href = url;
+    simpleLogin(username, password);
+}
+
+// Initialize simple auth on page load
+function initSimpleAuth() {
+    const authData = checkSimpleAuth();
+    if (authData) {
+        // User is already logged in
+        currentUser = {
+            uid: authData.userId || SIMPLE_LOGIN_USER_ID,
+            displayName: authData.username,
+            email: null,
+            photoURL: null,
+            isSimpleAuth: true
+        };
+        hideLoginScreen();
+        updateUserUI();
+        loadDataFromCloud();
     } else {
-        // Android: intent URL to open in Chrome/browser
-        const intentUrl = `intent://${url.replace('https://', '')}#Intent;scheme=https;action=android.intent.action.VIEW;end`;
-        
-        // Try intent first, fall back to regular URL
-        try {
-            window.location.href = intentUrl;
-        } catch (e) {
-            window.location.href = url;
-        }
+        // Show login form
+        showSimpleLoginForm();
+        showLoginScreen();
     }
+}
+
+// Sign in with Google (keeping for future use)
+async function signInWithGoogle() {
+    // For now, just show simple login
+    showSimpleLoginForm();
 }
 
 // Sign in anonymously (guest mode)
@@ -347,8 +353,16 @@ async function signInAnonymously() {
 
 // Sign out
 async function signOutUser() {
-    if (confirm('Sign out? You can sign back in anytime.')) {
+    if (confirm('Sign out? Your data is saved in the cloud.')) {
         try {
+            // Check if using simple auth
+            const simpleAuth = checkSimpleAuth();
+            if (simpleAuth || (currentUser && currentUser.isSimpleAuth)) {
+                simpleLogout();
+                return;
+            }
+            
+            // Firebase sign out
             await auth.signOut();
             showToast('Signed out');
         } catch (error) {

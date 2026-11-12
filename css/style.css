@@ -2863,3 +2863,74 @@ body {
 .pwa-login-close:active {
     background: rgba(255, 255, 255, 0.05);
 }
+
+
+/* Simple Login Form */
+.simple-login-form {
+    width: 100%;
+    max-width: 300px;
+    margin: 24px auto 0;
+}
+
+.input-group {
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    font-size: 16px;
+    color: #fff;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+}
+
+.input-group input::placeholder {
+    color: var(--text-tertiary);
+}
+
+.simple-login-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #007AFF, #0A84FF);
+    border: none;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+    transition: all 0.2s ease;
+}
+
+.simple-login-btn:active {
+    transform: scale(0.98);
+    background: linear-gradient(135deg, #006ADF, #0074EF);
+}
+
+.simple-login-btn span {
+    font-size: 20px;
+}
