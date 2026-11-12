@@ -194,20 +194,28 @@ async function signInWithGoogle() {
         
         console.log('Auth environment:', { isSafari, isIOS, isPWA });
         
-        // PWA standalone mode OR Safari/iOS = ALWAYS use redirect
-        // Popups don't work properly in standalone mode
-        if (isPWA || isSafari || isIOS) {
-            console.log('Using redirect sign-in (PWA/Safari/iOS)');
-            // Store a flag so we know we're expecting a redirect return
+        // For PWA standalone mode: Show modal with options
+        // Google OAuth redirects don't work properly in standalone PWA mode
+        if (isPWA) {
+            console.log('PWA detected - showing login options modal');
+            setSignInLoading(false);
+            showPWALoginModal();
+            return;
+        }
+        
+        // Safari/iOS in browser (not PWA) - use redirect
+        if (isSafari || isIOS) {
+            console.log('Using redirect sign-in (Safari/iOS browser)');
             sessionStorage.setItem('firebase_auth_pending', 'true');
             await auth.signInWithRedirect(provider);
-            return; // Page will redirect, code stops here
+            return;
         }
         
         // Desktop browsers - try popup first
         try {
             console.log('Using popup sign-in (Desktop)');
             const result = await auth.signInWithPopup(provider);
+            setSignInLoading(false);
             if (result.user) {
                 showToast('Signed in successfully! ☁️');
             }
@@ -230,6 +238,98 @@ async function signInWithGoogle() {
         sessionStorage.removeItem('firebase_auth_pending');
         if (error.code !== 'auth/redirect-cancelled-by-user') {
             showToast('Sign in failed. Try again.', 'error');
+        }
+    }
+}
+
+// Show PWA login options modal
+function showPWALoginModal() {
+    // Create modal overlay
+    const modalOverlay = document.createElement('div');
+    modalOverlay.className = 'pwa-login-modal-overlay';
+    modalOverlay.innerHTML = `
+        <div class="pwa-login-modal">
+            <div class="pwa-login-header">
+                <span style="font-size: 32px;">📱</span>
+                <h3>App Login</h3>
+            </div>
+            <div class="pwa-login-body">
+                <p class="pwa-login-note">
+                    Google sign-in doesn't work directly in installed apps. 
+                    Choose an option below:
+                </p>
+                
+                <button class="pwa-login-btn guest" onclick="closePWAModal(); signInAnonymously();">
+                    <span class="btn-icon">👤</span>
+                    <div class="btn-text">
+                        <strong>Continue as Guest</strong>
+                        <small>Data syncs to cloud, works instantly</small>
+                    </div>
+                </button>
+                
+                <div class="pwa-login-divider">
+                    <span>or for Google account</span>
+                </div>
+                
+                <button class="pwa-login-btn browser" onclick="openInBrowser();">
+                    <span class="btn-icon">🌐</span>
+                    <div class="btn-text">
+                        <strong>Open in Browser</strong>
+                        <small>Login there, then reopen this app</small>
+                    </div>
+                </button>
+                
+                <p class="pwa-login-hint">
+                    💡 After logging in via browser, your login will automatically 
+                    sync to this app next time you open it.
+                </p>
+            </div>
+            <button class="pwa-login-close" onclick="closePWAModal();">Cancel</button>
+        </div>
+    `;
+    
+    document.body.appendChild(modalOverlay);
+    
+    // Animate in
+    requestAnimationFrame(() => {
+        modalOverlay.classList.add('active');
+    });
+}
+
+// Close PWA login modal
+function closePWAModal() {
+    const modal = document.querySelector('.pwa-login-modal-overlay');
+    if (modal) {
+        modal.classList.remove('active');
+        setTimeout(() => modal.remove(), 300);
+    }
+}
+
+// Open app in browser for login
+function openInBrowser() {
+    closePWAModal();
+    
+    // Copy URL to clipboard for easy access
+    const url = 'https://jomygeo.github.io/fitness-tracker/';
+    
+    // Try to open in browser - different methods for different platforms
+    // Using location.href with a special URL scheme to force browser
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    
+    if (isIOS) {
+        // iOS: Show instructions since we can't force Safari
+        showToast('Opening in Safari...', 'info');
+        // This opens in Safari on iOS
+        window.location.href = url;
+    } else {
+        // Android: intent URL to open in Chrome/browser
+        const intentUrl = `intent://${url.replace('https://', '')}#Intent;scheme=https;action=android.intent.action.VIEW;end`;
+        
+        // Try intent first, fall back to regular URL
+        try {
+            window.location.href = intentUrl;
+        } catch (e) {
+            window.location.href = url;
         }
     }
 }

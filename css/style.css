@@ -2692,3 +2692,174 @@ body {
     font-size: 14px;
     flex-shrink: 0;
 }
+
+
+/* PWA Login Modal */
+.pwa-login-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.pwa-login-modal-overlay.active {
+    opacity: 1;
+}
+
+.pwa-login-modal {
+    background: linear-gradient(145deg, #1C1C1E, #2C2C2E);
+    border-radius: 20px;
+    padding: 24px;
+    width: 100%;
+    max-width: 340px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.pwa-login-modal-overlay.active .pwa-login-modal {
+    transform: scale(1) translateY(0);
+}
+
+.pwa-login-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.pwa-login-header h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 8px;
+    color: #fff;
+}
+
+.pwa-login-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.pwa-login-note {
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.pwa-login-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    width: 100%;
+}
+
+.pwa-login-btn.guest {
+    background: linear-gradient(135deg, #34C759, #30D158);
+    color: white;
+}
+
+.pwa-login-btn.guest:active {
+    transform: scale(0.98);
+    background: linear-gradient(135deg, #2DB84D, #28C750);
+}
+
+.pwa-login-btn.browser {
+    background: linear-gradient(135deg, #007AFF, #0A84FF);
+    color: white;
+}
+
+.pwa-login-btn.browser:active {
+    transform: scale(0.98);
+    background: linear-gradient(135deg, #006ADF, #0074EF);
+}
+
+.pwa-login-btn .btn-icon {
+    font-size: 24px;
+    width: 36px;
+    text-align: center;
+}
+
+.pwa-login-btn .btn-text {
+    flex: 1;
+}
+
+.pwa-login-btn .btn-text strong {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.pwa-login-btn .btn-text small {
+    font-size: 12px;
+    opacity: 0.85;
+}
+
+.pwa-login-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+}
+
+.pwa-login-divider::before,
+.pwa-login-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.pwa-login-divider span {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    white-space: nowrap;
+}
+
+.pwa-login-hint {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    text-align: center;
+    line-height: 1.5;
+    margin-top: 8px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.pwa-login-close {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: var(--text-secondary);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pwa-login-close:active {
+    background: rgba(255, 255, 255, 0.05);
+}
