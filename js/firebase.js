@@ -1,6 +1,49 @@
 // Firebase Configuration and Authentication
 // Fitness Tracker - Cloud Sync
 
+// Simple auth credentials and constants (defined early for immediate check)
+const VALID_CREDENTIALS = {
+    username: 'Jomy',
+    password: 'Jomy@123'
+};
+const SIMPLE_LOGIN_USER_ID = 'jomy-fitness-user';
+
+// Check if user is logged in via simple auth (defined early)
+function checkSimpleAuth() {
+    const simpleAuth = localStorage.getItem('fitnessTracker_simpleAuth');
+    if (simpleAuth) {
+        try {
+            const authData = JSON.parse(simpleAuth);
+            if (authData.loggedIn && authData.username) {
+                return authData;
+            }
+        } catch (e) {
+            console.log('Error parsing simple auth:', e);
+        }
+    }
+    return null;
+}
+
+// Current user state
+let currentUser = null;
+let isOnline = navigator.onLine;
+
+// IMMEDIATE CHECK: If simple auth exists, set currentUser right away
+// This prevents the login screen from flashing on refresh
+(function() {
+    const simpleAuth = checkSimpleAuth();
+    if (simpleAuth) {
+        console.log('Simple auth found on load:', simpleAuth.username);
+        currentUser = {
+            uid: simpleAuth.userId || SIMPLE_LOGIN_USER_ID,
+            displayName: simpleAuth.username,
+            email: null,
+            photoURL: null,
+            isSimpleAuth: true
+        };
+    }
+})();
+
 // Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyCSQNjr4XGA5U_S2D4-QAAXw3bInBWJi_Y",
@@ -65,10 +108,6 @@ auth.getRedirectResult().then((result) => {
         console.log('Redirect error:', error.code, error.message);
     }
 });
-
-// Current user state
-let currentUser = null;
-let isOnline = navigator.onLine;
 
 // Listen for online/offline status
 window.addEventListener('online', () => {
@@ -204,28 +243,6 @@ function setSignInLoading(loading) {
             text.textContent = 'Sign in with Google';
         }
     }
-}
-
-// Simple username/password login (temporary - no Firebase Auth needed)
-// Credentials stored locally, but data syncs to Firebase with a fixed user ID
-const VALID_CREDENTIALS = {
-    username: 'Jomy',
-    password: 'Jomy@123'
-};
-
-// Fixed user ID for simple login (ensures data syncs to same place)
-const SIMPLE_LOGIN_USER_ID = 'jomy-fitness-user';
-
-// Check if user is logged in via simple auth
-function checkSimpleAuth() {
-    const simpleAuth = localStorage.getItem('fitnessTracker_simpleAuth');
-    if (simpleAuth) {
-        const authData = JSON.parse(simpleAuth);
-        if (authData.loggedIn && authData.username) {
-            return authData;
-        }
-    }
-    return null;
 }
 
 // Simple login function
