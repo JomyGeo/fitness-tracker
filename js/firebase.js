@@ -98,31 +98,46 @@ function updateConnectionStatus() {
 
 // Auth state observer - skip if using simple auth
 auth.onAuthStateChanged(async (user) => {
-    // Skip Firebase auth if simple auth is active
+    // Check if simple auth is being used
     const simpleAuth = checkSimpleAuth();
+    
     if (simpleAuth) {
-        console.log('Simple auth active, skipping Firebase auth');
+        console.log('Simple auth active, using simple auth user');
+        // Set current user from simple auth
+        currentUser = {
+            uid: simpleAuth.userId || SIMPLE_LOGIN_USER_ID,
+            displayName: simpleAuth.username,
+            email: null,
+            photoURL: null,
+            isSimpleAuth: true
+        };
+        hideLoginScreen();
+        updateUserUI();
+        await loadDataFromCloud();
+        if (typeof renderContent === 'function') {
+            renderContent();
+            updateHeaderStats();
+        }
         return;
     }
     
-    currentUser = user;
-    
+    // No simple auth - check Firebase auth
     if (user) {
-        console.log('User signed in:', user.displayName || user.uid);
-        // Hide login screen, show app
+        currentUser = user;
+        console.log('Firebase user signed in:', user.displayName || user.uid);
         hideLoginScreen();
         updateUserUI();
-        // Load data from cloud
         await loadDataFromCloud();
-        // Re-render the app
         if (typeof renderContent === 'function') {
             renderContent();
             updateHeaderStats();
         }
     } else {
-        console.log('User not signed in');
-        // Initialize simple auth (shows login form)
-        initSimpleAuth();
+        console.log('No user signed in, showing login screen');
+        currentUser = null;
+        // Don't call initSimpleAuth, just show login screen
+        // The HTML already has the login form
+        showLoginScreen();
     }
 });
 
@@ -214,7 +229,11 @@ function checkSimpleAuth() {
 
 // Simple login function
 function simpleLogin(username, password) {
+    console.log('Attempting login for:', username);
+    
     if (username === VALID_CREDENTIALS.username && password === VALID_CREDENTIALS.password) {
+        console.log('Credentials valid, logging in...');
+        
         const authData = {
             loggedIn: true,
             username: username,
@@ -236,12 +255,21 @@ function simpleLogin(username, password) {
         hideLoginScreen();
         updateUserUI();
         
-        // Load data from cloud
-        loadDataFromCloud();
+        // Load data from cloud then render
+        loadDataFromCloud().then(() => {
+            // Re-render the app after data loads
+            if (typeof renderContent === 'function') {
+                renderContent();
+            }
+            if (typeof updateHeaderStats === 'function') {
+                updateHeaderStats();
+            }
+        });
         
         showToast(`Welcome, ${username}! ☁️`);
         return true;
     } else {
+        console.log('Invalid credentials');
         showToast('Invalid username or password', 'error');
         return false;
     }
