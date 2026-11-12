@@ -1,5 +1,5 @@
 // Service Worker for Fitness Tracker PWA
-const CACHE_NAME = 'fitness-tracker-v42';
+const CACHE_NAME = 'fitness-tracker-v43';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
@@ -40,7 +40,7 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event - network first, fall back to cache
 self.addEventListener('fetch', (event) => {
     // Skip non-GET requests
     if (event.request.method !== 'GET') return;
@@ -48,36 +48,33 @@ self.addEventListener('fetch', (event) => {
     // Skip YouTube and external requests
     if (event.request.url.includes('youtube.com') || 
         event.request.url.includes('googlevideo.com') ||
-        event.request.url.includes('ytimg.com')) {
+        event.request.url.includes('ytimg.com') ||
+        event.request.url.includes('firebase') ||
+        event.request.url.includes('gstatic.com')) {
         return;
     }
     
     event.respondWith(
-        caches.match(event.request)
-            .then((cachedResponse) => {
-                if (cachedResponse) {
-                    // Return cached version
-                    return cachedResponse;
+        // Try network first
+        fetch(event.request)
+            .then((response) => {
+                // Clone and cache the response
+                if (response && response.status === 200) {
+                    const responseToCache = response.clone();
+                    caches.open(CACHE_NAME)
+                        .then((cache) => {
+                            cache.put(event.request, responseToCache);
+                        });
                 }
-                
-                // Fetch from network
-                return fetch(event.request)
-                    .then((response) => {
-                        // Don't cache non-successful responses
-                        if (!response || response.status !== 200 || response.type !== 'basic') {
-                            return response;
+                return response;
+            })
+            .catch(() => {
+                // Network failed, try cache
+                return caches.match(event.request)
+                    .then((cachedResponse) => {
+                        if (cachedResponse) {
+                            return cachedResponse;
                         }
-                        
-                        // Clone and cache the response
-                        const responseToCache = response.clone();
-                        caches.open(CACHE_NAME)
-                            .then((cache) => {
-                                cache.put(event.request, responseToCache);
-                            });
-                        
-                        return response;
-                    })
-                    .catch(() => {
                         // Return offline page for navigation requests
                         if (event.request.mode === 'navigate') {
                             return caches.match('/index.html');
