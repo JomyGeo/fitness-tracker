@@ -2958,124 +2958,195 @@ body {
 .performance-stats {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-bottom: 12px;
+    gap: 6px;
+    margin-bottom: 10px;
 }
 
-/* Personal Best Box */
+/* Personal Best Box - Compact inline */
 .personal-best-box {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 14px;
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 165, 0, 0.1));
-    border: 1px solid rgba(255, 215, 0, 0.3);
-    border-radius: 10px;
+    gap: 6px;
+    padding: 6px 10px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.12), rgba(255, 165, 0, 0.08));
+    border: 1px solid rgba(255, 215, 0, 0.25);
+    border-radius: 8px;
+    font-size: 12px;
 }
 
 .pb-icon {
-    font-size: 18px;
+    font-size: 14px;
 }
 
 .pb-label {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-secondary);
     font-weight: 500;
 }
 
 .pb-value {
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 12px;
+    font-weight: 600;
     color: #FFD700;
     margin-left: auto;
 }
 
-/* Last Set Hint - shows previous weight per set */
+/* Last Set Hint - inline with set label */
 .last-set-hint {
-    width: 100%;
-    margin-bottom: 4px;
-    padding-left: 62px;
+    display: inline;
+    margin-left: 8px;
 }
 
 .hint-text {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--text-tertiary);
     font-style: italic;
 }
 
-/* Weight Group with Bar Only checkbox */
-.weight-group {
-    position: relative;
+/* Set Row - Single line layout */
+.set-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    flex-wrap: nowrap;
 }
 
-/* Bar Only Checkbox Styling */
+.set-row .set-label {
+    min-width: 45px;
+    font-size: 13px;
+}
+
+.set-row .set-inputs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+}
+
+/* Weight Group with Bar Only checkbox - inline */
+.weight-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    max-width: 90px;
+}
+
+/* Bar Only Checkbox - Small inline */
 .bar-only-label {
     display: flex;
     align-items: center;
-    gap: 4px;
-    margin-top: 4px;
+    gap: 3px;
     cursor: pointer;
+    margin-top: 2px;
 }
 
 .bar-only-checkbox {
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     accent-color: var(--primary);
     cursor: pointer;
+    margin: 0;
 }
 
 .bar-only-text {
-    font-size: 10px;
+    font-size: 9px;
     color: var(--text-tertiary);
     text-transform: uppercase;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.2px;
 }
 
 .bar-only-label:hover .bar-only-text {
     color: var(--primary);
 }
 
+/* Smaller inputs */
+.set-input-group {
+    flex: 1;
+    max-width: 80px;
+}
+
+.set-input-group input {
+    padding: 8px 6px;
+    font-size: 14px;
+}
+
+.set-input-group label {
+    font-size: 9px;
+}
+
 /* Disabled weight input when bar only is checked */
 .set-input-group input:disabled {
     background: var(--bg-tertiary);
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
 }
 
-/* Set row adjustments for hint text */
-.set-row {
-    flex-wrap: wrap;
+/* Done button smaller */
+.set-done-btn {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
 }
 
-.set-row .set-inputs {
-    width: 100%;
-    flex: none;
-}
-
-/* Make sure set label stays on same line as done button on mobile */
-@media (max-width: 400px) {
-    .last-set-hint {
-        padding-left: 0;
-    }
-    
-    .bar-only-label {
-        flex-direction: row;
-    }
-    
-    .weight-group {
-        min-width: 70px;
-    }
-}
-
-/* Improved Last Performance Box */
+/* Improved Last Performance Box - Compact */
 .last-performance-box {
-    padding: 10px 14px;
+    padding: 8px 10px;
     background: var(--bg-tertiary);
-    border-radius: 10px;
+    border-radius: 8px;
     border: 1px solid var(--border);
 }
 
 .last-performance-box.no-data {
     background: transparent;
     border: 1px dashed var(--border);
+    padding: 6px 10px;
+}
+
+.last-perf-header {
+    font-size: 12px;
+}
+
+.last-perf-icon {
+    font-size: 12px;
+}
+
+.last-perf-label {
+    font-size: 11px;
+}
+
+.last-perf-value {
+    font-size: 12px;
+}
+
+.progression-suggestion {
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 380px) {
+    .set-row {
+        padding: 8px;
+        gap: 6px;
+    }
+    
+    .weight-group {
+        max-width: 70px;
+    }
+    
+    .set-input-group {
+        max-width: 65px;
+    }
+    
+    .set-done-btn {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+    }
 }

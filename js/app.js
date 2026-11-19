@@ -688,12 +688,7 @@ function renderWorkoutDay(container) {
                                 
                                 return `
                                 <div class="set-row ${setData.done ? 'set-done' : 'set-active'}">
-                                    <div class="set-label">Set ${setIndex + 1}</div>
-                                    ${lastSetWeight && !setData.done ? `
-                                    <div class="last-set-hint">
-                                        <span class="hint-text">Last: ${lastSetWeight.barOnly ? 'Bar only' : lastSetWeight.weight + 'kg'} × ${lastSetWeight.reps}</span>
-                                    </div>
-                                    ` : ''}
+                                    <div class="set-label">Set ${setIndex + 1}${lastSetWeight && !setData.done ? `<span class="last-set-hint"><span class="hint-text">(${lastSetWeight.barOnly ? 'Bar' : lastSetWeight.weight + 'kg'})</span></span>` : ''}</div>
                                     <div class="set-inputs">
                                         ${isTimeExercise ? `
                                         <div class="set-input-group time-group">
@@ -714,20 +709,12 @@ function renderWorkoutDay(container) {
                                         ` : `
                                         ${!isBodyweight ? `
                                         <div class="set-input-group weight-group">
-                                            <label>kg</label>
+                                            <label>kg ${isBarbell ? `<label class="bar-only-label"><input type="checkbox" class="bar-only-checkbox" ${setData.barOnly ? 'checked' : ''} onchange="updateSetData('${exKey}', ${setIndex}, 'barOnly', this.checked)"><span class="bar-only-text">Bar</span></label>` : ''}</label>
                                             <input type="text" inputmode="decimal" pattern="[0-9]*\\.?[0-9]*"
                                                    value="${setData.barOnly ? '' : (setData.weight || '')}" 
                                                    onchange="updateSetData('${exKey}', ${setIndex}, 'weight', this.value)"
                                                    placeholder="${lastSetWeight ? lastSetWeight.weight : '20'}"
                                                    ${setData.barOnly ? 'disabled' : ''}>
-                                            ${isBarbell ? `
-                                            <label class="bar-only-label">
-                                                <input type="checkbox" class="bar-only-checkbox"
-                                                       ${setData.barOnly ? 'checked' : ''}
-                                                       onchange="updateSetData('${exKey}', ${setIndex}, 'barOnly', this.checked)">
-                                                <span class="bar-only-text">Bar</span>
-                                            </label>
-                                            ` : ''}
                                         </div>
                                         ` : ''}
                                         <div class="set-input-group">
