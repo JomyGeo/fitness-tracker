@@ -3028,25 +3028,48 @@ body {
     flex: 1;
 }
 
-/* Weight Group with Bar Only checkbox - inline */
+/* Weight Group with Bar/BW options */
 .weight-group {
     display: flex;
     flex-direction: column;
     gap: 2px;
     flex: 1;
-    max-width: 90px;
+    max-width: 100px;
 }
 
-/* Bar Only Checkbox - Small inline */
-.bar-only-label {
+.weight-label-row {
     display: flex;
     align-items: center;
-    gap: 3px;
-    cursor: pointer;
-    margin-top: 2px;
+    justify-content: space-between;
+    gap: 4px;
 }
 
-.bar-only-checkbox {
+.weight-label-row > label {
+    font-size: 9px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+}
+
+.weight-options {
+    display: flex;
+    gap: 6px;
+}
+
+.weight-option-label {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+    font-size: 9px;
+    color: var(--text-tertiary);
+}
+
+.weight-option-label:hover {
+    color: var(--primary);
+}
+
+.weight-option-checkbox {
     width: 12px;
     height: 12px;
     accent-color: var(--primary);
@@ -3054,15 +3077,28 @@ body {
     margin: 0;
 }
 
-.bar-only-text {
-    font-size: 9px;
-    color: var(--text-tertiary);
+.weight-option-label span {
     text-transform: uppercase;
     letter-spacing: 0.2px;
 }
 
-.bar-only-label:hover .bar-only-text {
-    color: var(--primary);
+/* Weight placeholder when Bar/BW is checked */
+.weight-placeholder {
+    width: 100%;
+    padding: 8px 6px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-tertiary);
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/* Disabled state visual */
+.weight-group.weight-disabled {
+    opacity: 0.8;
 }
 
 /* Smaller inputs */
