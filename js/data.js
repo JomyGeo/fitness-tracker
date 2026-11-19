@@ -216,17 +216,6 @@ const exerciseData = {
             { name: "Figure-4 Stretch", duration: "30s each side", why: "HIP MAINTENANCE - keeps hips mobile", video: "2NcKpQu3_GM", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Lying-Figure-4-Stretch.gif", muscles: ["Glutes", "Piriformis"], goal: "lower-back" }
         ]
     },
-            { name: "Arnold Press", sets: "3 x 10", rest: "60s", why: "WEAK SHOULDERS - full rotation, all heads", video: "6Z15_WdXmVw", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Arnold-Press.gif", muscles: { primary: ["Front Delts", "Side Delts"], secondary: ["Triceps"] } }
-        ],
-        cooldown: [
-            { name: "Shoulder Stretch", duration: "30s each arm", why: "Releases worked shoulders", video: "Yf1LYAC4otc", muscles: ["Shoulders"] },
-            { name: "Tricep Stretch", duration: "30s each arm", why: "Releases triceps after dips", video: "4aosnF1FPkA", muscles: ["Triceps"] },
-            { name: "Bicep Stretch", duration: "30s each arm", why: "Releases biceps after curls", video: "iMgK1F7w6Ag", muscles: ["Biceps"] },
-            { name: "Thread the Needle", duration: "30s each side", why: "THORACIC ROTATION - opens upper back", video: "gF062PEKJyc", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Thread-the-Needle-Stretch.gif", muscles: ["Thoracic Spine", "Shoulders"] },
-            { name: "Cat-Cow Stretch", duration: "10 reps", why: "LOWER BACK - spinal mobility", video: "kqnua4rHVVA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Cat-Cow-Stretch.gif", muscles: ["Spine", "Core"], goal: "lower-back" },
-            { name: "Figure-4 Stretch", duration: "30s each side", why: "HIP MAINTENANCE - keeps hips mobile", video: "2NcKpQu3_GM", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Lying-Figure-4-Stretch.gif", muscles: ["Glutes", "Piriformis"], goal: "lower-back" }
-        ]
-    },
     
     day6: {
         name: "Full Body + Power",
