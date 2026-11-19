@@ -3020,6 +3020,7 @@ body {
     font-weight: 600;
     color: var(--text-secondary);
     white-space: nowrap;
+    min-width: 75px;
 }
 
 .set-row .set-inputs {
@@ -3029,91 +3030,12 @@ body {
     flex: 1;
 }
 
-/* Weight Group with Bar/BW options */
-.weight-group {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    width: 80px;
-    flex-shrink: 0;
-}
-
-.weight-label-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.weight-label-row > label:first-child {
-    font-size: 10px;
-    color: var(--text-tertiary);
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-}
-
-.weight-options {
-    display: flex;
-    gap: 6px;
-}
-
-.weight-option-label {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    cursor: pointer;
-    font-size: 9px;
-    color: var(--text-tertiary);
-}
-
-.weight-option-label:hover {
-    color: var(--primary);
-}
-
-.weight-option-checkbox {
-    width: 14px;
-    height: 14px;
-    accent-color: var(--primary);
-    cursor: pointer;
-    margin: 0;
-}
-
-.weight-option-label span {
-    text-transform: uppercase;
-    font-weight: 500;
-}
-
-/* Weight input or placeholder */
-.weight-group input,
-.weight-placeholder {
-    width: 100%;
-    padding: 10px 8px;
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 600;
-    text-align: center;
-    box-sizing: border-box;
-}
-
-.weight-placeholder {
-    color: var(--text-tertiary);
-    text-transform: uppercase;
-    font-size: 13px;
-}
-
-/* Disabled state visual */
-.weight-group.weight-disabled {
-    opacity: 0.9;
-}
-
-/* Reps input group */
+/* Input groups */
 .set-input-group {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    width: 70px;
-    flex-shrink: 0;
+    flex: 1;
 }
 
 .set-input-group label {
@@ -3197,24 +3119,7 @@ body {
     
     .set-row .set-label {
         font-size: 12px;
-    }
-    
-    .weight-group {
-        width: 70px;
-    }
-    
-    .weight-group input,
-    .weight-placeholder {
-        padding: 8px 6px;
-        font-size: 14px;
-    }
-    
-    .weight-placeholder {
-        font-size: 12px;
-    }
-    
-    .set-input-group {
-        width: 60px;
+        min-width: 70px;
     }
     
     .set-input-group input {
@@ -3226,14 +3131,5 @@ body {
         width: 38px;
         height: 38px;
         min-width: 38px;
-    }
-    
-    .weight-option-checkbox {
-        width: 12px;
-        height: 12px;
-    }
-    
-    .weight-option-label {
-        font-size: 8px;
     }
 }
