@@ -158,34 +158,31 @@ const exerciseData = {
     },
     
     day4: {
-        name: "Shoulders + Rotational Power",
-        focus: "BAT SPEED exercises, posture",
+        name: "Active Recovery + Cardio",
+        focus: "Fat burning, recovery, light movement",
         week1: [
-            { name: "Overhead Press", sets: "4 x 10", rest: "90s", why: "Main shoulder builder - strength", video: "2yjwXTZQDDI", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Overhead-Press.gif", muscles: { primary: ["Front Delts", "Side Delts"], secondary: ["Triceps", "Core"] } },
-            { name: "Lateral Raises", sets: "4 x 12-15", rest: "60s", why: "Side delts - shoulder width", video: "3VcKaXpzqRo", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Lateral-Raise.gif", muscles: { primary: ["Side Delts"], secondary: [] } },
-            { name: "Rear Delt Flyes", sets: "3 x 15", rest: "60s", why: "POSTURE - balances front delts", video: "EA7u4Q_8HQ0", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Rear-Lateral-Raise.gif", muscles: { primary: ["Rear Delts"], secondary: ["Traps"] }, goal: "posture" },
-            { name: "Face Pulls", sets: "3 x 15", rest: "60s", why: "POSTURE + NECK HUMP fix", video: "rep-qVOkqgk", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Face-Pull.gif", muscles: { primary: ["Rear Delts", "Traps"], secondary: ["Rotator Cuff"] }, goal: "neck-hump" },
-            { name: "Cable Woodchops", sets: "3 x 12 each", rest: "60s", why: "BAT SPEED - hip rotation power", video: "pAplQXk3dkU", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-wood-chop.gif", muscles: { primary: ["Obliques", "Core"], secondary: ["Shoulders"] }, goal: "bat-speed" },
-            { name: "Pallof Press", sets: "3 x 10 each", rest: "45s", why: "CORE - anti-rotation stability", video: "AH_QZLm_0-s", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pallof-Press.gif", muscles: { primary: ["Core"], secondary: ["Obliques"] , bodyweight: true} },
-            { name: "Shrugs", sets: "3 x 12-15", rest: "60s", why: "Upper trap development", video: "cJRVVxmytaM", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shrug.gif", muscles: { primary: ["Upper Traps"], secondary: [] } }
+            { name: "Incline Treadmill Walk", sets: "30 mins", rest: "-", why: "FAT BURN - 12 incline, 3.0-3.5 speed. Burns fat without muscle loss", video: "iBW5TUvfpOs", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Walking-on-Treadmill.gif", muscles: { primary: ["Glutes", "Hamstrings"], secondary: ["Calves", "Core"] }, goal: "belly-fat", cardio: true },
+            { name: "Foam Rolling - Back", sets: "2 mins", rest: "-", why: "RECOVERY - releases tight muscles", video: "R2k4gGlk7uo", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Foam-Roller-Upper-Back.gif", muscles: { primary: ["Upper Back"], secondary: [] }, bodyweight: true },
+            { name: "Foam Rolling - Legs", sets: "2 mins each", rest: "-", why: "RECOVERY - releases quads, hamstrings, calves", video: "JRy7cyT3EQs", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Foam-Roller-Quadriceps.gif", muscles: { primary: ["Quads", "Hamstrings"], secondary: [] }, bodyweight: true },
+            { name: "Hip 90/90 Stretch", sets: "2 x 45s each", rest: "-", why: "HIP MOBILITY - opens tight hips", video: "8x5jpqXcLSA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/90-90-Hip-Stretch.gif", muscles: { primary: ["Hip Rotators"], secondary: ["Glutes"] }, bodyweight: true },
+            { name: "World's Greatest Stretch", sets: "5 each side", rest: "-", why: "FULL BODY MOBILITY - hips, thoracic, hamstrings", video: "lbozu0DPcYI", gif: "https://fitnessprogramer.com/wp-content/uploads/2022/02/Worlds-Greatest-Stretch.gif", muscles: { primary: ["Hip Flexors", "Thoracic"], secondary: ["Hamstrings"] }, bodyweight: true },
+            { name: "Dead Hang", sets: "3 x 30s", rest: "30s", why: "SPINE DECOMPRESSION - relieves back after heavy days", video: "HoE-C85ZlCE", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dead-Hang.gif", muscles: { primary: ["Lats", "Shoulders"], secondary: ["Forearms"] }, bodyweight: true, goal: "posture" },
+            { name: "Cat-Cow Stretch", sets: "2 x 15 reps", rest: "-", why: "LOWER BACK - spinal mobility recovery", video: "kqnua4rHVVA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Cat-Cow-Stretch.gif", muscles: { primary: ["Spine"], secondary: ["Core"] }, bodyweight: true, goal: "lower-back" }
         ],
         week2: [
-            { name: "Arnold Press", sets: "4 x 10-12", rest: "90s", why: "All delt heads - rotation movement", video: "6Z15_WdXmVw", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Arnold-Press.gif", muscles: { primary: ["Front Delts", "Side Delts"], secondary: ["Triceps"] } },
-            { name: "Cable Lateral Raise", sets: "4 x 12-15", rest: "60s", why: "Constant tension - better pump", video: "PPrzBWZDOhA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Lateral-Raise.gif", muscles: { primary: ["Side Delts"], secondary: [] } },
-            { name: "Reverse Pec Deck", sets: "3 x 15", rest: "60s", why: "POSTURE - rear delt isolation", video: "5YK4bgzXDp0", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Rear-Delt-Fly-Machine.gif", muscles: { primary: ["Rear Delts"], secondary: [] }, goal: "posture" },
-            { name: "Band Pull-Aparts", sets: "3 x 20", rest: "45s", why: "POSTURE + NECK HUMP fix", video: "JObYtU7Y7ag", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Resistance-Band-Pull-Apart.gif", muscles: { primary: ["Rear Delts"], secondary: ["Traps"] , bodyweight: true}, goal: "neck-hump" },
-            { name: "Med Ball Rotational Throw", sets: "3 x 8 each", rest: "60s", why: "BAT SPEED - explosive hip power", video: "Cf_2gRh1FZU", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/09/Medicine-Ball-Rotational-Throw.gif", muscles: { primary: ["Obliques", "Core"], secondary: ["Hips"] }, goal: "bat-speed" },
-            { name: "Russian Twists", sets: "3 x 20 total", rest: "45s", why: "CORE - rotational strength", video: "wkD8rjkodUI", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Russian-Twist.gif", muscles: { primary: ["Obliques"], secondary: ["Core"] }, goal: "bat-speed" },
-            { name: "Front Raises", sets: "3 x 12", rest: "60s", why: "Front delt - shoulder roundness", video: "-t7fuZ0KhDA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Front-Raise.gif", muscles: { primary: ["Front Delts"], secondary: [] } }
+            { name: "Incline Treadmill Walk", sets: "35 mins", rest: "-", why: "FAT BURN - 12-15 incline, 3.0-3.5 speed. Longer duration", video: "iBW5TUvfpOs", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Walking-on-Treadmill.gif", muscles: { primary: ["Glutes", "Hamstrings"], secondary: ["Calves", "Core"] }, goal: "belly-fat", cardio: true },
+            { name: "Foam Rolling - Full Body", sets: "5 mins", rest: "-", why: "RECOVERY - releases all major muscle groups", video: "R2k4gGlk7uo", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Foam-Roller-Upper-Back.gif", muscles: { primary: ["Full Body"], secondary: [] }, bodyweight: true },
+            { name: "Pigeon Pose", sets: "60s each side", rest: "-", why: "DEEP HIP OPENER - essential for tight hips", video: "c1iwMP0Bknk", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Pigeon-Pose.gif", muscles: { primary: ["Glutes", "Hip Flexors"], secondary: [] }, bodyweight: true },
+            { name: "Thread the Needle", sets: "45s each side", rest: "-", why: "THORACIC MOBILITY - opens upper back", video: "gF062PEKJyc", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Thread-the-Needle-Stretch.gif", muscles: { primary: ["Thoracic Spine"], secondary: ["Shoulders"] }, bodyweight: true },
+            { name: "Frog Stretch", sets: "60s", rest: "-", why: "INNER THIGH + GROIN - deep hip mobility", video: "3YMK26o9LLU", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Frog-Stretch.gif", muscles: { primary: ["Adductors"], secondary: ["Hip Flexors"] }, bodyweight: true },
+            { name: "Child's Pose", sets: "60s", rest: "-", why: "LOWER BACK - full relaxation and decompression", video: "2MJGg-dUKh0", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Childs-Pose.gif", muscles: { primary: ["Lower Back"], secondary: ["Lats"] }, bodyweight: true, goal: "lower-back" },
+            { name: "Wall Angels", sets: "2 x 15", rest: "-", why: "POSTURE - shoulder mobility and scapular control", video: "M_ooIhKYs7c", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Wall-Slides.gif", muscles: { primary: ["Shoulders", "Upper Back"], secondary: [] }, bodyweight: true, goal: "posture" }
         ],
         cooldown: [
-            { name: "Shoulder Cross-Body Stretch", duration: "30s each", why: "Releases worked delts", video: "Yf1LYAC4otc", muscles: ["Shoulders"] },
-            { name: "Chest Doorway Stretch", duration: "30s each", why: "Opens chest - POSTURE", video: "WTjkS3b8pFA", muscles: ["Chest"], goal: "posture" },
-            { name: "Torso Twist Stretch", duration: "30s each", why: "Releases rotational muscles after woodchops", video: "cSZAmTvvnuw", muscles: ["Obliques", "Lower Back"] },
-            { name: "Figure-4 Stretch", duration: "30s each side", why: "HIP MOBILITY - glute and piriformis release", video: "2NcKpQu3_GM", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Lying-Figure-4-Stretch.gif", muscles: ["Glutes", "Piriformis"], goal: "lower-back" },
-            { name: "Child's Pose", duration: "45s", why: "LOWER BACK relief + full body relaxation", video: "2MJGg-dUKh0", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Childs-Pose.gif", muscles: ["Lower Back", "Lats"], goal: "lower-back" },
-            { name: "Dead Bug", duration: "8 reps each side", why: "LOWER BACK + CORE - stabilizes after rotation work", video: "I5xbsA71v4c", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dead-Bug.gif", muscles: ["Core", "Lower Back"], goal: "lower-back" },
-            { name: "Chin Tucks", duration: "15 reps", why: "NECK HUMP FIX - never skip", video: "wQylqaCl8Zo", muscles: ["Neck"], goal: "neck-hump", bodyweight: true }
+            { name: "Standing Forward Fold", duration: "45s", why: "Hamstring stretch + relaxation", video: "g7Uhp5tphAs", muscles: ["Hamstrings", "Lower Back"] },
+            { name: "Seated Spinal Twist", duration: "30s each side", why: "Spinal mobility + relaxation", video: "VKPLe48axmg", muscles: ["Spine", "Obliques"] },
+            { name: "Butterfly Stretch", duration: "45s", why: "Inner thigh + hip opener", video: "NO1FnWDj67A", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Butterfly-Stretch.gif", muscles: ["Adductors", "Hips"] },
+            { name: "Supine Twist", duration: "30s each side", why: "Lower back release + relaxation", video: "DT1R9K3K1R4", muscles: ["Lower Back", "Obliques"] }
         ]
     },
     
@@ -198,7 +195,7 @@ const exerciseData = {
             { name: "Face Pulls", sets: "4 x 15", rest: "60s", why: "WEAK SHOULDERS + POSTURE - rear delt health", video: "rep-qVOkqgk", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Face-Pull.gif", muscles: { primary: ["Rear Delts", "Traps"], secondary: ["Rotator Cuff"] }, goal: "posture" },
             { name: "Barbell Curl", sets: "3 x 10-12", rest: "60s", why: "Bicep mass - arm size", video: "kwG2ipFRgfo", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Curl.gif", muscles: { primary: ["Biceps"], secondary: ["Forearms"] } },
             { name: "Hammer Curls", sets: "3 x 12", rest: "60s", why: "Brachialis + forearms - arm thickness", video: "zC3nLlEvin4", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Hammer-Curl.gif", muscles: { primary: ["Biceps", "Brachialis"], secondary: ["Forearms"] } },
-            { name: "Tricep Dips", sets: "3 x 12", rest: "60s", why: "Tricep mass - arm definition", video: "6kALZikXxLc", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Bench-Dips.gif", muscles: { primary: ["Triceps"], secondary: ["Front Delts"] }, bodyweight: true },
+            { name: "Tricep Pushdowns", sets: "3 x 12", rest: "60s", why: "Tricep mass - arm definition", video: "2-LAMcpzODU", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pushdown.gif", muscles: { primary: ["Triceps"], secondary: [] } },
             { name: "Reverse Flyes", sets: "3 x 12", rest: "45s", why: "WEAK SHOULDERS + POSTURE - rear delt strength", video: "oLrBlaYL6WU", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Rear-Delt-Fly.gif", muscles: { primary: ["Rear Delts"], secondary: ["Traps"] }, goal: "posture" }
         ],
         week2: [
@@ -208,6 +205,17 @@ const exerciseData = {
             { name: "Incline DB Curl", sets: "3 x 10", rest: "60s", why: "Bicep stretch + peak - better contraction", video: "soxrZlIl35U", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Curl.gif", muscles: { primary: ["Biceps"], secondary: [] } },
             { name: "Preacher Curl", sets: "3 x 12", rest: "60s", why: "Bicep isolation - no cheating", video: "fIWP-FRFNU0", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Preacher-Curl.gif", muscles: { primary: ["Biceps"], secondary: [] } },
             { name: "Overhead Tricep Extension", sets: "3 x 12", rest: "60s", why: "Tricep long head - arm shape", video: "YbX7Wd8jQ-Q", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Triceps-Extension.gif", muscles: { primary: ["Triceps (Long Head)"], secondary: [] } },
+            { name: "Arnold Press", sets: "3 x 10", rest: "60s", why: "WEAK SHOULDERS - full rotation, all heads", video: "6Z15_WdXmVw", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Arnold-Press.gif", muscles: { primary: ["Front Delts", "Side Delts"], secondary: ["Triceps"] } }
+        ],
+        cooldown: [
+            { name: "Shoulder Stretch", duration: "30s each arm", why: "Releases worked shoulders", video: "Yf1LYAC4otc", muscles: ["Shoulders"] },
+            { name: "Tricep Stretch", duration: "30s each arm", why: "Releases triceps after extensions", video: "4aosnF1FPkA", muscles: ["Triceps"] },
+            { name: "Bicep Stretch", duration: "30s each arm", why: "Releases biceps after curls", video: "iMgK1F7w6Ag", muscles: ["Biceps"] },
+            { name: "Thread the Needle", duration: "30s each side", why: "THORACIC ROTATION - opens upper back", video: "gF062PEKJyc", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Thread-the-Needle-Stretch.gif", muscles: ["Thoracic Spine", "Shoulders"] },
+            { name: "Cat-Cow Stretch", duration: "10 reps", why: "LOWER BACK - spinal mobility", video: "kqnua4rHVVA", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Cat-Cow-Stretch.gif", muscles: ["Spine", "Core"], goal: "lower-back" },
+            { name: "Figure-4 Stretch", duration: "30s each side", why: "HIP MAINTENANCE - keeps hips mobile", video: "2NcKpQu3_GM", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/06/Lying-Figure-4-Stretch.gif", muscles: ["Glutes", "Piriformis"], goal: "lower-back" }
+        ]
+    },
             { name: "Arnold Press", sets: "3 x 10", rest: "60s", why: "WEAK SHOULDERS - full rotation, all heads", video: "6Z15_WdXmVw", gif: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Arnold-Press.gif", muscles: { primary: ["Front Delts", "Side Delts"], secondary: ["Triceps"] } }
         ],
         cooldown: [
