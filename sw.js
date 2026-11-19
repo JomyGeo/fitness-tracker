@@ -1,5 +1,5 @@
 // Service Worker for Fitness Tracker PWA
-const CACHE_NAME = 'fitness-tracker-v59';
+const CACHE_NAME = 'fitness-tracker-v60';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',

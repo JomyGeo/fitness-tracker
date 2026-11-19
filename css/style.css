@@ -3007,24 +3007,25 @@ body {
 .set-row {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px;
+    gap: 10px;
+    padding: 12px;
     background: var(--bg-secondary);
     border-radius: 10px;
     transition: all 0.2s ease;
     border: 1px solid transparent;
-    flex-wrap: nowrap;
 }
 
 .set-row .set-label {
-    min-width: 45px;
     font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    white-space: nowrap;
 }
 
 .set-row .set-inputs {
     display: flex;
-    align-items: center;
-    gap: 6px;
+    align-items: flex-end;
+    gap: 8px;
     flex: 1;
 }
 
@@ -3032,23 +3033,22 @@ body {
 .weight-group {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    flex: 1;
-    max-width: 100px;
+    gap: 4px;
+    width: 80px;
+    flex-shrink: 0;
 }
 
 .weight-label-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 4px;
 }
 
-.weight-label-row > label {
-    font-size: 9px;
+.weight-label-row > label:first-child {
+    font-size: 10px;
     color: var(--text-tertiary);
     text-transform: uppercase;
-    letter-spacing: 0.2px;
+    letter-spacing: 0.3px;
 }
 
 .weight-options {
@@ -3070,8 +3070,8 @@ body {
 }
 
 .weight-option-checkbox {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     accent-color: var(--primary);
     cursor: pointer;
     margin: 0;
@@ -3079,55 +3079,78 @@ body {
 
 .weight-option-label span {
     text-transform: uppercase;
-    letter-spacing: 0.2px;
+    font-weight: 500;
 }
 
-/* Weight placeholder when Bar/BW is checked */
+/* Weight input or placeholder */
+.weight-group input,
 .weight-placeholder {
     width: 100%;
-    padding: 8px 6px;
+    padding: 10px 8px;
     background: var(--bg-tertiary);
     border: 1px solid var(--border);
     border-radius: 8px;
-    color: var(--text-tertiary);
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 15px;
+    font-weight: 600;
     text-align: center;
+    box-sizing: border-box;
+}
+
+.weight-placeholder {
+    color: var(--text-tertiary);
     text-transform: uppercase;
+    font-size: 13px;
 }
 
 /* Disabled state visual */
 .weight-group.weight-disabled {
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
-/* Smaller inputs */
+/* Reps input group */
 .set-input-group {
-    flex: 1;
-    max-width: 80px;
-}
-
-.set-input-group input {
-    padding: 8px 6px;
-    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 70px;
+    flex-shrink: 0;
 }
 
 .set-input-group label {
-    font-size: 9px;
+    font-size: 10px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 }
 
-/* Disabled weight input when bar only is checked */
-.set-input-group input:disabled {
+.set-input-group input {
+    width: 100%;
+    padding: 10px 8px;
     background: var(--bg-tertiary);
-    opacity: 0.4;
-    cursor: not-allowed;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    box-sizing: border-box;
 }
 
-/* Done button smaller */
+/* Done button */
 .set-done-btn {
-    width: 38px;
-    height: 38px;
-    min-width: 38px;
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    border: 2px solid var(--border);
+    color: var(--text-tertiary);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Improved Last Performance Box - Compact */
@@ -3166,23 +3189,51 @@ body {
 }
 
 /* Mobile adjustments */
-@media (max-width: 380px) {
+@media (max-width: 400px) {
     .set-row {
-        padding: 8px;
-        gap: 6px;
+        padding: 10px;
+        gap: 8px;
+    }
+    
+    .set-row .set-label {
+        font-size: 12px;
     }
     
     .weight-group {
-        max-width: 70px;
+        width: 70px;
+    }
+    
+    .weight-group input,
+    .weight-placeholder {
+        padding: 8px 6px;
+        font-size: 14px;
+    }
+    
+    .weight-placeholder {
+        font-size: 12px;
     }
     
     .set-input-group {
-        max-width: 65px;
+        width: 60px;
+    }
+    
+    .set-input-group input {
+        padding: 8px 6px;
+        font-size: 14px;
     }
     
     .set-done-btn {
-        width: 34px;
-        height: 34px;
-        min-width: 34px;
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+    }
+    
+    .weight-option-checkbox {
+        width: 12px;
+        height: 12px;
+    }
+    
+    .weight-option-label {
+        font-size: 8px;
     }
 }
