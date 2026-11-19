@@ -226,6 +226,108 @@ function getProgressionSuggestion(lastPerformance, targetRepsRange) {
         icon: '➡️'
     };
 }
+// Get Personal Best (all-time best) weight for an exercise
+function getPersonalBest(exerciseName) {
+    let personalBest = null;
+    
+    // Search through ALL workout data
+    for (const dateKey of Object.keys(workoutData)) {
+        const dayData = workoutData[dateKey];
+        
+        for (const dayKey of Object.keys(dayData)) {
+            if (!dayKey.startsWith('day')) continue;
+            
+            const exercises = dayData[dayKey];
+            
+            for (const exKey of Object.keys(exercises)) {
+                const exData = exercises[exKey];
+                if (!exData?.sets_data) continue;
+                
+                // Get the exercise name from exerciseData
+                const weekIndex = exKey.split('_')[0];
+                const exerciseIndex = parseInt(exKey.split('_')[1]);
+                const exercise = exerciseData[dayKey]?.[weekIndex]?.[exerciseIndex];
+                
+                if (exercise?.name === exerciseName) {
+                    // Check all sets for this exercise
+                    const completedSets = exData.sets_data.filter(s => s?.done && s.weight);
+                    
+                    for (const set of completedSets) {
+                        const weight = parseFloat(set.weight) || 0;
+                        const reps = parseInt(set.reps) || 0;
+                        
+                        if (!personalBest || weight > personalBest.weight || 
+                            (weight === personalBest.weight && reps > personalBest.reps)) {
+                            personalBest = {
+                                weight: weight,
+                                reps: reps,
+                                date: dateKey
+                            };
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    return personalBest;
+}
+
+// Get last weight used for a specific set number of an exercise
+function getLastSetWeight(exerciseName, setIndex, currentDateKey) {
+    // Get all dates sorted in descending order (most recent first)
+    const sortedDates = Object.keys(workoutData)
+        .filter(dateKey => dateKey !== currentDateKey && dateKey < currentDateKey)
+        .sort((a, b) => b.localeCompare(a));
+    
+    for (const dateKey of sortedDates) {
+        const dayData = workoutData[dateKey];
+        
+        for (const dayKey of Object.keys(dayData)) {
+            if (!dayKey.startsWith('day')) continue;
+            
+            const exercises = dayData[dayKey];
+            
+            for (const exKey of Object.keys(exercises)) {
+                const exData = exercises[exKey];
+                if (!exData?.sets_data) continue;
+                
+                const weekIndex = exKey.split('_')[0];
+                const exerciseIndex = parseInt(exKey.split('_')[1]);
+                const exercise = exerciseData[dayKey]?.[weekIndex]?.[exerciseIndex];
+                
+                if (exercise?.name === exerciseName) {
+                    const setData = exData.sets_data[setIndex];
+                    if (setData?.done && setData.weight) {
+                        return {
+                            weight: setData.weight,
+                            reps: setData.reps,
+                            barOnly: setData.barOnly || false
+                        };
+                    }
+                }
+            }
+        }
+    }
+    
+    return null;
+}
+
+// List of barbell exercises that can be done with "bar only"
+const barbellExercises = [
+    'Barbell Squats', 'Barbell Squats (Light)', 'Flat Bench Press', 'Barbell Bench Press',
+    'Overhead Press', 'Barbell Shoulder Press', 'Barbell Curls', 'Barbell Curl',
+    'Skull Crushers', 'Barbell Row', 'T-Bar Row', 'Romanian Deadlift',
+    'Good Mornings', 'Hack Squat'
+];
+
+function isBarbellExercise(exerciseName) {
+    return barbellExercises.some(name => 
+        exerciseName.toLowerCase().includes(name.toLowerCase()) ||
+        name.toLowerCase().includes(exerciseName.toLowerCase())
+    );
+}
+
 function highlightToday() {
     const dayOfWeek = new Date().getDay();
     const dayMap = { 1: 'day1', 2: 'day2', 3: 'day3', 4: 'day4', 5: 'day5', 6: 'day6', 0: 'day7' };
@@ -497,13 +599,49 @@ function renderWorkoutDay(container) {
                         ${ex.muscles.secondary.map(m => `<span class="muscle-tag secondary">${m}</span>`).join('')}
                     </div>
                     
-                    ${!isTimeExercise ? `
+                    ${!isTimeExercise && !isBodyweight ? `
+                    <div class="performance-stats">
+                        ${(() => {
+                            const personalBest = getPersonalBest(ex.name);
+                            return personalBest ? `
+                            <div class="personal-best-box">
+                                <span class="pb-icon">🏆</span>
+                                <span class="pb-label">Personal Best:</span>
+                                <span class="pb-value">${personalBest.weight}kg × ${personalBest.reps} reps</span>
+                            </div>
+                            ` : '';
+                        })()}
+                        ${lastPerf ? `
+                        <div class="last-performance-box">
+                            <div class="last-perf-header">
+                                <span class="last-perf-icon">📊</span>
+                                <span class="last-perf-label">Last time:</span>
+                                <span class="last-perf-value">${lastPerf.weight ? lastPerf.weight + 'kg × ' : ''}${lastPerf.reps || '-'} reps</span>
+                            </div>
+                            ${progression ? `
+                            <div class="progression-suggestion">
+                                ${progression.message}
+                            </div>
+                            ` : ''}
+                        </div>
+                        ` : `
+                        <div class="last-performance-box no-data">
+                            <div class="last-perf-header no-data">
+                                <span class="last-perf-icon">📊</span>
+                                <span class="last-perf-label">First time - track your sets!</span>
+                            </div>
+                        </div>
+                        `}
+                    </div>
+                    ` : ''}
+                    
+                    ${isBodyweight && !isTimeExercise ? `
                     <div class="last-performance-box ${lastPerf ? '' : 'no-data'}">
                         ${lastPerf ? `
                             <div class="last-perf-header">
                                 <span class="last-perf-icon">📊</span>
                                 <span class="last-perf-label">Last time:</span>
-                                <span class="last-perf-value">${lastPerf.weight ? lastPerf.weight + 'kg × ' : ''}${lastPerf.reps || '-'} reps</span>
+                                <span class="last-perf-value">${lastPerf.reps || '-'} reps</span>
                             </div>
                             ${progression ? `
                             <div class="progression-suggestion">
@@ -544,9 +682,18 @@ function renderWorkoutDay(container) {
                                     return '';
                                 }
                                 
+                                // Get last weight for this specific set
+                                const lastSetWeight = !isTimeExercise && !isBodyweight ? getLastSetWeight(ex.name, setIndex, todayKey) : null;
+                                const isBarbell = isBarbellExercise(ex.name);
+                                
                                 return `
                                 <div class="set-row ${setData.done ? 'set-done' : 'set-active'}">
                                     <div class="set-label">Set ${setIndex + 1}</div>
+                                    ${lastSetWeight && !setData.done ? `
+                                    <div class="last-set-hint">
+                                        <span class="hint-text">Last: ${lastSetWeight.barOnly ? 'Bar only' : lastSetWeight.weight + 'kg'} × ${lastSetWeight.reps}</span>
+                                    </div>
+                                    ` : ''}
                                     <div class="set-inputs">
                                         ${isTimeExercise ? `
                                         <div class="set-input-group time-group">
@@ -566,12 +713,21 @@ function renderWorkoutDay(container) {
                                         </div>
                                         ` : `
                                         ${!isBodyweight ? `
-                                        <div class="set-input-group">
+                                        <div class="set-input-group weight-group">
                                             <label>kg</label>
                                             <input type="text" inputmode="decimal" pattern="[0-9]*\\.?[0-9]*"
-                                                   value="${setData.weight || ''}" 
+                                                   value="${setData.barOnly ? '' : (setData.weight || '')}" 
                                                    onchange="updateSetData('${exKey}', ${setIndex}, 'weight', this.value)"
-                                                   placeholder="20">
+                                                   placeholder="${lastSetWeight ? lastSetWeight.weight : '20'}"
+                                                   ${setData.barOnly ? 'disabled' : ''}>
+                                            ${isBarbell ? `
+                                            <label class="bar-only-label">
+                                                <input type="checkbox" class="bar-only-checkbox"
+                                                       ${setData.barOnly ? 'checked' : ''}
+                                                       onchange="updateSetData('${exKey}', ${setIndex}, 'barOnly', this.checked)">
+                                                <span class="bar-only-text">Bar</span>
+                                            </label>
+                                            ` : ''}
                                         </div>
                                         ` : ''}
                                         <div class="set-input-group">
@@ -579,7 +735,7 @@ function renderWorkoutDay(container) {
                                             <input type="number" inputmode="numeric" 
                                                    value="${setData.reps || ''}" 
                                                    onchange="updateSetData('${exKey}', ${setIndex}, 'reps', this.value)"
-                                                   placeholder="10" min="0" max="100">
+                                                   placeholder="${lastSetWeight ? lastSetWeight.reps : '10'}" min="0" max="100">
                                         </div>
                                         `}
                                         <button class="set-done-btn ${setData.done ? 'done' : ''}" 
