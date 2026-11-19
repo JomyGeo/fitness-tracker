@@ -153,8 +153,14 @@ auth.onAuthStateChanged(async (user) => {
         hideLoginScreen();
         updateUserUI();
         await loadDataFromCloud();
+        // Force render all components
+        if (typeof renderNavigation === 'function') {
+            renderNavigation();
+        }
         if (typeof renderContent === 'function') {
             renderContent();
+        }
+        if (typeof updateHeaderStats === 'function') {
             updateHeaderStats();
         }
         return;
@@ -167,8 +173,14 @@ auth.onAuthStateChanged(async (user) => {
         hideLoginScreen();
         updateUserUI();
         await loadDataFromCloud();
+        // Force render all components
+        if (typeof renderNavigation === 'function') {
+            renderNavigation();
+        }
         if (typeof renderContent === 'function') {
             renderContent();
+        }
+        if (typeof updateHeaderStats === 'function') {
             updateHeaderStats();
         }
     } else {
